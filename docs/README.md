@@ -1,2 +1,3 @@
-# hiphops-io.github.io
+# Hiphops Docs
+
 Developer docs for Hiphops
