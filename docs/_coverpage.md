@@ -2,14 +2,15 @@
 
 ![logo](_media/inverted-logo.svg ":size=200")
 
-# Hiphops.io Docs<small>beta.1</small>
+# Hiphops.io<small>beta.1</small>
 
-> Automate developer admin
+> Automate your release process
 
-- ML driven change analysis
-- Only require the reviews you need
-- Automate release admin tasks
+- [x] ML driven change analysis
+- [x] Remove developer admin
+- [x] Only require the reviews you need
+- [x] Automate release admin tasks
 
 <!-- [GitHub](https://github.com/docsifyjs/docsify/) -->
 
-[Get Started](#hiphops-docs)
+[Get Started](#introduction)
