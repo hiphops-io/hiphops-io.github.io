@@ -1,2 +1,1 @@
-- [Home](/)
 - [Introduction](intro.md)
