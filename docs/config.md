@@ -18,3 +18,5 @@ release_pipelines:
     when:
       branch: ["production", "staging"]
 ```
+
+The above config would configure change analysis (along with PR commenting) to run on pull requests against branches `production` and `staging`.
