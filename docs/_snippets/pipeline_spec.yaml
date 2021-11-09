@@ -1,0 +1,98 @@
+PipelineConfig:
+  properties:
+    release_pipelines:
+      items:
+        $ref: "#/components/schemas/ReleasePipeline"
+      maxItems: 100
+      minItems: 1
+      title: Release Pipelines
+      type: array
+    version:
+      allOf:
+        - $ref: "#/components/schemas/Version"
+      default: beta
+  required:
+    - release_pipelines
+  title: PipelineConfig
+  type: object
+
+Version:
+  description: An enumeration.
+  enum:
+  - beta
+  title: Version
+
+ReleasePipeline:
+  properties:
+    name:
+      maxLength: 200
+      minLength: 1
+      title: Name
+      type: string
+    when:
+      $ref: "#/components/schemas/When"
+  required:
+    - name
+  title: ReleasePipeline
+  type: object
+
+When:
+  properties:
+    branch:
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Branch
+      type: array
+    branch_not:
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Branch Not
+      type: array
+    changed_files:
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Changed Files
+      type: array
+    changed_files_not:
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Changed Files Not
+      type: array
+    repo:
+      default:
+        - "*"
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Repo
+      type: array
+    repo_not:
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Repo Not
+      type: array
+  title: When
+  type: object
