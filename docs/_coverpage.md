@@ -6,10 +6,10 @@
 
 > Automate your release process
 
-- [x] ML driven change analysis
-- [x] Remove developer admin
-- [x] Only require the reviews you need
-- [x] Automate release admin tasks
+&#9989; ML driven change analysis<br/>
+&#9989; Remove developer admin<br/>
+&#9989; Only require the reviews you need<br/>
+&#9989; Automate release admin tasks
 
 <!-- [GitHub](https://github.com/docsifyjs/docsify/) -->
 
