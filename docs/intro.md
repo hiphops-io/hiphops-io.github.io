@@ -78,14 +78,14 @@ Ease looks at the total amount of effort was required to create a change. If a c
 
 Each of the health scores generates a label, as does the overall score and the change category. Our next release will allow users to apply these labels to your PRs with optional re-writing. Labels can also be used to trigger GitHub Actions workflows.
 
-The possible labels are:​​
+The possible labels are:
 
 `kind/fix` `kind/maintenance` `kind/enhancement`
 
-`size/very-small` `size/small` `size/medium` `size/medium-large` `size/large​` `size/very-large​`
+`size/very-small` `size/small` `size/medium` `size/large` `size/very-large`
 
-`capacity/very-low` `capacity/low` `capacity/medium​` `capacity/high`
+`capacity/very-low` `capacity/low` `capacity/medium` `capacity/high`
 
-`ease/very-low` `ease/low` `ease/medium` `ease/high​`
+`ease/very-low` `ease/low` `ease/medium` `ease/high`
 
 `health/very-low` `health/low` `health/medium` `health/high`
