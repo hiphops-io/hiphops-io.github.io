@@ -1,38 +1,46 @@
-PipelineConfig:
-  properties:
-    release_pipelines:
-      items:
-        $ref: "#/components/schemas/ReleasePipeline"
-      maxItems: 100
-      minItems: 1
-      title: Release Pipelines
-      type: array
-    version:
-      allOf:
-        - $ref: "#/components/schemas/Version"
-      default: beta
-  required:
-    - release_pipelines
-  title: PipelineConfig
-  type: object
-
 Version:
   description: An enumeration.
   enum:
   - beta
   title: Version
 
+PipelineConfig:
+  properties:
+    release_pipelines:
+      items:
+        $ref: '#/components/schemas/ReleasePipeline'
+      maxItems: 100
+      minItems: 1
+      title: Release Pipelines
+      type: array
+    version:
+      allOf:
+      - $ref: '#/components/schemas/Version'
+      default: beta
+  required:
+  - release_pipelines
+  title: PipelineConfig
+  type: object
+
 ReleasePipeline:
   properties:
+    do:
+      default: []
+      items:
+        $ref: '#/components/schemas/Do'
+      maxItems: 100
+      minItems: 0
+      title: Do
+      type: array
     name:
       maxLength: 200
       minLength: 1
       title: Name
       type: string
     when:
-      $ref: "#/components/schemas/When"
+      $ref: '#/components/schemas/When'
   required:
-    - name
+  - name
   title: ReleasePipeline
   type: object
 
@@ -76,7 +84,7 @@ When:
       type: array
     repo:
       default:
-        - "*"
+      - '*'
       items:
         maxLength: 200
         minLength: 1
@@ -96,3 +104,33 @@ When:
       type: array
   title: When
   type: object
+
+Do:
+  properties:
+    action:
+      $ref: '#/components/schemas/Action'
+    config:
+      anyOf:
+      - items: {}
+        type: array
+      - type: object
+      title: Config
+    name:
+      maxLength: 200
+      minLength: 1
+      title: Name
+      type: string
+    when:
+      $ref: '#/components/schemas/When'
+  required:
+  - action
+  - config
+  title: Do
+  type: object
+
+Action:
+  description: An enumeration.
+  enum:
+  - apply_labels
+  - apply_custom_labels
+  title: Action

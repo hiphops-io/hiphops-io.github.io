@@ -44,15 +44,57 @@ This pipeline runs on changes that include Terraform changes.
 ```yaml
 version: beta
 release_pipelines:
-  - name: "Run Hiphops on master/release changes that only contain CSS"
+  - name: "Run Hiphops on main/release changes that only contain CSS"
     when:
       branch:
-        - "master"
+        - "main"
         - "release/*"
       changed_files_not:
         - "*"
         - "!*.css"
 ```
+
+We can use actions to apply custom labels to PRs
+
+```yaml
+version: beta
+release_pipelines:
+  - name: "Apply automerge label to docs only changes against main"
+    when:
+      branch: ["main"]
+      changed_files_not:
+        - "*"
+        - "!*.md"
+    do:
+      - name: "Apply automerge label"
+        action: apply_custom_labels
+        config:
+          - "automerge"
+```
+
+The above pipeline could be used to trigger a GitHub action when the `automerge` label is applied that automatically merges the pull request and skips review.
+
+The `apply_custom_labels` action `config` takes a list of strings to apply as labels to the PR.
+
+---
+
+We can also choose to apply the labels that Hiphops generates to the PR
+
+```yaml
+version: beta
+release_pipelines:
+  - name: "Apply Hiphops labels to PRs against main"
+    when:
+      branch:
+        - "main"
+    do:
+      - name: Apply all Hiphops labels to PR
+        action: apply_labels
+        config: ["*"]
+```
+
+The config for the `apply_labels` action is a list of glob style patterns that are compared with the labels created in the Hiphops analysis.
+
 
 This pipeline shows how with Hiphops you can not only filter by the presence/abscence of a specific pattern, but also by PRs *only* including changes to certain files and nothing else.
 The branch patterns should be fairly self explanatory, the `changed_files_not` pattern is a bit more interesting. The result is that it will be `true` when the change *only* alters CSS files and nothing else.
@@ -129,7 +171,28 @@ Every field has a `fieldname_not` variation which returns the opposite boolean r
     branch_not: ["release/*"]
 ```
 
+#### `release_pipeline[*].do`
 
+The `do` field is a list of actions to run on the pipeline.
+Currently we support two action types:
+- `apply_labels` which applies Hiphops generated labels to the PR
+- `apply_custom_labels` which applies labels of your own choosing to the PR
+
+#### release_pipeline[*].do[*].name
+
+Optional name for the action to run. Will be used in logs/comments/checksuites etc.
+
+#### release_pipeline[*].do[*].action
+
+The action to run. Either `apply_labels` or `apply_custom_labels`.
+
+#### release_pipeline[*].do[*].config
+
+The config to pass to the action, structure and meaning depends on the action.
+
+`apply_labels` config is a list of glob style patterns that are compared with the labels created in the Hiphops analysis. Matching hiphops labels will be applied to the PR. Applied labels will overwrite any existing labels that share a prefix.
+
+`apply_custom_labels` config is a list of strings to apply as labels to the PR.
 
 ## Reference
 

@@ -48,7 +48,7 @@ Access to objectively assigned categories for every change enables teams to unde
 
 The health of a change can be seen as a measure of both good working practices and how stringent the review process should be.
 
-We generate the health by looking at three key metrics; `size`, `capacity`, and `ease`. These metrics correlate strongly with good change outcomes and are based on three principles:
+We generate the health by looking at three key metrics; `size`, `focus`, and `ease`. These metrics correlate strongly with good change outcomes and are based on three principles:
 
 1. **Small changes are safer than large changes**
 2. **Authors that are focused on a single task at a time produce fewer errors than authors with a larger workload**
@@ -62,11 +62,11 @@ Hiphops produces a score for each of the three categories in addition to an over
 
 We score based on the number of files altered in addition to the number of lines added/deleted. Our algorithm accounts for changes that only alter a few lines of code yet impact a wide area of the codebase.
 
-**Capacity**
+**Focus**
 
-Capacity is the detected workload of the author (the one that raised the PR). We only consider the last 500 PRs against the current repository, analysing for concurrent work in addition to increased failure rates.
+Focus is the detected workload of the author (the one that raised the PR). We only consider the last 500 PRs against the current repository, analysing for concurrent work in addition to increased failure rates.
 
-High scores denote an author working comfortably within their available capacity, a low score indictates they may be over-utilised or having to frequently switch context.
+High scores denote an author was able to remain focused on a single task for the duration of the work, a low score indictates they may be over-utilised or having to frequently switch context.
 
 **Ease**
 
@@ -84,7 +84,7 @@ The possible labels are:
 
 `size/very-small` `size/small` `size/medium` `size/large` `size/very-large`
 
-`capacity/very-low` `capacity/low` `capacity/medium` `capacity/high`
+`focus/very-low` `focus/low` `focus/medium` `focus/high`
 
 `ease/very-low` `ease/low` `ease/medium` `ease/high`
 
