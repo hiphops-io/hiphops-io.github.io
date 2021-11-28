@@ -124,7 +124,7 @@ A unique name for the pipeline used to identify it in comments/logs/checksuites 
 
 #### `release_pipeline[*].when`
 
-The when clause allows you to conditionally apply a pipeline using Unix style pattern matching. You can specify patterns for `branch`, `changed_files` and `repo`. The fields `branch` and `repo` match against the change's target, rather than the source.
+The when clause allows you to conditionally apply a pipeline using Unix style pattern matching. You can specify patterns for `branch`, `changed_files`, `repo` and `labels`. The fields `branch` and `repo` match against the change's target, rather than the source.
 
 
 |Pattern|Meaning|
@@ -162,7 +162,7 @@ Multiple patterns for a field run top to bottom on an additive/subtractive basis
 
 The second `when` block first excludes files ending in .css, but then adds all files to the match (including those that end in .css).
 
-Every field has a `fieldname_not` variation which returns the opposite boolean result for the same patterns.
+Every field has a `FIELDNAME_not` variation which returns the opposite boolean result for the same patterns.
 ```yaml
   when:
     # Whenever this evaluates to true...
@@ -181,6 +181,10 @@ Currently we support two action types:
 #### release_pipeline[*].do[*].name
 
 Optional name for the action to run. Will be used in logs/comments/checksuites etc.
+
+#### release_pipeline[*].do[*].when
+
+The when block configures when this action will run. It uses the exact same structure as the `when` block in release pipelines which is [described above](#release_pipelinewhen)
 
 #### release_pipeline[*].do[*].action
 

@@ -82,6 +82,24 @@ When:
       minItems: 1
       title: Changed Files Not
       type: array
+    labels:
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Labels
+      type: array
+    labels_not:
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Labels Not
+      type: array
     repo:
       default:
       - '*'
