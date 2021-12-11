@@ -13,16 +13,14 @@ The Hiphops platform:
 
 ## Getting started
 
-> We're currently in beta, which you will need to join before being able to install. Join the beta [here](https://hiphops.io)
-
-Hiphops is installable as a GitHub app via the marketplace. GitHub apps are installed on a per user/org basis.
+Hiphops can be installed into your GitHub org or user account via the [GitHub app marketplace](https://github.com/apps/hiphops-io).
 
 Without any config Hiphops will analyse all new PRs and add a summary as a comment.
-To refine this behaviour, you can [configure Hiphops](config.md)
+To refine this behaviour, you can [configure Hiphops](config.md).
 
 ## Change analysis overview
 
-Hiphops analyses changes created by a PR, collecting several metrics and a generating a human-readable summary on the PR itself.
+Hiphops analyses changes created by a PR, collecting several metrics and generating a human-readable summary on the PR itself.
 
 When you've installed the Hiphops GitHub app and created your first pull request, Hiphops will post a comment like this:
 

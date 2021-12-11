@@ -1,0 +1,33 @@
+ApplyLabelsAction:
+  properties:
+    custom:
+      default: []
+      description: A list of custom labels to be applied to the PR.
+      items:
+        maxLength: 50
+        minLength: 1
+        type: string
+      title: Custom
+      type: array
+    matching:
+      default: []
+      description: A list of glob style patterns defining which Hiphops generated
+        labels should be applied to the PR. Will replace any labels that share a prefix
+        with matched labels (e.g. size/, kind/)
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Matching
+      type: array
+    when:
+      allOf:
+      - $ref: 'When'
+      default:
+        repo:
+        - '*'
+      title: When
+  title: ApplyLabelsAction
+  type: object

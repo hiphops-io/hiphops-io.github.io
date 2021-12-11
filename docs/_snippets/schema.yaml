@@ -1,0 +1,151 @@
+PipelineConfig:
+  properties:
+    apply_labels:
+      allOf:
+      - $ref: 'ApplyLabelsAction'
+      description: An action to apply labels to a matching pull request. If no action
+        is specified, the pipeline will simply analyse the change and add a comment
+        to the PR. Currently the only supported action.
+      title: Apply Labels
+    id:
+      description: An optional unique ID for this config, will be used to identify
+        the config in logs/status checks.
+      example: label-prod-prs
+      maxLength: 200
+      minLength: 1
+      title: Id
+      type: string
+    when:
+      allOf:
+      - $ref: 'When'
+      default:
+        repo:
+        - '*'
+      description: A set of filters compared against an incoming changeto decide when
+        to run this pipeline.
+      title: When
+  title: PipelineConfig
+  type: object
+
+When:
+  properties:
+    branch:
+      description: List of patterns matched against the target branch name.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Branch
+      type: array
+    branch_not:
+      description: Identical to branch field but with the boolean result flipped.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Branch Not
+      type: array
+    changed_files:
+      description: List of patterns matched against the list of files updated, created,
+        or deleted in the change.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Changed Files
+      type: array
+    changed_files_not:
+      description: Identical to changed_files field but with the boolean result flipped.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Changed Files Not
+      type: array
+    labels:
+      description: List of patterns matched against the hiphops generated labels applied
+        to the change.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Labels
+      type: array
+    labels_not:
+      description: Identical to labels field but with the boolean result flipped.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Labels Not
+      type: array
+    repo:
+      default:
+      - '*'
+      description: List of patterns matched against the target repo for the change.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Repo
+      type: array
+    repo_not:
+      description: Identical to repo field but with the boolean result flipped.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Repo Not
+      type: array
+  title: When
+  type: object
+
+ApplyLabelsAction:
+  properties:
+    custom:
+      default: []
+      description: A list of custom labels to be applied to the PR.
+      items:
+        maxLength: 50
+        minLength: 1
+        type: string
+      title: Custom
+      type: array
+    matching:
+      default: []
+      description: A list of glob style patterns defining which Hiphops generated
+        labels should be applied to the PR. Will replace any labels that share a prefix
+        with matched labels (e.g. size/, kind/)
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Matching
+      type: array
+    when:
+      allOf:
+      - $ref: 'When'
+      default:
+        repo:
+        - '*'
+      title: When
+  title: ApplyLabelsAction
+  type: object

@@ -1,0 +1,88 @@
+When:
+  properties:
+    branch:
+      description: List of patterns matched against the target branch name.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Branch
+      type: array
+    branch_not:
+      description: Identical to branch field but with the boolean result flipped.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Branch Not
+      type: array
+    changed_files:
+      description: List of patterns matched against the list of files updated, created,
+        or deleted in the change.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Changed Files
+      type: array
+    changed_files_not:
+      description: Identical to changed_files field but with the boolean result flipped.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Changed Files Not
+      type: array
+    labels:
+      description: List of patterns matched against the hiphops generated labels applied
+        to the change.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Labels
+      type: array
+    labels_not:
+      description: Identical to labels field but with the boolean result flipped.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Labels Not
+      type: array
+    repo:
+      default:
+      - '*'
+      description: List of patterns matched against the target repo for the change.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Repo
+      type: array
+    repo_not:
+      description: Identical to repo field but with the boolean result flipped.
+      items:
+        maxLength: 200
+        minLength: 1
+        type: string
+      maxItems: 100
+      minItems: 1
+      title: Repo Not
+      type: array
+  title: When
+  type: object
