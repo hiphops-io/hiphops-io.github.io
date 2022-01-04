@@ -24,7 +24,7 @@ This would enable change analysis (along with PR commenting) to run on pull requ
 
 ---
 
-You can create as many pipeline configs in the `hiphops.yaml` file as you like, separated by `---`:
+You can create as many pipeline configs in `hiphops.yaml` as you like, separated by `---`:
 
 ```yaml
 ---
@@ -112,7 +112,7 @@ Every field has a `FIELDNAME_not` variation which returns the opposite boolean r
 
 #### `apply_labels`
 
-Apply labels is our first supported action (with many more coming soon). Unsurprisingly it allows you to apply labels to a PR.
+The cunningly names apply labels action allows you to apply labels to a PR. These can be Hiphops generated labels or your own custom labels.
 
 
 #### `apply_labels.when`
@@ -130,17 +130,38 @@ Takes a list of glob style patterns matched against Hiphops generated labels. Ea
 Takes a list of strings. Each item in the list will be applied to the PR as a label. This is useful to label based on filters we provide (e.g. labelling something as `css-only`)
 
 
+#### `add_review`
+
+The add review action adds a review to the pull request that triggered the pipeline. It will either add a new review if the result (approve/request changes) has changed, or update the old review's comment otherwise. This action enables you to do things such as skip reviews for small mantainence changes or auto reject PRs that are too big.
+
+#### `add_review.when`
+
+The when block configures when this action will run. It uses the exact same structure as the `when` block in release pipelines which is [described above](#when)
+
+#### `add_review.approved`
+
+A `boolean` field. If true, the PR will be approved. If false, the review will request changes (which is essentially rejecting it in the current form).
+
+#### `add_review.comment`
+
+A `string` field. The comment to add to the review, if blank a default comment will be used explaining the review was automated.
+
 ## Reference
 
 
-### Pipeline config spec
+### Pipeline Config Spec
 
 [pipelineconfig.yaml](_snippets/pipelineconfig.yaml ':include :type=code')
 
-### When spec
+### When Spec
 
 [when.yaml](_snippets/when.yaml ':include :type=code')
 
-### Apply labels action spec
+### Apply Labels Action Spec
 
 [applylabelsaction.yaml](_snippets/applylabelsaction.yaml ':include :type=code')
+
+
+### Add Review Action Spec
+
+[addreviewaction.yaml](_snippets/addreviewaction.yaml ':include :type=code')

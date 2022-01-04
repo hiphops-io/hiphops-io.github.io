@@ -20,6 +20,19 @@ This pipeline runs on changes that include Terraform changes.
 ---
 
 ```yaml
+id: "Auto approve small fixes"
+when:
+  labels: ["kind/fix", "size/*small"]
+add_review:
+  approved: true
+  comment: "Automatically approved small fix"
+```
+
+This pipeline will automatically add an approving review to the PR if it is is either `size/very-small` or `size/small` and detected as a fix by our ML pipelines.
+
+---
+
+```yaml
 id: "Run Hiphops on main/release changes that only contain CSS"
 when:
   branch:

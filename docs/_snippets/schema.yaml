@@ -1,5 +1,10 @@
 PipelineConfig:
   properties:
+    add_review:
+      allOf:
+      - $ref: 'AddReviewAction'
+      description: An action to add a review to the PR with an optional comment
+      title: Add Review
     apply_labels:
       allOf:
       - $ref: 'ApplyLabelsAction'
@@ -148,4 +153,25 @@ ApplyLabelsAction:
         - '*'
       title: When
   title: ApplyLabelsAction
+  type: object
+
+AddReviewAction:
+  properties:
+    approved:
+      description: Whether the review gives approval or rejects/requests changes
+      title: Approved
+      type: boolean
+    comment:
+      title: Comment
+      type: string
+    when:
+      allOf:
+      - $ref: 'When'
+      default:
+        repo:
+        - '*'
+      title: When
+  required:
+  - approved
+  title: AddReviewAction
   type: object

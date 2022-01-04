@@ -9,6 +9,7 @@ The Hiphops platform:
 - Instantly analyses changes for health and impact
 - Provides high level summaries to assist with code reviews
 - Objectively categorises changes for better team analytics and deeper automations
+- Automatically review pull requests
 - Auto labels PRs, opening the door to further automation such as with GitHub Actions
 
 ## Getting started
