@@ -15,12 +15,16 @@ Here's a quick example of a very simple, but potentially useful, hiphops config:
 
 ```yaml
 ---
-id: "Analyse production and staging changes"
+id: "Auto approve small fix PRs in non-prod envs"
 when:
-  branch: ["production", "staging"]
+  branch: ["main", "staging"]
+  labels: ["size/very-small", "kind/fix"]
+add_review:
+  approved: true
+  comment: Auto approved small fix.
 ```
 
-This would enable change analysis (along with PR commenting) to run on pull requests targeting branches `production` and `staging`.
+This pipeline would add an approving review to non-prod pull requests that are 'very small' and detected as being a bug fix. (Your exact branch names will likely vary).
 
 ---
 
