@@ -1,3 +1,4 @@
 - [Introduction](intro.md)
-- [Configuration](config.md)
+- [Concepts](concepts.md)
+- [Using Hiphops](using.md)
 - [Examples](examples.md)

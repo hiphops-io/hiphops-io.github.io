@@ -64,7 +64,7 @@ When:
       minItems: 1
       title: Branch Not
       type: array
-    changed_files:
+    changed_filenames:
       items:
         maxLength: 200
         minLength: 1
@@ -73,7 +73,7 @@ When:
       minItems: 1
       title: Changed Files
       type: array
-    changed_files_not:
+    changed_filenames_not:
       items:
         maxLength: 200
         minLength: 1
