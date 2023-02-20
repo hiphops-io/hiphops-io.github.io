@@ -1,28 +1,24 @@
-# Introduction
-
-Hiphops gives you the ability to create secure, highly automated development flows.
-
-By hooking into the lifecycle events of your dev tooling, you're able to create automations in reaction to events such as pull requests, pushes and GitHub config changes.
-
-However, Hiphops is more than just an event trigger. Hiphops is built to understand the SDLC process, enriching events in ways that make automated decision making possible.
-
-You aren't just told a pull request is open, you're given a machine learning generated summary of the change's health, predicted category, and hundreds of data points that are critical to understanding what an event _actually_ means to you and your team.
-
-
-## Getting started
+## Installation
 
 Setting up Hiphops is straighforward. You will need a GitHub account and around 2 minutes.
 
-1. Sign up on the app [app.hiphops.io](https://app.hiphops.io)
+1. Sign up here :point_right: [app.hiphops.io](https://app.hiphops.io)
 2. If you signed in with anything other than GitHub, you also need to [connect your personal GitHub account](https://app.hiphops.io/account)
     > We use this to connect you to your GitHub installation and set up your project. The GitHub installation you create next handles all the privileged access.
 3. Install the GitHub app by clicking 'Add project' on the [project page](https://app.hiphops.io/projects). Make sure to select the correct org/account when installing.
 
-
-:tada: You're done! :tada:
+?> Integrating with GitHub will become optional in a future release, but for now it remains a required step in creating a new project.
 
 By default Hiphops will monitor all pull requests in the account and take no further action. If you'd like to automate some actions or control what is tracked, you can [configure Hiphops](using.md)
 
+
+## Usage
+
+Hiphops will analyse changes without any custom config, but that's not very interesting. Creating a `hiphops.yaml` file stored in one of your repositories and telling Hiphops to use it will enable you to create custom process flows and automations.
+
+Once you have written your first `hiphops.yaml` just tell Hiphops where it is by heading to your project's settings and updating the repo/branch name.
+
+From then on, whenever there's a change to this file, Hiphops will automatically fetch it and update your pipelines.
 
 ## Viewing your data
 

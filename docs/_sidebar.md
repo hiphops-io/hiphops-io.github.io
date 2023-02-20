@@ -1,4 +1,5 @@
-- [Introduction](intro.md)
+- [About Hiphops](about.md)
+- [Get Started](get-started.md)
 - [Concepts](concepts.md)
 - [Using Hiphops](using.md)
 - [Examples](examples.md)

@@ -4,11 +4,8 @@
 
 # Hiphops.io
 
-> Power up your SDLC
+> Fully automate your dev process
 
-
-<!-- [GitHub](https://github.com/docsifyjs/docsify/) -->
-
-[Read Docs](#introduction)
+[About Hiphops](#what-is-hiphops) [Get Started](get-started.md#installation)
 
 ![color](#f0f0f0)
