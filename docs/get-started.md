@@ -4,7 +4,7 @@ Setting up Hiphops is straighforward. You will need a GitHub account and around 
 
 1. Sign up here :point_right: [app.hiphops.io](https://app.hiphops.io)
 2. If you signed in with anything other than GitHub, you also need to [connect your personal GitHub account](https://app.hiphops.io/account)
-    > We use this to connect you to your GitHub installation and set up your project. The GitHub installation you create next handles all the privileged access.
+    > We only use your personal GitHub auth to connect you to your GitHub installation and set up your project. The GitHub installation you create next handles all the privileged access.
 3. Install the GitHub app by clicking 'Add project' on the [project page](https://app.hiphops.io/projects). Make sure to select the correct org/account when installing.
 
 ?> Integrating with GitHub will become optional in a future release, but for now it remains a required step in creating a new project.
