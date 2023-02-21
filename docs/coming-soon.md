@@ -1,4 +1,4 @@
-# Coming soon
+# Coming Soon
 
 We're developing a number of huge additions to Hiphops at the moment. We can't share all of them just yet, but here's a sample of some we're excited about.
 

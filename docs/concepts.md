@@ -2,7 +2,7 @@
 
 ## Sensors
 
-Sensors are the entrypoint to everything Hiphops can do. Sensors filter incoming events (such as a pull request being opened, a slack message being sent, etc). Any events that match will trigger that sensor's pipeline of tasks.
+Sensors are the entrypoint to everything Hiphops can do. Sensors listen for incoming events (such as a pull request being opened, a slack message being sent, etc) and trigger a set of tasks. Sensors can include a `when` filter to decide which events they apply to.
 
 A basic sensor might look like this:
 
@@ -20,6 +20,24 @@ when:
 Tasks are triggered in response to matching sensors. They can be things such as labelling a pull request, automatically approving or rejecting a change based on metrics, or other common steps in a development workflow.
 
 Tasks can run in parallel or have dependencies between them. Using the `depends` clause allows you to create DAGs, meaning you can easily model complex multi-step processes.
+
+Here's an example of a task on a simple sensor:
+
+```yaml
+
+resource: sensor
+tasks:
+- name: slack.post_comment
+  when:
+    some_field: "matches_somevalue"
+  input:
+    text: "A message to send"
+    channel: "general"
+```
+
+## Pipelines
+
+When a sensor matches an event, a pipeline run is created within Hiphops. This contains a record of all task statuses, their responses, the original event and the sensor config that triggered it. Pipeline runs can be seen within the Hiphops UI.
 
 
 ## Changes

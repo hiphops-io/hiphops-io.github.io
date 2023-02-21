@@ -9,22 +9,63 @@ Setting up Hiphops is straighforward. You will need a GitHub account and around 
 
 ?> Integrating with GitHub will become optional in a future release, but for now it remains a required step in creating a new project.
 
-By default Hiphops will monitor all pull requests in the account and take no further action. If you'd like to automate some actions or control what is tracked, you can [Configure Hiphops](config.md)
+By default Hiphops will monitor all pull requests in the account and take no further action. If you'd like to automate some actions or control what is tracked, you can [Configure Hiphops](syntax.md)
 
+---
 
-## Usage
+Hiphops will analyse changes without any custom config, but that's not very interesting. Creating a `hiphops.yaml` file is how you use all the good stuff.
 
-Hiphops will analyse changes without any custom config, but that's not very interesting. Creating a `hiphops.yaml` file stored in one of your repositories and telling Hiphops to use it will enable you to create custom process flows and automations.
+## Quickstart
 
-Once you have written your first `hiphops.yaml` just tell Hiphops where it is by heading to your project's settings and updating the repo/branch name.
+Hiphops can be configured by placing a file named `hiphops.yaml` in the root of a repository owned by a connected GitHub account.
 
-From then on, whenever there's a change to this file, Hiphops will automatically fetch it and update your pipelines.
+Once you've created a config, add the branch/repo name in your project settings. Hiphops will automatically detect and apply changes with no further setup required.
+
+If no custom config is set, the default pipeline matches all changes, runs analysis and stores the result, but takes no further action.
+
+> Note the extension must be `.yaml` and not `.yml` or variations thereof
+
+### Hello world
+
+What docs would be complete without a nice hello world to get you started?
+
+```yaml
+---
+id: Hello world
+resource: sensor
+tasks:
+- name: slack.post_message
+  input:
+    channel: "general"
+    text: "Hello world!"
+```
+
+Of course, this isn't particularly _useful_ unless you happen to want your Slack channel to be relentlessly spammed every time an event is received from your integrations.
+
+> Hint: You do not want that.
+
+---
+
+You can create as many sensors in `hiphops.yaml` as you like, separated by `---`:
+
+```yaml
+---
+id: "Analyse production and staging changes"
+resource: sensor
+...
+
+---
+id: "Do some other thing"
+resource: sensor
+when:
+  branch: ["main"]
+...
+
+```
 
 ## Viewing your data
 
-Pull requests created in your GitHub org/account will be analysed and stored as changes within Hiphops. A change is essentially a pull request that is tracked beyond close/merge and has been enriched with analysis data. Hiphops follows pull requests through your branches, even when the merge method creates a new sha.
-
-You can see your changes, releases, and development insights in [Hiphops](https://app.hiphops.io/)
+Pipeline runs are visible in the [Hiphops UI](https://app.hiphops.io/) along with records of your changes, release, development insights and control scans.
 
 Faceted search allows you to see across all of your repos and get a more complete view of your development efforts than is possible via GitHub.
 
@@ -33,6 +74,6 @@ Using faceted search enables you to do things such as see all recently merged pu
 
 ## What next?
 
-- Read about the core Hiphops [concepts](concepts.md)
-- To customise what events are captured and create some automations, check out the [config docs](config.md)
-- See what you can do with Hiphops through [example configs](examples.md)
+- Read about the core Hiphops [concepts](concepts.md#concepts-overview)
+- To customise what events are captured and create some automations, check out the [config docs](syntax.md#configuring-hiphops)
+- See what you can do with Hiphops through [example configs](simple-recipes.md#simple-recipes)
