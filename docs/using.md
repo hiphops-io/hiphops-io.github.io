@@ -2,45 +2,32 @@
 
 ## How to configure
 
-Hiphops can be configured by placing a file named `hiphops.yaml` in the root of your repository.
+Hiphops can be configured by placing a file named `hiphops.yaml` in the root of a repository owned by a connected GitHub account.
+
+Once you've created a config, add the branch/repo name in your project settings. Hiphops will automatically detect and apply changes with no further setup required.
+
+If no custom config is set, the default pipeline is one which matches all changes and runs analysis, but takes no further action.
 
 > Note the extension must be `.yaml` and not `.yml` or variations thereof
 
-For every PR, we fetch the `hiphops.yaml` found in the head of the target branch (A.K.A the `base` branch) and apply it to the incoming change.
-If no file can be found, the default pipeline is one which matches all changes and runs analysis on the change, but takes no further action.
-
-> In a future release we'll be adding support for global config applied to all events.
-
 ## Quick examples
 
-Here's a quick example of a very simple, but potentially useful, hiphops config:
+Here's a quick example of a simple, but potentially useful, hiphops config that automatically approves small PRs that have been detected as fixes:
 
 ```yaml
 ---
-resource: change_sensor
-id: Automate small fixes
+resource: sensor
+id: Approve small fixes
 when:
-  branch: ['main']
-  labels: ["size/*small"]
-add_review:
-  approve: true
-  comment: Small fix automatically approved
-apply_auto_labels:
-  matching: ["size/*", "kind/*"]
-
----
-resource: release_sensor
-id: Create a pre-release
-when:
-  ref: ["refs/heads/main"]
-annotations:
-  env: dev
-  app: "backend"
-version_template: "v$calyy.$calw.$sha7"
-is_prerelease: true
+  $: event.size.score >= 90 && event.kind.label === "fix"
+  event.hiphops.event: "change_analysed"
+tasks:
+- name: github.create_or_update_pr_review
+  input:
+    (path)pr_number: event.pr_number
+    message: "Auto approved a small fix"
+    approved: true
 ```
-
-This pipeline would add an approving review to non-prod pull requests that are 'very small' and detected as being a bug fix. (Your exact branch names will likely vary).
 
 ---
 
@@ -49,19 +36,16 @@ You can create as many sensors in `hiphops.yaml` as you like, separated by `---`
 ```yaml
 ---
 id: "Analyse production and staging changes"
-resource: change_sensor
-when:
-  branch: ["production", "staging"]
+resource: sensor
+...
 
 ---
-id: "Label PRs against main with size and kind"
-resource: change_sensor
+id: "Do some other thing"
+resource: sensor
 when:
   branch: ["main"]
-apply_auto_labels:
-  matching:
-    - "size/*"
-    - "kind/*"
+...
+
 ```
 
 <!-- To see more example pipelines, check out our [examples page](examples.md). -->
@@ -73,16 +57,12 @@ The full set of config values allowed in a hiphops config are as follows:
 
 #### `id`
 
-A unique name/id for the pipeline used to identify it in comments/logs/checksuites etc. It's also useful to explain the purpose of the release pipeline to other developers reading your config.
+A unique name/id for the pipeline used to identify it in the UI and comments/logs/checksuites etc. It's also useful to explain the purpose of the release pipeline to other developers reading your config.
 
 
 #### `resource`
 
-Either `change_sensor` or `release_sensor`.
-
-A `change_sensor` will be triggered on pull request events only. It will also create a Hiphops change object. Change objects are unique for each pull request, so multiple sensors matching the same pull request will not create duplicates.
-
-It _is_ possible however to create conflicting behaviour. e.g. A pull request that matches two `change_sensors` one of which approves the PR and one of which rejects it will have a race condition. The behaviour in cases like these will be non-deterministic.
+Currently on supports a value of `sensor`.
 
 #### `when`
 

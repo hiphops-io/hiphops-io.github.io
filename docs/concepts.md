@@ -1,5 +1,21 @@
 # Concepts Overview
 
+## Sensors
+
+Sensors are the entrypoint to everything Hiphops can do. Sensors filter incoming events (such as a pull request being opened, a slack message being sent, etc). Any events that match will trigger that sensor's pipeline of tasks.
+
+An example would be a change sensor matching pull requests against your `main` branch that contain changes to the `migrations/` folder. Perhaps adding a custom label `database` to the source PR.
+
+
+## Tasks
+
+Tasks are triggered in response to matching sensors. They can be things such as labelling a pull request, automatically approving or rejecting a change based on metrics, or other common steps in a development workflow.
+
+In our next major release we're expanding tasks in a big way, allowing you to call arbitrary tasks on connected services whilst using a powerful expression language for decision making.
+
+This unlocks the ability to create sophisticated, fully automated workflows across as many disparate tools as you have in your stack.
+
+
 ## Changes
 
 Changes are tracked and analysed pull requests.
@@ -24,22 +40,6 @@ If you use persistent branches per environment such as `prod` `dev` `main` etc t
 If you push to fresh release branches e.g. `release/v1.0.0` then change detection will require you to create the branch immediately after the last release.
 
 In future we're adding additional behaviour for release delta detection which will remove this restriction.
-
-
-## Sensors
-
-Sensors are simply bits of config that match specific events with filters and describe the tasks you'd like to trigger.
-
-An example would be a change sensor matching pull requests against your `main` branch that contain changes to the `migrations/` folder. Perhaps adding a custom label `database` to the source PR.
-
-
-## Tasks
-
-Tasks are triggered in response to matching sensors. They can be things such as labelling a pull request, automatically approving or rejecting a change based on metrics, or other common steps in a development workflow.
-
-In our next major release we're expanding tasks in a big way, allowing you to call arbitrary tasks on connected services whilst using a powerful expression language for decision making.
-
-This unlocks the ability to create sophisticated, fully automated workflows across as many disparate tools as you have in your stack.
 
 ## Change analysis
 
