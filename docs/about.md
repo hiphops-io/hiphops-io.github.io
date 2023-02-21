@@ -33,7 +33,7 @@ We do analyse your changes, but we care more about the people and working method
 
 Hiphops integrates with your team's tools such as GitHub and Slack. We provide inbound events from each integration along with automated tasks. 
 
-Combining this with our powerful expressions syntax for filtering, event enrichment via ML, and our DAG workflows means you can automate sophisticated flows in a few lines config.
+Combining this with our powerful expressions syntax for filtering, event enrichment via ML, and our DAG workflows means you can automate sophisticated flows in a few lines of config.
 
 Things like 'automatically merge a PR if it contains maintenance work, is small and is from an experienced author' become trivial to implement.
 
