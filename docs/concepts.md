@@ -4,7 +4,15 @@
 
 Sensors are the entrypoint to everything Hiphops can do. Sensors filter incoming events (such as a pull request being opened, a slack message being sent, etc). Any events that match will trigger that sensor's pipeline of tasks.
 
-An example would be a change sensor matching pull requests against your `main` branch that contain changes to the `migrations/` folder. Perhaps adding a custom label `database` to the source PR.
+A basic sensor might look like this:
+
+```yaml
+
+resource: sensor
+id: Create release on merge
+when:
+  event.hiphops.event: "push"
+```
 
 
 ## Tasks

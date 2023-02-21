@@ -1,23 +1,23 @@
-# Using Hiphops
+# Configuring Hiphops
 
-## How to configure
+## Quickstart
 
 Hiphops can be configured by placing a file named `hiphops.yaml` in the root of a repository owned by a connected GitHub account.
 
 Once you've created a config, add the branch/repo name in your project settings. Hiphops will automatically detect and apply changes with no further setup required.
 
-If no custom config is set, the default pipeline is one which matches all changes and runs analysis, but takes no further action.
+If no custom config is set, the default pipeline matches all changes, runs analysis and stores the result, but takes no further action.
 
 > Note the extension must be `.yaml` and not `.yml` or variations thereof
 
-## Quick examples
+### A simple example
 
 Here's a quick example of a simple, but potentially useful, hiphops config that automatically approves small PRs that have been detected as fixes:
 
 ```yaml
 ---
-resource: sensor
 id: Approve small fixes
+resource: sensor
 when:
   $: event.size.score >= 90 && event.kind.label === "fix"
   event.hiphops.event: "change_analysed"

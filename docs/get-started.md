@@ -9,7 +9,7 @@ Setting up Hiphops is straighforward. You will need a GitHub account and around 
 
 ?> Integrating with GitHub will become optional in a future release, but for now it remains a required step in creating a new project.
 
-By default Hiphops will monitor all pull requests in the account and take no further action. If you'd like to automate some actions or control what is tracked, you can [configure Hiphops](using.md)
+By default Hiphops will monitor all pull requests in the account and take no further action. If you'd like to automate some actions or control what is tracked, you can [Configure Hiphops](config.md)
 
 
 ## Usage
@@ -34,5 +34,5 @@ Using faceted search enables you to do things such as see all recently merged pu
 ## What next?
 
 - Read about the core Hiphops [concepts](concepts.md)
-- To customise what events are captured and create some automations, check out the [config docs](using.md)
+- To customise what events are captured and create some automations, check out the [config docs](config.md)
 - See what you can do with Hiphops through [example configs](examples.md)
