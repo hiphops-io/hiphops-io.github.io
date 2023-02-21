@@ -19,9 +19,7 @@ when:
 
 Tasks are triggered in response to matching sensors. They can be things such as labelling a pull request, automatically approving or rejecting a change based on metrics, or other common steps in a development workflow.
 
-In our next major release we're expanding tasks in a big way, allowing you to call arbitrary tasks on connected services whilst using a powerful expression language for decision making.
-
-This unlocks the ability to create sophisticated, fully automated workflows across as many disparate tools as you have in your stack.
+Tasks can run in parallel or have dependencies between them. Using the `depends` clause allows you to create DAGs, meaning you can easily model complex multi-step processes.
 
 
 ## Changes

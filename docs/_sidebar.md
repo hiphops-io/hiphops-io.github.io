@@ -1,5 +1,6 @@
 - [About Hiphops](about.md)
 - [Get Started](get-started.md)
-- [Configuring Hiphops](config.md)
 - [Concepts](concepts.md)
+- [Configuring Hiphops](config.md)
+- [Apps](apps.md)
 - [Examples](examples.md)

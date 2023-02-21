@@ -10,24 +10,24 @@ If no custom config is set, the default pipeline matches all changes, runs analy
 
 > Note the extension must be `.yaml` and not `.yml` or variations thereof
 
-### A simple example
+### Hello world
 
-Here's a quick example of a simple, but potentially useful, hiphops config that automatically approves small PRs that have been detected as fixes:
+What docs would be complete without a nice hello world to get you started?
 
 ```yaml
 ---
-id: Approve small fixes
+id: Hello world
 resource: sensor
-when:
-  $: event.size.score >= 90 && event.kind.label === "fix"
-  event.hiphops.event: "change_analysed"
 tasks:
-- name: github.create_or_update_pr_review
+- name: slack.post_message
   input:
-    (path)pr_number: event.pr_number
-    message: "Auto approved a small fix"
-    approved: true
+    channel: "general"
+    text: "Hello world!"
 ```
+
+Of course, this isn't particularly _useful_ unless you happen to want your Slack channel to be relentlessly spammed every time an event is received from your integrations.
+
+> Hint: You do not want that.
 
 ---
 
