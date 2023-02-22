@@ -49,7 +49,7 @@ For the source event structure, see [GitHub pull request event docs](https://doc
 
 ##### Event: `push`
 
-actions: N/A (no actions exist for this event)
+actions: `N/A`
 
 For the source event structure, see [GitHub push event docs](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#push)
 
@@ -212,9 +212,6 @@ tasks:
 Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
 
-
-
-
 ##### Task: `github.apply_pr_labels`
 
 Applies labels to a PR.
@@ -291,42 +288,21 @@ Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_me
 
 Fetches details about the files changed in a PR, placing the data in `vars.pr_files` for use by other tasks.
 
-###### Task structure
-
-This goes in the `tasks` block of a sensor.
-
 ```yaml
 tasks:
   - name: github.fetch_pr_files
     input:
-      repo: <the name of the repository the PR is in>
-      pr_number: <the PR number>
-```
-
-###### Example tasks
-
-```yaml
-tasks:
-  - name: github.fetch_pr_files
-    input:
-      repo: fabulous-thingy
-      pr_number: 55
-```
-
-```yaml
-tasks:
-  - name: github.fetch_pr_files
-    input:
-      (path)repo: event.repo_name
-      (path)pr_number: event.pr_number
+      repo: fabulous-thingy # The name of the repository the PR is in
+      pr_number: 55 # The PR number
 ```
 
 ###### Responds with
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
-Additionally, if successful it will respond with a `vars` object containing the key `pr_files` and, an a value, an array of data about the PR's files matching the output of Github's "List pull requests files" endpoint: https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#list-pull-requests-files.
 
-###### Example vars
+If successful it will respond with a `vars` object containing the key `pr_files` an array of data about the PR's files matching the output of [Github's List pull requests files endpoint](https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#list-pull-requests-files).
+
+Example:
 
 ```json
 {
@@ -350,9 +326,6 @@ Additionally, if successful it will respond with a `vars` object containing the 
 ```
 
 
-
-
-
 ## Slack
 
 |Name|Incoming events|Has tasks|Integration|
@@ -363,58 +336,36 @@ _Integrating slack allows you to send messages to slack channels. It also allows
 
 ### Events
 
-All slack events have:
-
-source: `slack`
-
 ##### Event: `command`
 
-actions: Any command your user provids to the `/hiphops` slash command. For example, `/hiphops deploy #505` will trigger a sensor with the action `deploy`, `deploy` and `#505` will appear in the `command` property and `args` array property respectively.
+actions: Any command your user provides to the `/hiphops` slash command will be used to populate the `hiphops.action` field.
+For example, `/hiphops deploy` will have the action `deploy`.
 
-###### Event structure
+A command entered on Slack such as `/hiphops foo arg1 arg2` would generate an event with the following structure:
 
-```json
+```js
 {
-  "project_id": <the current project>,
-  "hiphops":,
+  "project_id": "12345677-0123-aaaa-bbbb-123456abcdef", // Your project's UUID
+  "hiphops": {
     "source": "slack",
     "event": "command",
-    "action": <user command>,
-  "command": <user command>,
-  "args": [<arg1>, <arg2>, ...],
-  "response_url": <time limited URL to respond to message directly>,
-  "trigger_id": <can be used to trigger modal>,
-  "team_id": <team where the command came from>,
-  "channel_id": <channel where the command came from>,
-  "user_id": <user to sent the command>,
-  "is_enterprise_install": <true or false>,
-  "enterprise_id": <enterprise id if set>
-}
-```
-
-###### Example event
-
-```json
-{
-  "project_id": "5489ff57-07d9-4d39-b849-18c14612f09d",
-  "hiphops":,
-    "source": "slack",
-    "event": "command",
-    "action": "deploy",
-  "command": "deploy",
-  "args": ["repo", "backend", "branch", "main"],
-  "response_url": "https://hooks.slack.com/commands/T1234567ABC/12345678912345/T123abcDEF1234567",
-  "trigger_id": "123456789.123456789.123456789abcdef12345",
-  "team_id": "T1234567ABC",
-  "channel_id": "C1234567ABC",
-  "user_id": "U1234567ABC",
-  "is_enterprise_install": "false",
+    "action": "foo", // User defined command
+  },
+  "command": "foo", // User defined command
+  "args": ["arg1", "arg2"], // An array of strings
+  "response_url": "https://hooks.slack.com/commands/T1234567ABC/12345678912345/T123abcDEF1234567", // A time limited URL to respond to message directly
+  "trigger_id": "some_id", // Can be used to trigger a modal
+  "team_id": "some_team_id", // The team from which the command originated
+  "channel_id": "some_channel_id", // The channel from where the command originated
+  "user_id": "some_user_id", // The user that sent the command
+  "is_enterprise_install": "false" // String "true" | "false" - Whether the slack instance is an enteprise install
+  "enterprise_id": "some_enterprise_id" // Optional string, The enterprise ID if set
 }
 ```
 
 ###### Example sensor
 
-This sensor simply posts a message to the `#slack-integration-dev` slack channel when the `/hiphops` command is used, echoing the command and arguments.
+This sensor simply posts a message to the `#general` slack channel when the `/hiphops` command is used, echoing the command and arguments.
 
 ```yaml
 ---
@@ -426,7 +377,7 @@ when:
 tasks:
   - name: slack.post_message
     input:
-      channel: slack-integration-dev
+      channel: general
       $: "({text: `Command: ${event.command}, Args: ${event.args}`})"
 ```
 
@@ -434,37 +385,22 @@ tasks:
 
 ### Tasks
 
-All slack tasks are prefixed with `slack.`
-
 ##### Task: `slack.post_message`
 
 Posts a message to slack using the slack message API. The message can be a simple string or a complex object. The message object is documented here: [Slack messaging payload documentation](https://api.slack.com/reference/messaging/payload).
-
-###### Task structure
-
-This goes in the `tasks` block of a sensor.
 
 ```yaml
 tasks:
   - name: slack.post_message
     input:
-      channel: <the name of the channel to post to>
-      text: <the message to post, which conforms to the slack payload format>
+      channel: general # String - The name of the channel to post to
+      text: "Hello world" # String - The message to post, which conforms to the slack payload format
 ```
 
 ###### Responds with
 
 Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
-###### Example task
-
-```yaml
-tasks:
-  - name: slack.post_message
-    input:
-      channel: slack-integration-dev
-      text: "Command: ${event.command}, Args: ${event.args}"
-```
 
 ###### Coming soon
 
