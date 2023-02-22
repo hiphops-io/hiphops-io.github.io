@@ -1,19 +1,26 @@
-# Event Sources and Task Handlers
+## About event sources and task handlers
 
-Hiphops is only useful when integrated with sources of events and task handlers (e.g. GitHub).
-By integrating with your dev tooling, you can use Hiphops to orchestrate your processes end-to-end.
+Hiphops is only useful when integrated with sources of events and task handlers.
+By integrating with your dev tooling such as GitHub, you can use Hiphops to orchestrate your processes end-to-end.
 
 Below we give summaries of the events and tasks provided by each source/handler.
 
+Each integration can act as either an event source, a task handler, or both.
+
+Event sources emit events that are available for you to listen for in your sensors.
+
+Task handlers perform the actions you describe in the `tasks` block of a sensor.
+
 ## GitHub
 
-GitHub is both an event source and a task handler. Integrating with GitHub is done as part of project creation in the UI.
+_Integrating with GitHub enables you to automate standard developer flows, view your change and release data in Hiphops and monitor your GitHub account to maintain secure config._
 
-### Events
+|Name|Incoming events|Has tasks|Integration|
+|:-------|:-------|:-------|:-------|
+|`github`|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|Integrated as part of project creation in the UI|
 
-Source for all events is `github`
 
-The GitHub integration emits the following events:
+---
 
 ##### Event: `pull_request`
 

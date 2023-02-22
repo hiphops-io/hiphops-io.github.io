@@ -2,6 +2,6 @@
 - [Get Started](get-started.md)
 - [Concepts](concepts.md)
 - [Syntax](syntax.md)
-- [Sources & Handlers](sources-handlers.md)
+- [Integrations](integrations.md)
 - [Simple Recipes](simple-recipes.md)
 - [Advanced Recipes](advanced-recipes.md)
