@@ -970,32 +970,33 @@ tasks:
 
 ###### Version templates
 
-The version template is a string containing anything but can contain any of the version templates variables
+The version template is a string. Any version template variables will be replaced to generate your version.
 
 These are the supported version template variables:
 
 | Variable | Description |
 | --- | --- |
 | `$cal` | year.month.day |
-| `$calyyyy` | The current year |
-| `$calyy` | The current year |
-| `$caly` | The current year |
-| `$calmm` | The current month |
+| `$calyyyy` | The current four digit year, zero padded |
+| `$calyy` | The current two digit year, zero padded |
+| `$caly` | The current year 1-2 digits |
+| `$calmm` | The current month, zero padded |
 | `$calm` | The current month |
-| `$calww` | The current week |
+| `$calww` | The current week, zero padded |
 | `$calw` | The current week |
-| `$caldd` | The current day |
-| `$cald` | The current day |
+| `$caldd` | The current day of the month, zero padded |
+| `$cald` | The current day of the month |
 | `$sha` | The full commit sha |
 | `$sha7` | The first 7 characters of the commit sha |
 | `$sha12` | The first 12 characters of the commit sha |
 | `$find_semver` | searches ref, message and base_ref of release for a semver (in that order) |
 
+
 ###### Example tasks and sensors
 
 ```yaml
 ---
-resource: release_sensor_backend_stage
+resource: sensor
 id: Create a dev release
 when:
   event.hiphops.source: hiphops
