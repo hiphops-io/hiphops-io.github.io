@@ -1,5 +1,3 @@
-# Concepts Overview
-
 ## Sensors
 
 Sensors are the entrypoint to everything Hiphops can do. Sensors listen for incoming events (such as a pull request being opened, a slack message being sent, etc) and trigger a set of tasks. Sensors can include a `when` filter to decide which events they apply to.

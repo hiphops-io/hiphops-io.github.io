@@ -1,4 +1,6 @@
-# Hiphops Config Syntax
+> Good programmers use their brains, but good guidelines save us having to think out every case
+>
+> <cite>Francis Glassborow</cite>
 
 ## Sensor
 

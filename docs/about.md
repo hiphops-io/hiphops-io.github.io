@@ -1,8 +1,8 @@
-## What is Hiphops?
-
 > Software development is not a rational process. It’s a process made by people with feelings, with bodies and with thinking. And by putting all of those together I can be a more effective software developer.
 >
 > <cite>Kent Beck</cite>
+
+## What is Hiphops?
 
 Hiphops is a platform that gives you the ability to create _secure_, highly automated development flows.
 

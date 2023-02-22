@@ -1,3 +1,8 @@
+> Poor management can increase software costs more rapidly than any other factor
+>
+> <cite>Barry Boehm.</cite>
+
+
 ## Installation
 
 Setting up Hiphops is straighforward. You will need a GitHub account and around 2 minutes.
@@ -74,6 +79,6 @@ Using faceted search enables you to do things such as see all recently merged pu
 
 ## What next?
 
-- Read about the core Hiphops [concepts](concepts.md#concepts-overview)
-- To customise what events are captured and create some automations, check out the [config docs](syntax.md#configuring-hiphops)
+- Read about the core Hiphops [concepts](concepts.md#sensors)
+- To customise what events are captured and create some automations, check out the [config docs](syntax.md#sensor)
 - See what you can do with Hiphops through [example configs](simple-recipes.md#simple-recipes)
