@@ -604,20 +604,31 @@ See [Change Analysis](./concepts.md#change-analysis) for more information about 
 This sensor detects the change events and pulls out the labels to apply to the PR.
 
 ```yaml
----
 resource: sensor
-id: Add PR labels
+id: Update PR in response to change
 when:
   event.hiphops.source: hiphops
   event.hiphops.event: change
-  event.change.branch: main
+  event.branch: main
 tasks:
-- name: github.apply_hiphops_pr_labels
-  input:
-    hiphops_labels: true
-    labels: ["size/*", "kind/*"]
-    (path)repo: event.repo_name
-    (path)pr_number: event.pr_number
+  - name: releasemanager.generate_pr_analysis_comment
+    input:
+      (path)change: event
+      include: ["scores", "rundown"]
+  - name: github.create_or_update_pr_comment
+    input:
+      (path)repo: vars.change_analysis_comment.repo
+      (path)pr_number: vars.change_analysis_comment.pr_number
+      (path)comment_body: vars.change_analysis_comment.comment_body
+    depends:
+      $: vars.change_analysis_comment
+  - name: github.apply_pr_labels
+    input:
+      (path)repo: event.repo_name
+      (path)pr_number: event.pr_number
+      (path)labels: event.labels
+      matching: ["kind/*", "size/*"]
+      update: true
 ```
 
 ---
