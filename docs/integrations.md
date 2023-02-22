@@ -186,6 +186,10 @@ tasks:
       text: <the message to post, which conforms to the slack payload format>
 ```
 
+###### Responds with
+
+Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+
 ###### Example task
 
 ```yaml
