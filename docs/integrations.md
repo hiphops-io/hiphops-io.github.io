@@ -879,7 +879,6 @@ action: Not used
   "is_tag": false,
   "sha": "10bba9039292038ad1a3ea3186058326df142cd4",
   "ref": "refs/heads/release/snappy-cobra",
-  "base_ref": null,
   "repo_name": "backend",
   "full_repo_name": "hiphops-io/backend",
   "git_pusher": {
@@ -950,6 +949,194 @@ tasks:
 ```
 
 ### Tasks
+
+##### Task: `releasemanager.create_release`
+
+Creates releases based on receiving the `release_prepared` event which this task processes.
+
+###### Task structure
+
+This goes in the `tasks` block of a sensor.
+
+```yaml
+tasks:
+  - name: releasemanager.create_release
+    id: <name of this task step>
+    input:
+      (path)release: event # this is the event received from the `release_prepared` event
+      annotations:
+        <[Optional] annotations as key value pair. common example would be env and app. Release will be annotated with these>
+      version_template: <template string for how the version should be generated>
+      is_prerelease: <true or false>
+```
+
+###### Version templates
+
+The version template is a string containing anything but can contain any of the version templates variables
+
+These are the supported version template variables:
+
+| Variable | Description |
+| --- | --- |
+| `$cal` | year.month.day |
+| `$calyyyy` | The current year |
+| `$calyy` | The current year |
+| `$caly` | The current year |
+| `$calmm` | The current month |
+| `$calm` | The current month |
+| `$calww` | The current week |
+| `$calw` | The current week |
+| `$caldd` | The current day |
+| `$cald` | The current day |
+| `$sha` | The full commit sha |
+| `$sha7` | The first 7 characters of the commit sha |
+| `$sha12` | The first 12 characters of the commit sha |
+| `$find_semver` | searches ref, message and base_ref of release for a semver (in that order) |
+
+###### Example tasks and sensors
+
+```yaml
+---
+resource: release_sensor_backend_stage
+id: Create a dev release
+when:
+  event.hiphops.source: hiphops
+  event.hiphops.event: release_prepared
+  event.repo_name: backend
+  event.ref: ["refs/heads/release/*"]
+tasks:
+  - name: releasemanager.create_release
+    id: release
+    input:
+      (path)release: event
+      annotations:
+        env: live
+      version_template: "v$calyy.$calm.$cald"
+      is_prerelease: false
+```
+
+```yaml
+tasks:
+  - name: releasemanager.create_release
+    input:
+      (path)release: event
+      annotations:
+        env: dev
+        app: "backend"
+      version_template: "$sha7"
+      is_prerelease: true
+```
+
+###### Responds with
+
+Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Additionally, if successful it will respond with a `vars` object containing the key `release` as described below–.
+
+```json
+{
+  "vars": {
+    "release": {
+      "id": <id of the release>,
+      "created_at": <time of creation>,
+      "updated_at": <time of update>,
+      "project_id": <project id>,
+      "source": "GITHUB_COM",
+      "source_id": <github source id>,
+      "source_url": <github commit url>,
+      "version": <generated version from version template>
+      "message": <Release message from the event>,
+      "is_tag": <is this release based off a tag>,
+      "sha": <sha of the head commit>,
+      "ref": <target ref>,
+      "repo_name": <target repo name>,
+      "full_repo_name": <target repo name with org>,
+      "annotations": {
+        List of annotations from input
+      },
+      "pusher_id": <pusher id>,
+      "git_pusher": {
+        "name": <name of the pusher>,
+        "email": <email of the pusher>
+      },
+      "is_pre_release": <true or false>,
+      "shas": [
+        List of shas
+      ],
+      "pusher": {
+        Object can be null
+        "id": <pusher id>,
+        "created_at": <pusher created at>,
+        "updated_at": <pusher updated at>,
+        "source": "GITHUB_COM",
+        "source_id": <source id>,
+        "username": <username>,
+        "image_url": <avatar for pusher>,
+        "url": <github url for pusher>,
+      },
+      "changes": [
+        List of changes
+        Object can be null
+        {
+          release_id: <[Optional] release id>,
+          change_id: <[Optional] change id>,
+        }
+      ],
+      "release_notes": [
+        List of release notes
+        Object can be null
+        {
+          version: <[Optional] version of the release note>,
+          is_auto_generated: <[Optional] true or false>,
+          note: <[Optional] release note>,
+          release_id: <[Optional] release id>,
+          author_id: <[Optional] author id>
+        }
+      ]
+    }–
+  }
+}
+```
+
+###### Example vars
+
+```json
+{
+  "vars": {
+    "release": {
+      "id": "0e8104e1-79a9-4306-8d36-90b6fbf8fb72",
+      "created_at": "2023-02-22T14:58:26.416878+00:00",
+      "updated_at": "2023-02-22T14:58:26.416878+00:00",
+      "project_id": "0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3",
+      "source": "GITHUB_COM",
+      "source_id": "bbb920626b031b2aee41bec40500518624a0bfec",
+      "source_url": "https://github.com/hiphops-io/backend/commit/bbb920626b031b2aee41bec40500518624a0bfec",
+      "version": "bbb9206",
+      "message": "Task update: handle applying PR labels in one github task (#610)\n\n* Task update: handle applying PR labels in one github task\r\n\r\n* Don't make no-op changes",
+      "is_tag": false,
+      "sha": "bbb920626b031b2aee41bec40500518624a0bfec",
+      "ref": "refs/heads/release/snazzy-cobra",
+      "repo_name": "backend",
+      "full_repo_name": "hiphops-io/backend",
+      "annotations": {
+        "app": "backend",
+        "env": "dev"
+      },
+      "pusher_id": "0ff85ad3-fbc1-407c-9bb4-caed8af51f22",
+      "git_pusher": {
+        "name": "A Coder",
+        "email": "a_coder@hiphops.io"
+      },
+      "is_pre_release": true,
+      "shas": [
+        "bbb920626b031b2aee41bec40500518624a0bfec"
+      ],
+      "pusher": null,
+      "changes": null,
+      "release_notes": null
+    }
+  }
+}
+```
 
 ## Hiphops - Controls
 
