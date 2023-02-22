@@ -323,6 +323,8 @@ action: Not used
 
 ###### Event structure
 
+See [Change Analysis](./concepts.md#change-analysis) for more information about the areas marked `See change analysis` below.
+
 ```json
 {
   "project_id": <current project>,
@@ -351,7 +353,7 @@ action: Not used
   "additions": <number of lines added>,
   "deletions": <number of lines deleted>,
   "status": <"OPEN" or "CLOSED">,
-  See [Change Analysis](./concepts.md#change-analysis) for the following health, kind, size, ease and focus.
+  Section: see change analysis for scores
   "health": {
     "score": <0 to 100>
     "label": <calculated label>
@@ -420,12 +422,12 @@ action: Not used
   "labels": [
     List of labels. See [Change Analysis](./concepts.md#change-analysis).
   ],
-  See [Change Analysis](./concepts.md#change-analysis) for following scores.
+  Section: see change analysis for following scores.
   "health_score": <0.0 to 100.0>,
   "size_score": <0 to 100>,
   "focus_score": <0 to 100>,
   "ease_score": <0 to 100>,
-  See [Change Analysis](./concepts.md#change-analysis) for markdown section.
+  Section: see change analysis for markdown section.
   "markdown": {
     "header": <header for analysis markdown>,
     "labels": <labels markdown>,
@@ -599,24 +601,26 @@ action: Not used
 
 ###### Example sensor
 
-This sensor simply posts a message to the `#slack-integration-dev` slack channel when the `/hiphops` command is used, echoing the command and arguments.
+This sensor detects the change events and pulls out the labels to apply to the PR.
 
 ```yaml
 ---
 resource: sensor
-id: slack command receiver
+id: Add PR labels
 when:
-  event.hiphops.source: slack
-  event.hiphops.event: command
+  event.hiphops.source: hiphops
+  event.hiphops.event: change
+  event.change.branch: main
 tasks:
-  - name: slack.post_message
-    input:
-      channel: slack-integration-dev
-      $: "({text: `Command: ${event.command}, Args: ${event.args}`})"
+- name: github.apply_hiphops_pr_labels
+  input:
+    hiphops_labels: true
+    labels: ["size/*", "kind/*"]
+    (path)repo: event.repo_name
+    (path)pr_number: event.pr_number
 ```
 
 ---
-
 
 ### Tasks
 
