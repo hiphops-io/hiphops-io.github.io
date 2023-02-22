@@ -938,7 +938,7 @@ tasks:
 ###### Responds with
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
-Additionally, if successful it will respond with a `vars` object containing the key `release` as described below–.
+Additionally, if successful it will respond with a `vars` object containing the key `release` as described below.
 
 ```json
 {
@@ -1041,6 +1041,76 @@ Additionally, if successful it will respond with a `vars` object containing the 
       "pusher": null,
       "changes": null,
       "release_notes": null
+    }
+  }
+}
+```
+
+##### Task: `releasemanager.generate_pr_analysis_comment`
+
+Generates a comment for a PR based on the analysis of the PR in the `change` event. See the [Change Analysis](./concepts.md#change-analysis) section for more details.
+
+This task is usually followed by the `github.create_or_update_pr_comment` task.
+
+###### Task structure
+
+This goes in the `tasks` block of a sensor.
+
+```yaml
+tasks:
+  - name: releasemanager.generate_pr_analysis_comment
+    input:
+      (path)change: event # the `change` event
+      include: [
+        <At least one of>
+        "scores", "rundown", "labels"
+      ]
+```
+
+###### Example tasks and sensors
+
+```yaml
+---
+resource: customer_sensor
+id: Update PR in response to change
+when:
+  event.hiphops.source: hiphops
+  event.hiphops.event: change
+tasks:
+  - name: releasemanager.generate_pr_analysis_comment
+    input:
+      (path)change: event
+      include: ["scores", "rundown"]
+  - name: github.create_or_update_pr_comment
+    input:
+      (path)repo: vars.change_analysis_comment.repo
+      (path)pr_number: vars.change_analysis_comment.pr_number
+      (path)comment_body: vars.change_analysis_comment.comment_body
+    depends:
+      $: vars.change_analysis_comment
+  - name: github.apply_pr_labels
+    input:
+      (path)repo: event.repo_name
+      (path)pr_number: event.pr_number
+      (path)labels: event.labels
+      matching: ["kind/*", "size/*"]
+      update: true
+```
+
+###### Responds with
+
+Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Additionally, if successful it will respond with a `vars` object containing the key `change_analysis_comment`.
+
+###### Example vars
+
+```json
+{
+  "vars": {
+    "change_analysis_comment": {
+      "repo": "backend",
+      "pr_number": 611,
+      "comment_body": "![Hiphops.io banner](https://stage-app.hiphops.io/external-assets/pr-comment-banner.svg)\n## Rundown\n\n**This looks like a `small` `maintenance` change. This change's health is rated as `very-high`.** Given this health score, it may need fewer reviewers.\n\n<!-- Show health descriptions as bullet points -->\n- This is a small change with 246 addition(s), 108 deletion(s), and 7 file(s) impacted\n- The author appears to have focused on one change for the duration of the work\n- The work on this change took over a month to complete and is the work of a single author\n\n\n\n\n## Scores\n\n\n\n| Overall `86%` | Size `63%` | Focus `90%` | Ease `97%` |\n| :---: | :---: | :---: | :---: |\n| ![9 out of 10 score](https://stage-app.hiphops.io/external-assets/health-score-9.svg)  | ![6 out of 10 score](https://stage-app.hiphops.io/external-assets/health-score-6.svg) | ![9 out of 10 score](https://stage-app.hiphops.io/external-assets/health-score-9.svg) | ![10 out of 10 score](https://stage-app.hiphops.io/external-assets/health-score-10.svg) |\n\n> To understand what each section of this analysis means and how Hiphops arrives at its conclusions, read [about change analysis](https://docs.hiphops.io/#/README?id=change-analysis-overview)."
     }
   }
 }
