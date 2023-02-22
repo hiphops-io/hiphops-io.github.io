@@ -25,9 +25,9 @@ All Github events have:
 
 source: `github`
 
-Their event structures are nearly identical to the events directly emitted by Github, described in their docs (https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads).
+Their event structures are nearly identical to the events directly emitted by Github, described in their docs: https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads.
 
-The only difference is that they also contain, at the event root, the following properties:
+The only difference is that they also contain the following properties at the event root:
 
 ```yaml
 project_id: <the current project>
@@ -43,7 +43,7 @@ hiphops:
 
 actions: `opened`, `closed`, `reopened`, `merged`, `edited`, `assigned`, `unassigned`, `labeled`, `unlabeled`, `synchronize`, `converted_to_draft`, `ready_for_review`, `locked`, `unlocked`, `review_requested`, `review_request_removed`, `auto_merge_enabled`, `auto_merge_disabled`
 
-For the source event structure, see https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#pull_request
+For the source event structure, see [GitHub pull request event docs](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#pull_request)
 
 ---
 
@@ -51,7 +51,7 @@ For the source event structure, see https://docs.github.com/webhooks-and-events/
 
 actions: N/A (no actions exist for this event)
 
-For the source event structure, see https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#push
+For the source event structure, see [GitHub push event docs](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#push)
 
 
 ### Tasks
@@ -103,8 +103,6 @@ tasks:
 ###### Responds with
 
 Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
-
-
 
 
 
@@ -1137,14 +1135,6 @@ Additionally, if successful it will respond with a `vars` object containing the 
   }
 }
 ```
-
-## Hiphops - Controls
-
-The Hiphops controls service is both an event source and a task handler. This integration is built in. No setup is required.
-
-### Events
-
-### Tasks
 
 ## Jira <small>(coming soon)</small>
 
