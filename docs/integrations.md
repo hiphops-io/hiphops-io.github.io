@@ -547,24 +547,26 @@ See [Change Analysis](./concepts.md#change-analysis) for more information about 
 
 ###### Example sensor
 
-This sensor simply posts a message to the `#slack-integration-dev` slack channel when the `/hiphops` command is used, echoing the command and arguments.
+This sensor detects the change events and pulls out the labels to apply to the PR.
 
 ```yaml
 ---
 resource: sensor
-id: slack command receiver
+id: Add PR labels
 when:
-  event.hiphops.source: slack
-  event.hiphops.event: command
+  event.hiphops.source: hiphops
+  event.hiphops.event: change
+  event.change.branch: main
 tasks:
-  - name: slack.post_message
-    input:
-      channel: slack-integration-dev
-      $: "({text: `Command: ${event.command}, Args: ${event.args}`})"
+- name: github.apply_hiphops_pr_labels
+  input:
+    hiphops_labels: true
+    labels: ["size/*", "kind/*"]
+    (path)repo: event.repo_name
+    (path)pr_number: event.pr_number
 ```
 
 ---
-
 
 ### Tasks
 
