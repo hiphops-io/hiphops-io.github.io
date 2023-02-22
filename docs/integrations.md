@@ -169,42 +169,15 @@ If you are only going to have one task post reviews to a given PR, then the firs
 
 However, if you intend to have multiple reviews posted by Hiphops, you should add a `review_identifier` that is distinct for each task - this will be appended to the end of the review, and subsequent runs of the task (assuming it uses the same identifier) will update the review on the PR that ends with that identifier.
 
-###### Task structure
-
-This goes in the `tasks` block of a sensor.
-
 ```yaml
 tasks:
   - name: github.create_or_update_pr_review
     input:
-      repo: <the name of the repository the PR is in>
-      pr_number: <the PR number>
-      approved: <true/false - is the review an approval or request for changes>
-      review_body: <the text to post in the review>
-      review_identifier: <[optional] an identifier used for making updates to the same review. This identifier is appended to the end of the review and subsequent tasks executions that use the same identifier on the same PR will update that review. This is only needed if you intend to have Hiphops post more than one review to the same PR.>
-```
-
-###### Example tasks
-
-```yaml
-tasks:
-  - name: github.create_or_update_pr_review
-    input:
-      repo: fabulous-thingy
-      pr_number: 55
-      approved: true
-      review_body: Auto-approved documentation change
-```
-
-```yaml
-tasks:
-  - name: github.create_or_update_pr_review
-    input:
-      (path)repo: event.repo_name
-      (path)pr_number: event.pr_number
-      approved: true
-      review_body: Auto-approved documentation change
-      comment_identifier: DocsApproval
+      repo: backend # String - The name of the repository the PR is in
+      pr_number: 53 # Integer - The PR number
+      approved: true # Boolean - Is the review an approval or request for changes
+      review_body: Auto approved your PR! # The text to post in the review
+      review_identifier: auto-approve-id-foo # Optional string - An identifier used for making updates to the same review. Only needed if you intend to have Hiphops post more than one review to the same PR
 ```
 
 ###### Responds with

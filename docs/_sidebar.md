@@ -3,5 +3,5 @@
 - [Concepts](concepts.md)
 - [Syntax](syntax.md)
 - [Integrations](integrations.md)
-- [Simple Recipes](simple-recipes.md)
-- [Advanced Recipes](advanced-recipes.md)
+<!-- - [Simple Recipes](simple-recipes.md)
+- [Advanced Recipes](advanced-recipes.md) -->
