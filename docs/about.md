@@ -8,7 +8,7 @@ Hiphops is a platform that gives you the ability to create _secure_, highly auto
 
 By using Hiphops you can **address the gaps between CI/CD and your full dev process.**
 
-Sometimes the gap is small. It might be as simple as a developer having to manually tag a release every time they merge into `main`.
+Sometimes the gap is small but encountered frequently. It might be as simple as a developer having to manually tag a release every time they merge into `main`.
 
 In other cases the gap is vast. Regulated teams might have several manual hoops to jump through before they can kick off a deployment pipeline, or be left manually gathering test evidence for audit purposes.
 
