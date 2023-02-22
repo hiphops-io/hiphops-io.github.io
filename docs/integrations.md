@@ -96,6 +96,10 @@ tasks:
 
 Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
+
+
+
+
 ##### Task: `github.create_or_update_pr_comment`
 
 Creates or updates a comment on a PR.
@@ -124,8 +128,8 @@ tasks:
 tasks:
   - name: github.create_or_update_pr_comment
     input:
-      (path)repo: vars.change_analysis_comment.repo
-      (path)pr_number: vars.change_analysis_comment.pr_number
+      (path)repo: event.repo_name
+      (path)pr_number: event.pr_number
       (path)comment_body: vars.change_analysis_comment.comment_body
       comment_identifier: ChangeAnalysis
     depends:
@@ -135,6 +139,56 @@ tasks:
 ###### Responds with
 
 Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+
+
+
+
+
+##### Task: `github.create_or_update_pr_review`
+
+Creates or updates a review on a PR.
+
+If you mark a review as `approved: true` then the review will be approved. If marked as `approved: false` then it will instead be a request for changes.
+
+If you are only going to have one task post reviews to a given PR, then the first review posted by the Hiphops app on the given PR is the one that will be updated each time.
+
+However, if you intend to have multiple reviews posted by Hiphops, you should add a `review_identifier` that is distinct for each task - this will be appended to the end of the review, and subsequent runs of the task (assuming it uses the same identifier) will update the review on the PR that ends with that identifier.
+
+###### Task structure
+
+This goes in the `tasks` block of a sensor.
+
+```yaml
+tasks:
+  - name: github.create_or_update_pr_review
+    input:
+      repo: <the name of the repository the PR is in>
+      pr_number: <the PR number>
+      approved: <true/false - is the review an approval or request for changes>
+      review_body: <the text to post in the review>
+      review_identifier: <[optional] an identifier used for making updates to the same review. This identifier is appended to the end of the review and subsequent tasks executions that use the same identifier on the same PR will update that review. This is only needed if you intend to have Hiphops post more than one review to the same PR.>
+```
+
+###### Example task
+
+```yaml
+tasks:
+  - name: github.create_or_update_pr_review
+    input:
+      (path)repo: event.repo_name
+      (path)pr_number: event.pr_number
+      approved: true
+      review_body: "Auto-approved documentation change"
+      comment_identifier: DocsApproval
+```
+
+###### Responds with
+
+Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+
+
+
+
 
 ## Slack
 
