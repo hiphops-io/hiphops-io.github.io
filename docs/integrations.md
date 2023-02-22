@@ -269,6 +269,8 @@ action: Not used
 
 ###### Event structure
 
+See [Change Analysis](./concepts.md#change-analysis) for more information about the areas marked `See change analysis` below.
+
 ```json
 {
   "project_id": <current project>,
@@ -297,7 +299,7 @@ action: Not used
   "additions": <number of lines added>,
   "deletions": <number of lines deleted>,
   "status": <"OPEN" or "CLOSED">,
-  See [Change Analysis](./concepts.md#change-analysis) for the following health, kind, size, ease and focus.
+  Section: see change analysis for scores
   "health": {
     "score": <0 to 100>
     "label": <calculated label>
@@ -366,12 +368,12 @@ action: Not used
   "labels": [
     List of labels. See [Change Analysis](./concepts.md#change-analysis).
   ],
-  See [Change Analysis](./concepts.md#change-analysis) for following scores.
+  Section: see change analysis for following scores.
   "health_score": <0.0 to 100.0>,
   "size_score": <0 to 100>,
   "focus_score": <0 to 100>,
   "ease_score": <0 to 100>,
-  See [Change Analysis](./concepts.md#change-analysis) for markdown section.
+  Section: see change analysis for markdown section.
   "markdown": {
     "header": <header for analysis markdown>,
     "labels": <labels markdown>,
