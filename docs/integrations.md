@@ -79,7 +79,15 @@ tasks:
       merge_method: <[optional] the merge method the PR will be merged with - can be “merge”, “squash” or “rebase”. Defaults to “merge” if not provided>
 ```
 
-###### Example task
+###### Example tasks
+
+```yaml
+tasks:
+  - name: github.merge_pr
+    input:
+      repo: fabulous-thingy
+      pr_number: 55
+```
 
 ```yaml
 tasks:
@@ -122,7 +130,16 @@ tasks:
       comment_identifier: <[optional] an identifier used for making updates to the same comment. This identifier is appended to the end of the comment and subsequent tasks executions that use the same identifier on the same PR will update that comment. This is only needed if you intend to have Hiphops post more than one comment to the same PR.>
 ```
 
-###### Example task
+###### Example tasks
+
+```yaml
+tasks:
+  - name: github.create_or_update_pr_comment
+    input:
+      repo: fabulous-thingy
+      pr_number: 55
+      comment_body: This is a comment
+```
 
 ```yaml
 tasks:
@@ -169,7 +186,17 @@ tasks:
       review_identifier: <[optional] an identifier used for making updates to the same review. This identifier is appended to the end of the review and subsequent tasks executions that use the same identifier on the same PR will update that review. This is only needed if you intend to have Hiphops post more than one review to the same PR.>
 ```
 
-###### Example task
+###### Example tasks
+
+```yaml
+tasks:
+  - name: github.create_or_update_pr_review
+    input:
+      repo: fabulous-thingy
+      pr_number: 55
+      approved: true
+      review_body: Auto-approved documentation change
+```
 
 ```yaml
 tasks:
@@ -178,8 +205,80 @@ tasks:
       (path)repo: event.repo_name
       (path)pr_number: event.pr_number
       approved: true
-      review_body: "Auto-approved documentation change"
+      review_body: Auto-approved documentation change
       comment_identifier: DocsApproval
+```
+
+###### Responds with
+
+Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+
+
+
+
+
+##### Task: `github.apply_pr_labels`
+
+Applies labels to a PR.
+
+The input `labels` defines the labels that may be added to the PR. If you don't provide a `matching` input too, then `labels` entries will just be added to the PR.
+
+However, if you do provide a list of glob-matching patterns in `matching` (e.g `["kind/*", "size/*"]`), then only the entries in `labels` that have a match in one or more of the entries in `matching` will be applied.
+
+By setting the update input to true, the task will treat the patterns in `matching` as a list of label patterns to be updated, and will first _remove_ labels matching a pattern before applying those labels from the `labels` input that match it.
+
+So if we have a PR 55 in repository `fabulous-thingy` that currently has the labels `["kind/fix", "size/small", "thingy"]`, and this task is invoked with the input:
+```yaml
+    input:
+      repo: fabulous-thingy
+      pr_number: 55
+      labels: ["kind/fix", "size/medium", "health/good"]
+      matching: ["kind/*", "size/*"]
+      update: true
+```
+
+Then the task would first remove `size/small`, and then add `size/medium`. No other labels would be changed as they don't meet the criteria in `matching`.
+
+If update had been false (or unset), then it would only add `size/medium`, not attempting to update the existing labels.
+
+
+###### Task structure
+
+This goes in the `tasks` block of a sensor.
+
+```yaml
+tasks:
+  - name: github.apply_pr_labels
+    input:
+      repo: <the name of the repository the PR is in>
+      pr_number: <the PR number>
+      labels: <an array of strings - the labels to be applied to the PR>
+      matching: <an array of strings - each string is a glob matching pattern that will be applied against labels, such that only the labels that have a match will be applied. If update is true, then existing labels on the PR that have a match will be removed too>
+      update: <true/false - if true, attempt to update existing labels, or if false just apply labels as new - if matching is provided, this is used to determine which labels will be updated. Defaults to false>
+```
+
+###### Example tasks
+
+```yaml
+tasks:
+  - name: github.apply_pr_labels
+    input:
+      repo: fabulous-thingy
+      pr_number: 55
+      labels: ["kind/fix", "size/small"]
+      matching: ["kind/*", "size/*"]
+      update: true
+```
+
+```yaml
+tasks:
+  - name: github.apply_pr_labels
+    input:
+      (path)repo: event.repo_name
+      (path)pr_number: event.pr_number
+      (path)labels: event.labels
+      matching: ["kind/*", "size/*"]
+      update: true
 ```
 
 ###### Responds with
