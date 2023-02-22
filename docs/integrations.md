@@ -289,6 +289,72 @@ Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_me
 
 
 
+##### Task: `github.fetch_pr_files`
+
+Fetches details about the files changed in a PR, placing the data in `vars.pr_files` for use by other tasks.
+
+###### Task structure
+
+This goes in the `tasks` block of a sensor.
+
+```yaml
+tasks:
+  - name: github.fetch_pr_files
+    input:
+      repo: <the name of the repository the PR is in>
+      pr_number: <the PR number>
+```
+
+###### Example tasks
+
+```yaml
+tasks:
+  - name: github.fetch_pr_files
+    input:
+      repo: fabulous-thingy
+      pr_number: 55
+```
+
+```yaml
+tasks:
+  - name: github.fetch_pr_files
+    input:
+      (path)repo: event.repo_name
+      (path)pr_number: event.pr_number
+```
+
+###### Responds with
+
+Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Additionally, if successful it will respond with a `vars` object containing the key `pr_files` and, an a value, an array of data about the PR's files matching the output of Github's "List pull requests files" endpoint: https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#list-pull-requests-files.
+
+###### Example vars
+
+```json
+{
+  "vars": {
+    "pr_files": [
+      {
+        "sha": "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07",
+        "filename": "e1ec5e842183b1878ccc61c8368108b1b1d6198c.txt",
+        "status": "added",
+        "additions": 1,
+        "deletions": 0,
+        "changes": 1,
+        "blob_url": "https://github.com/hiphops-io/integration-test/blob/22b88538a0fadf73b427fe749ae7bbbaece2ee57/e1ec5e842183b1878ccc61c8368108b1b1d6198c.txt",
+        "raw_url": "https://github.com/hiphops-io/integration-test/raw/22b88538a0fadf73b427fe749ae7bbbaece2ee57/e1ec5e842183b1878ccc61c8368108b1b1d6198c.txt",
+        "contents_url": "https://api.github.com/repos/hiphops-io/integration-test/contents/e1ec5e842183b1878ccc61c8368108b1b1d6198c.txt?ref=22b88538a0fadf73b427fe749ae7bbbaece2ee57",
+        "patch": "@@ -0,0 +1 @@\n+e1ec5e842183b1878ccc61c8368108b1b1d6198c\n\\ No newline at end of file"
+      }
+    ]
+  }
+}
+```
+
+
+
+
+
 ## Slack
 
 |Name|Incoming events|Has tasks|Integration|
