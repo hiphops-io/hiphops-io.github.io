@@ -38,7 +38,10 @@ actions: ?
 
 ## Slack
 
-Slack is both an event source and a task handler. You can integrate with Slack in a few clicks via the Hiphops UI under your project settings page.
+|Name|Incoming events|Has tasks|Integration|
+|:-------|:-------|:-------|:-------|
+|`slack`|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|Integrated in a few clicks via the UI under project settings|
+
 
 ### Events
 
