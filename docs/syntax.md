@@ -69,38 +69,92 @@ You can filter using javascript expressions or Unix style pattern matching (and 
 
 If a `when` block doesn't match, that sensor or task will be skipped for this event.
 
-Keys can be dot notation paths to properties in the source event payload, e.g.:
+Keys are either `$` or paths to properties on the pipeline run context, their values are the conditions that property must meet. Some examples given the following context:
 
-`event.some.path: "foo"`
+```js
+// Example context
+{
+  "event": {
+    "project_id": "01234567-0123-abcd-1234-12345678abcd",
+    "hiphops": {
+      "source": "hiphops",
+      "event": "demo_event",
+      "action": "ping"
+    },
+    "greeting": "Hello",
+    "greeting_length": 5,
+    "alt_greetings": [
+      "Hey",
+      "Hi",
+      "Ello guvnor!"
+    ]
+  },
+  "tasks": {...}
+}
+```
+
+```yaml
+# This clause would match as all key/value conditions match
+when:
+  $: "event.greeting_length == event.greeting.length"
+  event.hiphops.event: "demo_event"
+  event.alt_greetings: ["*", "!goodbye"]
+```
 
 ---
 
+##### Pattern matches
+
+Normal dot notation keys will be evaluated using a familiar Unix style syntax. They can either take a single string or array of strings.
+Under the hood, a single string is simply treated as an array with one entry.
+
+The pattern syntax is as follows:
+
 |Pattern|Meaning|
 |-------|-------|
-|`*`|matches everything|
+|`*`|matches in a glob-like fashion without matching across `/`|
 |`?`|matches any single character|
 |`[seq]`|matches any character in seq|
 |`[!seq]`|matches any character not in seq|
 |`!restofstring`|leading `!` negates the pattern|
 
-<!-- - `title` The title of the pull request
-- `body` The pull request description
-- `branch` The name of the target/base branch for the PR e.g. **main**
-- `source_branch` The name of the head/source branch for the PR e.g. **feature/new-feature**
-- `repo_name` The name of the target/base repo
-- `source_repo_name` The name of the source repo
-- `full_repo_name` The name of the target/base repo including the account/org name e.g. **hiphops-io/widgets**
-- `full_source_repo_name` The name of the source repo including the account/org name
-- `status` The status of the PR. Either `OPEN`, `CLOSED`, or `MERGED`
-- `changed_filenames` A list of filenames changed in this PR
-- `labels` A list of Hiphops generated labels applied to this PR. All possible labels are described [here](concepts.md#labels) -->
-
 
 Some other notes on matching:
 
-- If you have multiple patterns for a field, they run in order on an additive/subtractive basis.
+- If you have an array of patterns for a field, they run top to bottom on an additive/subtractive basis.
 > Imagine putting items into a 'matched' bucket and taking negated items out again. If the bucket is empty at the end it doesn't match. Otherwise it does.
 
+---
+
+##### Expression matches
+
+Matches can be evaluated as Javascript expressions, giving you the ability to make more complex decisions around the flow of your pipelines.
+
+To define an expression use the key `$`. An expression result will be evaluated for truthiness/falsiness to decide if the condition matches.
+
+Bear in mind that truthiness/falsiness is as defined by Javascript, which may not be the same as whatever language you are most familiar with.
+
+A quick cheat sheet:
+
+The following values are falsy:
+
+```js
+false
+0 // Zero (including negative zero & big int zero)
+undefined
+null
+'', "", `` // The empty string
+NaN
+```
+
+Everything else is truthy, but that includes some common gotchas:
+
+```js
+[] // An empty array <- Python devs take note!
+{} // An empty object <- Python devs take note!
+"0" // A string containing a single zero
+"false" // A string with the text “false”
+```
 
 <div style="text-align: right">
   <small>
@@ -112,7 +166,6 @@ Some other notes on matching:
 
 ## Task
 
-
 <div style="text-align: right">
   <small>
     <em>/ task</em>
@@ -122,6 +175,17 @@ Some other notes on matching:
 ---
 
 ## Depends
+
+A depends clause will ensure tasks do not run until their conditions are met. If multiple tasks have their dependencies met at the same time, they will be dispatched in parallel.
+
+This flexible syntax allows you to create complex workflows simply by declaring what a task needs to begin executing.
+
+A depends clause follows the exact same syntax rules as a when clause, the difference is at what point they are evaluated and how they are used. (This is described in detail [below](#when-depends)).
+
+Given that the purpose of a `depends` clause is to create dependencies between tasks, you'll also find you reference different areas of the context object.
+
+In particular a `depends` clause will often reference `vars` and `tasks.*.result`.
+
 
 <div style="text-align: right">
   <small>

@@ -1,3 +1,8 @@
-.sidebar>.app-name {
-  width: 20%;
+.sidebar>.app-name>.app-name-link>img {
+  display: block;
+  height: 7vh;
+  min-height: 35px;
+  object-fit: cover;
+  margin-left: auto;
+  margin-right: auto;
 }
