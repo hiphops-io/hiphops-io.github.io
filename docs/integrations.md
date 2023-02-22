@@ -319,6 +319,10 @@ source: `hiphops`
 
 ##### Event: `change`
 
+Calculates and tracks changes to your codebase. Applies the This event is triggered when a pull request is opened, closed, merged, reopened and edited.
+
+The analysis performed is documented at [Change Analysis](./concepts.md#change-analysis).
+
 action: Not used
 
 ###### Event structure
@@ -632,6 +636,153 @@ tasks:
 ```
 
 ---
+
+##### Event: `release_prepared`
+
+This event is emitted when a github `push` occurs. It then prepares a release on the basis of the push. The user then has the option to store the release by using a sensor and applying the approprate task.
+
+action: Not used
+
+###### Event structure
+
+```json
+{
+  "project_id": <current project>,
+  "hiphops": {
+    "event": "release_prepared",
+    "source": "hiphops",
+    "action": ""
+  },
+  "id": <release id>,
+  "created_at": <release created at>,
+  "updated_at": <release updated at>,
+  "source": "GITHUB_COM",
+  "source_id": <release source id>,
+  "source_url": <release commit url>,
+  "version": <release version>,
+  "message": <release message>,
+  "is_tag": <true if releaes is a tag, false otherwise>,
+  "sha": <release commit sha>,
+  "ref": <target ref>,
+  "repo_name": <target repo name>,
+  "full_repo_name": <target full repo name including org>,
+  "git_pusher": {
+    "name": <git pusher name>,
+    "email": <git pusher email>
+  },
+  "is_pre_release": <true if release is a pre-release, false otherwise>,
+  "shas": [
+    <list of commit shas>
+  ],
+  "pusher": {
+    "id": <pusher id>,
+    "created_at": <pusher created at>,
+    "updated_at": <pusher updated at>,
+    "source": "GITHUB_COM",
+    "source_id": <source id>,
+    "username": <username>,
+    "image_url": <avatar for pusher>,
+    "url": <github url for pusher>,
+  },
+  "changes": [
+    List of changes
+  ],
+  "release_notes": [
+    List of release notes
+  ]
+}
+```
+
+###### Example event
+
+```json
+{
+  "project_id": "5489ff57-07d9-4d39-b849-18c14612f09d",
+  "hiphops": {
+    "event": "release_prepared",
+    "source": "hiphops",
+    "action": ""
+  },
+  "id": null,
+  "created_at": null,
+  "updated_at": null,
+  "source": "GITHUB_COM",
+  "source_id": "10bba9039292038ad1a3ea3186058326df142cd4",
+  "source_url": "https://github.com/hiphops-io/backend/commit/10bba9039292038ad1a3ea3186058326df142cd4",
+  "version": null,
+  "message": "Fix error when apply labels has no changes to make",
+  "is_tag": false,
+  "sha": "10bba9039292038ad1a3ea3186058326df142cd4",
+  "ref": "refs/heads/release/snappy-cobra",
+  "base_ref": null,
+  "repo_name": "backend",
+  "full_repo_name": "hiphops-io/backend",
+  "git_pusher": {
+    "name": "Shadlington",
+    "email": "shadlingtontr@gmail.com"
+  },
+  "is_pre_release": null,
+  "shas": [
+    "10bba9039292038ad1a3ea3186058326df142cd4"
+  ],
+  "pusher": {
+    "id": null,
+    "created_at": null,
+    "updated_at": null,
+    "source": "GITHUB_COM",
+    "source_id": "2999999",
+    "username": "a_coder",
+    "image_url": "https://avatars.githubusercontent.com/u/2999999?v=4",
+    "url": "https://github.com/a_coder"
+  },
+  "changes": [],
+  "release_notes": [],
+}
+```
+
+###### Example sensor
+
+This sensor detects the change events and pulls out the labels to apply to the PR.
+
+```yaml
+---
+resource: sensor
+id: Create a release
+when:
+  event.hiphops.source: hiphops
+  event.hiphops.event: release_prepared
+  event.repo_name: ["!process"]
+  event.ref: refs/heads/main
+
+tasks:
+  - name: releasemanager.create_release
+    id: release
+    input:
+      (path)release: event
+      annotations:
+        env: live
+      version_template: "v$calyy.$calm.$cald"
+      is_prerelease: false
+
+  - name: github.create_tag
+    id: tag
+    depends:
+      $: tasks.release.SUCCESS
+    input:
+      (path)repo: event.repo_name
+      (path)tag: vars.release.version
+      (path)sha: event.sha
+      (path)message: event.message
+
+  - name: slack.post_message
+    depends:
+      $: tasks.tag.SUCCESS
+    input:
+      (expr)text: |
+        `:tada: ${event.git_pusher.name} released ${vars.release.version} on repo ${event.repo_name} :tada:
+        > ${event.release_note}`
+      channel: "engineering"
+```
 
 ### Tasks
 
