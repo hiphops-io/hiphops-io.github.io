@@ -108,7 +108,7 @@ source: `slack`
 
 ##### Event: `command`
 
-actions: Any command your user provids to the `/hiphops` slash command. For example, `/hiphops deploy` will trigger a sensor with the action `deploy`.
+actions: Any command your user provids to the `/hiphops` slash command. For example, `/hiphops deploy #505` will trigger a sensor with the action `deploy`, `deploy` and `#505` will appear in the `command` property and `args` array property respectively.
 
 ###### Event structure
 
