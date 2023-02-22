@@ -166,6 +166,22 @@ Everything else is truthy, but that includes some common gotchas:
 
 ## Task
 
+A task can be defined within the `tasks` array on a sensor. Tasks will perform work and can have dependencies between them. Tasks that have their conditions met are triggered in parallel. Sequential execution can be defined using `depends` which is documented in the next section.
+
+Available task names and their inputs are defined in the [integration docs](integrations.md)
+
+```yaml
+tasks:
+- name: slack.post_comment # Required string - The name of the task to run
+  when: # Optional - A when block. Remember events are already filtered by the sensor's own when block, so this isn't always necessary
+    ...
+  depends: # Optional - A depends block. If no depends block is set the task will trigger immediately on event
+    ...
+  input: # Optional, depending on the task being called
+    ... # The required input structure is defined by the task being called
+```
+
+
 <div style="text-align: right">
   <small>
     <em>/ task</em>
@@ -185,6 +201,17 @@ A depends clause follows the exact same syntax rules as a when clause, the diffe
 Given that the purpose of a `depends` clause is to create dependencies between tasks, you'll also find you reference different areas of the context object.
 
 In particular a `depends` clause will often reference `vars` and `tasks.*.result`.
+
+A simple example:
+
+```yaml
+tasks:
+- name: foo.some_first_task
+  id: first
+- name: foo.some_second_task
+  depends:
+    $: tasks.first.SUCCESS # Once the `first` task has successfully completed this property will be populated, meaning the task can trigger
+```
 
 
 <div style="text-align: right">
