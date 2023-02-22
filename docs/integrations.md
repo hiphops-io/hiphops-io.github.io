@@ -112,6 +112,38 @@ tasks:
 
 ### Tasks
 
+All slack tasks are prefixed with `slack.`
+
+##### Task: `slack.post_message`
+
+Posts a message to slack using the slack message API. The message can be a simple string or a complex object. The message object is documented here: [Slack messaging payload documentation](https://api.slack.com/reference/messaging/payload).
+
+###### Task structure
+
+This goes in the `tasks` block of a sensor.
+
+```yaml
+tasks:
+  - name: slack.post_message
+    input:
+      channel: <the name of the channel to post to>
+      text: <the message to post, which conforms to the slack payload format>
+```
+
+###### Example task
+
+```yaml
+tasks:
+  - name: slack.post_message
+    input:
+      channel: slack-integration-dev
+      text: "Command: ${event.command}, Args: ${event.args}"
+```
+
+###### Coming soon
+
+_Ability to reply to a message directly using the `response_url` provided in the event._
+
 ## Hiphops - Release manager
 
 The Hiphops release manager is both an event source and a task handler. This integration is built in. No setup is required.
