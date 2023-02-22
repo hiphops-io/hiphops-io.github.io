@@ -42,8 +42,73 @@ actions: ?
 |:-------|:-------|:-------|:-------|
 |`slack`|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|Integrated in a few clicks via the UI under project settings|
 
+_Integrating slack allows you to send messages to slack channels. It also allows you to create custom commands using the `/hiphops` slash command. This can be used to trigger sensors and perform tasks by creating a sensor in your `hiphops.yml` file._
 
 ### Events
+
+All slack events have:
+
+source: `slack`
+
+##### Event: `command`
+
+actions: Any command your user provids to the `/hiphops` slash command. For example, `/hiphops deploy` will trigger a sensor with the action `deploy`.
+
+###### Event structure
+
+```yaml
+project_id: <the current project>
+hiphops:
+  source: slack
+  event: command
+  action: <user command>
+command: <user command>
+args: [<arg1>, <arg2>, ...]
+response_url: <time limited URL to respond to message directly>
+trigger_id: <can be used to trigger modal>
+team_id: <team where the command came from>
+channel_id: <channel where the command came from>
+user_id: <user to sent the command>
+is_enterprise_install: <true or false>
+enterprise_id: <enterprise id if set>
+```
+
+###### Example event
+
+```yaml
+hiphops:
+  source: slack
+  event: command
+  action: deploy
+command: deploy
+args: [repo, backend, branch, main]
+response_url: https://hooks.slack.com/commands/T1234567ABC/12345678912345/T123abcDEF1234567
+trigger_id: 123456789.123456789.123456789abcdef12345team_id: T1234567ABC
+team_id: T02NVHE2ERJ
+channel_id: C1234567ABC
+user_id: U1234567ABC
+is_enterprise_install: false
+```
+
+###### Example sensor
+
+This sensor simply posts a message to the `#slack-integration-dev` slack channel when the `/hiphops` command is used, echoing the command and arguments.
+
+```yaml
+---
+resource: sensor
+id: slack command receiver
+when:
+  event.hiphops.source: slack
+  event.hiphops.event: command
+tasks:
+  - name: slack.post_message
+    input:
+      channel: slack-integration-dev
+      $: "({text: `Command: ${event.command}, Args: ${event.args}`})"
+```
+
+---
 
 ### Tasks
 
