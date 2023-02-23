@@ -218,6 +218,45 @@ Example:
 }
 ```
 
+##### Task: `github.create_release`
+
+Creates a release in Github. Will create the corresponding tag if it doesn't already exist.
+
+```yaml
+tasks:
+  - name: github.create_release # String - The name of the task
+    input:
+      repo: "integration-test" # String - repository to create the release in
+      tag_name: "7eafcf0107" # String - the name of the tag (e.g. v1.0.0). If it already exists, the release will use this. If it doesn’t exist, the tag will be created
+      release_name: "a test release" # String - the name of the release
+      release_body: "This release contains a fixes" # Optional string - the body text of the release
+      draft: false # Optional boolean - whether or not to create the release as a draft - defaults to false
+      prerelease: false # Optional boolean - whether or not to create the release as a prerelease - defaults to false
+      make_latest: true # Optional boolean - whether or not to mark the release as the latest for the repo - defaults to true.
+      sha: "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" # Optional string - the SHA to create the tag for - required if the tag specified by tag_name does not exist.
+```
+
+###### Responds with
+
+Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+
+##### Task: `github.create_tag`
+
+Creates a tag in Github.
+
+```yaml
+tasks:
+  - name: github.create_tag # String - The name of the task
+    input:
+      repo: "integration-test" # String - the repository the tag should be created in
+      tag: "v23.01.05" # String - the name of the tag
+      tag_message: "Final version of v23.01.05" # Optional string - the message that will be provided with the tag. If not supplied this will default to the same value as tag
+      sha: "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" # String - the SHA to create the tag for
+```
+
+###### Responds with
+
+Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
 
 
