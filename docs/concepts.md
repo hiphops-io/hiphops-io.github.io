@@ -140,6 +140,67 @@ When a sensor matches an event, a pipeline run is created within Hiphops. This c
 }
 ```
 
+## Full Lifecycle
+
+Hiphops is designed from the ground up to support release oriented workflows, the humans in the loop and the environments that code travels through.
+
+In order to support this broad remit, the system handles and processes events , dispatches tasks and tracks results.
+
+Here we descibe the full lifecycle of an event coming into Hiphops. An example event Hiphops proccesses is a Github push event.
+
+#### 1. Event arrives
+
+When an event arrives, it is distributed to both the system sensors (these are used to run internal Hiphops tasks and also create new events for use by users), and user sensors (the ones you define in `hiphops.yaml`).
+
+Both flows run in parallel. Both flows are identical. From here on we will describe the flow which could be for either.
+
+#### 2. Sensors are tested to see if they match
+
+Each sensor (from `hiphops.yaml`) is tested to see if it matches the incoming event. This is done via the `when` clause of the sensor. If it matches, a `pipeline run` is created (see documentation of the `pipeline_run` object) to manages execution of the tasks for the sensor.
+
+A pipeline run consists of the sensor that triggered it, the event that triggered it, and the tasks that are to be executed as well, as the state of each task (and a few other bits).
+
+#### 3. Each tasks is checked to see if it is ready to run
+
+The system now takes the list of tasks in the pipeline run and sets them all to pending. They remain pending until they are ready.
+
+A task is ready when its `depends` clause (same syntax as the `when` clause in the sensor) evaluates to true and the task's `when` clause (if present) is true.
+
+If the task's `when` clause evaluates to false, the task is skipped.
+
+> Tasks can depend on each other (which allows them to run in sequence). For example, you may want to run a task to create a release, and then another task to get the release approved, and another to deploy that release. Each task would depend on the successful completion of the previous task.
+
+For example: a task `auto deploy` task may depend on completion of the `can_auto_deploy` task. If the `can_auto_deploy` task returns `true`, then the `auto_deploy` task is ready to run. But otherwise, the `auto_deploy` task is skipped.
+
+#### 4. Tasks are executed
+
+Once a task is ready, it is scheduled for execution.
+
+When a task is executed, it is marked as running in the pipeline run and the relevent Hiphops service or integration is sent the task to process.
+
+Tasks are not timelimited in any way. Therefore Hiphops can easily support long running tasks (such as waiting for an approval from a human).
+
+#### 5. Tasks return results
+
+All tasks must return a result.
+
+Whenever a task returns a result, the pipeline run is updated with the result and all pending tasks are checked to see if they can now be executed.
+
+Some tasks, while running, create new events, which can then trigger new pipelines (as described in #1).
+
+Some tasks return `vars` which will be stored in the pipeline run and can be used in any expression of any task, but typically in the `input` section.
+
+#### 6. Pipeline run completes
+
+Once all tasks have completed successfully or have been skipped, the pipeline run is marked as successful, and completes.
+
+Failures are described in the next point.
+
+#### 7. Errors and failures
+
+If a task fails, the pipeline run is marked as failed and ends, regardless of the outcome of any other tasks.
+
+If at any point, a task completes and no pending tasks can be started, the pipeline run is marked as failed and ends.
 
 ## Changes
 
@@ -245,7 +306,7 @@ Expressions and variables are evaluated whenever a sensor is run. They can be us
 Examples of when expressions are run:
 
 - In the `when` clause of a sensor
-- In the `depends_on` clause of a task
+- In the `depends` clause of a task
 - When setting the `input` of a task
 
 The sandboxed environment is populated with a `context`.
