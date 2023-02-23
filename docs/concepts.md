@@ -5,7 +5,6 @@ Sensors are the entrypoint to everything Hiphops can do. Sensors listen for inco
 A basic sensor might look like this:
 
 ```yaml
-
 resource: sensor
 id: Create release on merge
 when:
@@ -22,7 +21,6 @@ Tasks can run in parallel or have dependencies between them. Using the `depends`
 Here's an example of a task on a simple sensor:
 
 ```yaml
-
 resource: sensor
 tasks:
 - name: slack.post_comment

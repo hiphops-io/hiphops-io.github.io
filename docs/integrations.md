@@ -72,38 +72,16 @@ This goes in the `tasks` block of a sensor.
 tasks:
   - name: github.merge_pr
     input:
-      repo: <the name of the repository the PR is in>
-      pr_number: <the PR number>
-      merge_comment_title: <[optional] the commit message title that will provided with the merge. Defaults to the PR title>
-      head_sha: <[optional] the SHA the branch head must be at for the merge to proceed, to prevent race conditions. If not provided the merge will proceed without checking the SHA>
-      merge_method: <[optional] the merge method the PR will be merged with - can be “merge”, “squash” or “rebase”. Defaults to “merge” if not provided>
-```
-
-###### Example tasks
-
-```yaml
-tasks:
-  - name: github.merge_pr
-    input:
-      repo: fabulous-thingy
-      pr_number: 55
-```
-
-```yaml
-tasks:
-  - name: github.merge_pr
-    input:
-      (path)repo: event.repo_name
-      (path)pr_number: event.pr_number
-      (path)merge_comment_title: event.title
-      (path)head_sha: event.sha
-      merge_method: squash
+      repo: backend # String - The name of the repository the PR is in
+      pr_number: 55 # Int - The PR number
+      merge_comment_title: Auto-merged this PR! # Optional string - The commit message title that will provided with the merge. Defaults to the PR title
+      head_sha: 939abcd18feaa12345bdb # Optional string - The SHA the branch head must be at for the merge to proceed, to prevent race conditions. If not provided the merge will proceed without checking the SHA
+      merge_method: merge # Optional string - One of “merge”, “squash” or “rebase”. The merge method the PR will be merged with defaults to “merge” if not set
 ```
 
 ###### Responds with
 
 Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
-
 
 
 ##### Task: `github.create_or_update_pr_comment`
