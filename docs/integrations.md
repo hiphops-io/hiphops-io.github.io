@@ -73,7 +73,7 @@ tasks:
   - name: github.merge_pr
     input:
       repo: backend # String - The name of the repository the PR is in
-      pr_number: 55 # Int - The PR number
+      pr_number: 55 # Number - The PR number
       merge_comment_title: Auto-merged this PR! # Optional string - The commit message title that will provided with the merge. Defaults to the PR title
       head_sha: 939abcd18feaa12345bdb # Optional string - The SHA the branch head must be at for the merge to proceed, to prevent race conditions. If not provided the merge will proceed without checking the SHA
       merge_method: merge # Optional string - One of “merge”, “squash” or “rebase”. The merge method the PR will be merged with defaults to “merge” if not set
@@ -95,12 +95,12 @@ However, if you intend to have multiple comments posted by Hiphops, you should a
 
 ```yaml
 tasks:
-- name: github.create_or_update_pr_comment
-  input:
-    repo: backend # String - The name of the repository the PR is in
-    pr_number: 55 # Int - The PR number
-    comment_body: This is a comment # The text to post in the comment
-    comment_identifier: my-comment-id-foo # Optional string - An identifier used for making updates to the same comment. This is only needed if you intend to have Hiphops post more than one comment to the same PR
+  - name: github.create_or_update_pr_comment
+    input:
+      repo: backend # String - The name of the repository the PR is in
+      pr_number: 55 # Number - The PR number
+      comment_body: This is a comment # String - The text to post in the comment
+      comment_identifier: my-comment-id-foo # Optional string - An identifier used for making updates to the same comment. This is only needed if you intend to have Hiphops post more than one comment to the same PR
 ```
 
 ###### Responds with
@@ -123,9 +123,9 @@ tasks:
   - name: github.create_or_update_pr_review
     input:
       repo: backend # String - The name of the repository the PR is in
-      pr_number: 53 # Integer - The PR number
+      pr_number: 53 # Number - The PR number
       approved: true # Boolean - Is the review an approval or request for changes
-      review_body: Auto approved your PR! # The text to post in the review
+      review_body: Auto approved your PR! # String - The text to post in the review
       review_identifier: auto-approve-id-foo # Optional string - An identifier used for making updates to the same review. Only needed if you intend to have Hiphops post more than one review to the same PR
 ```
 
@@ -144,10 +144,10 @@ However, if you do provide a list of glob-matching patterns in `matching` (e.g `
 
 By setting the update input to true, the task will treat the patterns in `matching` as a list of label patterns to be updated, and will first _remove_ labels matching a pattern before applying those labels from the `labels` input that match it.
 
-So if we have a PR 55 in repository `fabulous-thingy` that currently has the labels `["kind/fix", "size/small", "thingy"]`, and this task is invoked with the input:
+So if we have a PR 55 in repository `backend` that currently has the labels `["kind/fix", "size/small", "thingy"]`, and this task is invoked with the input:
 ```yaml
     input:
-      repo: fabulous-thingy
+      repo: backend
       pr_number: 55
       labels: ["kind/fix", "size/medium", "health/good"]
       matching: ["kind/*", "size/*"]
@@ -158,44 +158,15 @@ Then the task would first remove `size/small`, and then add `size/medium`. No ot
 
 If update had been false (or unset), then it would only add `size/medium`, not attempting to update the existing labels.
 
-
-###### Task structure
-
-This goes in the `tasks` block of a sensor.
-
 ```yaml
 tasks:
   - name: github.apply_pr_labels
     input:
-      repo: <the name of the repository the PR is in>
-      pr_number: <the PR number>
-      labels: <an array of strings - the labels to be applied to the PR>
-      matching: <an array of strings - each string is a glob matching pattern that will be applied against labels, such that only the labels that have a match will be applied. If update is true, then existing labels on the PR that have a match will be removed too>
-      update: <true/false - if true, attempt to update existing labels, or if false just apply labels as new - if matching is provided, this is used to determine which labels will be updated. Defaults to false>
-```
-
-###### Example tasks
-
-```yaml
-tasks:
-  - name: github.apply_pr_labels
-    input:
-      repo: fabulous-thingy
-      pr_number: 55
-      labels: ["kind/fix", "size/small"]
-      matching: ["kind/*", "size/*"]
-      update: true
-```
-
-```yaml
-tasks:
-  - name: github.apply_pr_labels
-    input:
-      (path)repo: event.repo_name
-      (path)pr_number: event.pr_number
-      (path)labels: event.labels
-      matching: ["kind/*", "size/*"]
-      update: true
+      repo: backend # String - The name of the repository the PR is in
+      pr_number: 55 # Number - The PR number
+      labels: ["kind/fix", "size/medium", "health/good"] # String array - The labels to be applied to the PR
+      matching: ["kind/*", "size/*"] # String array - Each string is a glob matching pattern that will be applied against labels, such that only the labels that have a match will be applied. If update is true, then existing labels on the PR that have a match will be removed too
+      update: true # Boolean - If true, attempt to update existing labels, or if false just apply labels as new - if matching is provided, this is used to determine which labels will be updated. Defaults to false
 ```
 
 ###### Responds with
@@ -214,8 +185,8 @@ Fetches details about the files changed in a PR, placing the data in `vars.pr_fi
 tasks:
   - name: github.fetch_pr_files
     input:
-      repo: fabulous-thingy # The name of the repository the PR is in
-      pr_number: 55 # The PR number
+      repo: fabulous-thingy # String - The name of the repository the PR is in
+      pr_number: 55 # Number - The PR number
 ```
 
 ###### Responds with
