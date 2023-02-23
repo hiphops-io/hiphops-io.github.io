@@ -1,4 +1,4 @@
-> Flow is the movement and delivery of customer value through a process. In knowledge work, our whole reason for existence is to deliver value to the customer. > Therefore, it stands to reason that our whole process should be oriented around optimizing flow
+> Flow is the movement and delivery of customer value through a process. In knowledge work, our whole reason for existence is to deliver value to the customer. Therefore, it stands to reason that our whole process should be oriented around optimizing flow
 >
 > <cite>Daniel Vacanti</cite>
 
