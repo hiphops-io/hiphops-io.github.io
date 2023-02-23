@@ -940,71 +940,6 @@ tasks:
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 Additionally, if successful it will respond with a `vars` object containing the key `release` as described below.
 
-```json
-{
-  "vars": {
-    "release": {
-      "id": <id of the release>,
-      "created_at": <time of creation>,
-      "updated_at": <time of update>,
-      "project_id": <project id>,
-      "source": "GITHUB_COM",
-      "source_id": <github source id>,
-      "source_url": <github commit url>,
-      "version": <generated version from version template>
-      "message": <Release message from the event>,
-      "is_tag": <is this release based off a tag>,
-      "sha": <sha of the head commit>,
-      "ref": <target ref>,
-      "repo_name": <target repo name>,
-      "full_repo_name": <target repo name with org>,
-      "annotations": {
-        List of annotations from input
-      },
-      "pusher_id": <pusher id>,
-      "git_pusher": {
-        "name": <name of the pusher>,
-        "email": <email of the pusher>
-      },
-      "is_pre_release": <true or false>,
-      "shas": [
-        List of shas
-      ],
-      "pusher": {
-        Object can be null
-        "id": <pusher id>,
-        "created_at": <pusher created at>,
-        "updated_at": <pusher updated at>,
-        "source": "GITHUB_COM",
-        "source_id": <source id>,
-        "username": <username>,
-        "image_url": <avatar for pusher>,
-        "url": <github url for pusher>,
-      },
-      "changes": [
-        List of changes
-        Object can be null
-        {
-          release_id: <[Optional] release id>,
-          change_id: <[Optional] change id>,
-        }
-      ],
-      "release_notes": [
-        List of release notes
-        Object can be null
-        {
-          version: <[Optional] version of the release note>,
-          is_auto_generated: <[Optional] true or false>,
-          note: <[Optional] release note>,
-          release_id: <[Optional] release id>,
-          author_id: <[Optional] author id>
-        }
-      ]
-    }–
-  }
-}
-```
-
 ###### Example vars
 
 ```json
@@ -1018,14 +953,14 @@ Additionally, if successful it will respond with a `vars` object containing the 
       "source": "GITHUB_COM",
       "source_id": "bbb920626b031b2aee41bec40500518624a0bfec",
       "source_url": "https://github.com/hiphops-io/backend/commit/bbb920626b031b2aee41bec40500518624a0bfec",
-      "version": "bbb9206",
+      "version": "bbb9206", # String - version generated using the version template
       "message": "Task update: handle applying PR labels in one github task (#610)\n\n* Task update: handle applying PR labels in one github task\r\n\r\n* Don't make no-op changes",
-      "is_tag": false,
+      "is_tag": false, # Bool - is this release based off a tag?
       "sha": "bbb920626b031b2aee41bec40500518624a0bfec",
       "ref": "refs/heads/release/snazzy-cobra",
       "repo_name": "backend",
-      "full_repo_name": "hiphops-io/backend",
-      "annotations": {
+      "full_repo_name": "hiphops-io/backend", # String - target repo name with org
+      "annotations": { # Object - a set of annotations from the task input
         "app": "backend",
         "env": "dev"
       },
@@ -1038,9 +973,31 @@ Additionally, if successful it will respond with a `vars` object containing the 
       "shas": [
         "bbb920626b031b2aee41bec40500518624a0bfec"
       ],
-      "pusher": null,
-      "changes": null,
-      "release_notes": null
+      "pusher": { # Object - can be null
+        "id": "0ff85ad3-fbc1-407c-9bb4-caed8af51f22",
+        "created_at": "2023-02-22T14:58:26.416878+00:00",
+        "updated_at": "2023-02-22T14:58:26.416878+00:00",
+        "source": "GITHUB_COM",
+        "source_id": "0ff85ad3-fbc1-407c-9bb4-caed8af51f22",
+        "username": "a-coder",
+        "image_url": "https://avatars.githubusercontent.com/u/12345678?v=4",
+        "url": "https://github.com/a-coder"
+      },
+      "changes": [ # Array of Objects - List of changes - can be null
+        {
+          "release_id": "0e8104e1-79a9-4306-8d36-90b6fbf8fb72",
+          "change_id": "0e8104e1-79a9-4306-8d36-90b6fbf8fb72"
+        }
+      ],
+      "release_notes": [ # Array of Objects - List of release notes - can be null
+        {
+          "version": "bbb9206", # String - version generated using the version template
+          "is_auto_generated": true, # Bool - are the notes auto generated?
+          "note": "Task update: handle applying PR labels in one github task (#610)",
+          "release_id": "0e8104e1-79a9-4306-8d36-90b6fbf8fb72",
+          "author_id": "0ff85ad3-fbc1-407c-9bb4-caed8af51f22"
+        }
+      ]
     }
   }
 }
@@ -1052,26 +1009,11 @@ Generates a comment for a PR based on the analysis of the PR in the `change` eve
 
 This task is usually followed by the `github.create_or_update_pr_comment` task.
 
-###### Task structure
-
-This goes in the `tasks` block of a sensor.
-
-```yaml
-tasks:
-  - name: releasemanager.generate_pr_analysis_comment
-    input:
-      (path)change: event # the `change` event
-      include: [
-        <At least one of>
-        "scores", "rundown", "labels"
-      ]
-```
-
 ###### Example tasks and sensors
 
 ```yaml
 ---
-resource: customer_sensor
+resource: sensor
 id: Update PR in response to change
 when:
   event.hiphops.source: hiphops
@@ -1079,8 +1021,8 @@ when:
 tasks:
   - name: releasemanager.generate_pr_analysis_comment
     input:
-      (path)change: event
-      include: ["scores", "rundown"]
+      (path)change: event # Event - the `change` event
+      include: ["scores", "rundown"] # Array of Strings - At least one of "scores", "rundown" and "labels"
   - name: github.create_or_update_pr_comment
     input:
       (path)repo: vars.change_analysis_comment.repo
