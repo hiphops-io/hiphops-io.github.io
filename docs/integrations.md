@@ -233,7 +233,7 @@ tasks:
       draft: false # Optional boolean - whether or not to create the release as a draft - defaults to false
       prerelease: false # Optional boolean - whether or not to create the release as a prerelease - defaults to false
       make_latest: true # Optional boolean - whether or not to mark the release as the latest for the repo - defaults to true.
-      sha: "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" # Optional string - the SHA to create the tag for - required if the tag specified by tag_name does not exist.
+      target: "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" # Optional string - the target to create the tag for, either a commit SHA or branch ref - required if the tag specified by tag_name does not exist.
 ```
 
 ###### Responds with
@@ -258,6 +258,23 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
+If successful it will respond with a `vars` object, that has - against the key `created_tag` - an object containing information about the created tag.
+
+Example:
+
+```json
+{
+  "vars": {
+    "created_tag": {
+      "tag": "v23.01.05", # The tag name
+      "tag_ref": "refs/tags/v23.01.05", # The tag ref
+      "tagged_sha": "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07", # The SHA that was tagged
+      "tag_sha": "940bd336248efae0f9ee5bc7b2d5c985887b16ac", # The SHA of the tag object
+      "tag_message": "Final version of v23.01.05", # The tag message
+    }
+  }
+}
+```
 
 
 ##### Task: `github.fetch_pr_commits`
