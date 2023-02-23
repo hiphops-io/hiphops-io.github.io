@@ -729,6 +729,38 @@ Example:
 }
 ```
 
+##### Task: `github.github.create_repo_webhook`
+
+Creates a webhook for a particular repo in Github. Documentation for this (especially the events input) can be found [here](https://docs.github.com/en/rest/reference/repos#create-a-repository-webhook).
+
+```yaml
+tasks:
+  - name: github.github.create_repo_webhook # String - The name of the task
+    input:
+      repo: "integration-test" # String - repository to create the release in
+      url: "https://hiphops.io/github_events" # String - The URL to which the events in the hook are delivered.
+      events: # Array - Determines what events the hook is triggered for. Set "*" to receive all events. Default: ['push']
+        - push
+        - pull_request
+      secret: "importantsecret" # String - The shared secret between Github and Hiphops which is used to validate the payload.
+```
+
+##### Task: `github.github.create_org_webhook`
+
+Creates a webhook for your organization in Github. Documentation for this (especially the events input) can be found [here](https://docs.github.com/en/rest/orgs/webhooks?apiVersion=2022-11-28#create-an-organization-webhook).
+
+```yaml
+tasks:
+  - name: github.github.create_org_webhook # String - The name of the task
+    input:
+      url: "https://hiphops.io/github_org_events" # String - The URL to which the events in the hook are delivered.
+      events: # Array - Determines what events the hook is triggered for. Set "*" to receive all events. Default: ['push']
+        - push
+        - pull_request
+      secret: "importantsecret" # String - The shared secret between Github and Hiphops which is used to validate the payload.
+```
+
+
 
 
 
