@@ -132,3 +132,27 @@ The possible labels are:
 `health/very-low` `health/low` `health/medium` `health/high`
 
 It's possible to automatically add these labels to the underlying pull request, in addition to custom labels of your own choosing. Combined with GitHub actions triggered by specific labels developers can create arbitrary automations.
+
+## Expressions and their execution context
+
+Expressions and variables are evaluated whenever a sensor is run. They can be used to filter events, or to dynamically generate task inputs. These expressions are run in a sandboxed environment, and are not able to access any external resources.
+
+Examples of when expressions are run:
+
+- In the `when` clause of a sensor
+- In the `depends_on` clause of a task
+- When setting the `input` of a task
+
+The sandboxed environment is populated with a `context`.
+
+However, a number of structures and variables are available in the expression context. Some variables are only available in certain circumstances. For example, `vars` are only populated by tasks. If nothing has been put in `vars` yet, then it will be empty.
+
+*Note*: changes to the variables will not be persisted between invocations of teh expression. This is true even between different steps in a when clause for example.
+
+The variables and structures are:
+
+- `event` - The event that triggered the sensor
+- `vars` - A dictionary of variables set by tasks
+- `pipeline_run` - The full pipeline run that is currently executing
+- `tasks` - A list of all tasks that are defined in the sensor. The tasks can be accessed either by their id or by their index in the list (the order as defined in the `hiphops.yaml` file)
+- `input` - The input to the sensor. This is the same as the `input` field in the `hiphops.yaml` file
