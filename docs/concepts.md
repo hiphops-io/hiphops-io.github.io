@@ -155,4 +155,4 @@ The variables and structures are:
 - `vars` - A dictionary of variables set by tasks
 - `pipeline_run` - The full pipeline run that is currently executing
 - `tasks` - A list of all tasks that are defined in the sensor. The tasks can be accessed either by their id or by their index in the list (the order as defined in the `hiphops.yaml` file)
-- `input` - The input to the sensor. This is the same as the `input` field in the `hiphops.yaml` file
+- `input` - The input to the task. This is the same as the `input` field in the `hiphops.yaml` file
