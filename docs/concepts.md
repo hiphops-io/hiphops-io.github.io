@@ -313,7 +313,7 @@ The sandboxed environment is populated with a `context`.
 
 However, a number of structures and variables are available in the expression context. Some variables are only available in certain circumstances. For example, `vars` are only populated by tasks. If nothing has been put in `vars` yet, then it will be empty.
 
-*Note*: changes to the variables will not be persisted between invocations of teh expression. This is true even between different steps in a when clause for example.
+*Note*: changes to the variables will not be persisted between invocations of the expression. This is true even between different steps in a when clause for example.
 
 The variables and structures are:
 
