@@ -58,6 +58,7 @@ when:
   event.hiphops.action: "opened" # Simple pattern match. With the above, matches when a pull request was opened.
   event.branch: ["feature/*", "main"] # Simple pattern match with array of matches
   event.source_branch: ["*", "!feature/*"] # Simple pattern match with a negative pattern
+  (not)event.changed_filenames: ["!*.md"] # An inverted (not) match condition. Matches when all changed files are *.md files.
   $: "event.size.score >= 90" # A javascript expression. Matches based on js truthiness/falsiness of result
 ```
 
@@ -68,6 +69,8 @@ When blocks are sets of key/value pairs defining match clauses. Each individual 
 You can filter using javascript expressions or Unix style pattern matching (and any combination of the two) at both the sensor and per task level.
 
 If a `when` block doesn't match, that sensor or task will be skipped for this event.
+
+If prefixed with the annotation `(not)`, the entire match condition is inverted - matching when all of the criteria on the RHS evaluate as false.
 
 Keys are either `$` or paths to properties on the pipeline run context, their values are the conditions that property must meet. Some examples given the following context:
 
