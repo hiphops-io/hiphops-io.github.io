@@ -249,3 +249,41 @@ It is expected that all `depends` clauses in a list of tasks will eventually eva
 </div>
 
 ---
+
+
+## Input
+
+Many tasks take inputs - arguments that dictate the work the task should perform.
+Some inputs are optional, some are required, and they can be a variety of types (including primitives, complex objects and arrays). See the documentation for the task in question for details.
+
+For example, the following task's inputs specify that the task should create/update a comment saying "This is a comment" on PR 55 in the backend repo:
+```yaml
+tasks:
+  - name: github.create_or_update_pr_comment
+    input:
+      repo: backend
+      pr_number: 55
+      comment_body: This is a comment
+```
+
+Additionally, you can use the `(path)` annotation as a prefix to the input name (e.g. `(path)repo:`) to specify that the input value is a dot.path to a property on the context object. If you do this, and the path is valid at the time of evaluation, the value of that path will be looked up and substitued into the task input at the time of dispatch.
+
+Returning to the above example:
+```yaml
+tasks:
+  - name: github.create_or_update_pr_comment
+    input:
+      (path)repo: event.repo_name
+      (path)pr_number: event.pr_number
+      comment_body: This is a comment
+```
+
+In this task definition, the repo name and PR number are now coming via the `event` object within the context object (if, for example, the event in question was a `change` event). If the event was for PR 55 in the backend repo, the task would evaluate to the same values as the prior example.
+
+<div style="text-align: right">
+  <small>
+    <em>/ input</em>
+  </small>
+</div>
+
+---
