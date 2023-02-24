@@ -240,6 +240,10 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
+
+
+
+
 ##### Task: `github.create_tag`
 
 Creates a tag in Github.
@@ -275,6 +279,45 @@ Example:
   }
 }
 ```
+
+
+
+
+##### Task: `github.create_branch`
+
+Creates a branch in Github.
+
+```yaml
+tasks:
+  - name: github.create_branch # String - The name of the task
+    input:
+      repo: "integration-test" # String - the repository the branch should be created in
+      tag: "a-nice-branch" # String - the name of the branch
+      sha: "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" # String - the SHA to create the branch for
+```
+
+###### Responds with
+
+Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+
+If successful it will respond with a `vars` object, that has - against the key `created_branch` - an object containing information about the created branch.
+
+Example:
+
+```json
+{
+  "vars": {
+    "created_branch": {
+      "branch": "a-nice-branch", # The branch name
+      "branch_ref": "refs/heads/branches/a-nice-branch", # The branch ref
+      "sha": "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07", # The SHA of the branch
+    }
+  }
+}
+```
+
+
+
 
 
 ##### Task: `github.fetch_pr_commits`
