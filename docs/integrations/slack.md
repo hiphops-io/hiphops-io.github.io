@@ -6,9 +6,7 @@
 
 _Integrating slack allows you to send messages to slack channels. It also allows you to create custom commands using the `/hiphops` slash command. This can be used to trigger sensors and perform tasks by creating a sensor in your `hiphops.yml` file._
 
-### Events
-
-##### Event: `command`
+## Event: `command`
 
 actions: Any command your user provides to the `/hiphops` slash command will be used to populate the `hiphops.action` field.
 For example, `/hiphops deploy` will have the action `deploy`.
@@ -55,9 +53,7 @@ tasks:
 
 ---
 
-### Tasks
-
-##### Task: `slack.post_message`
+## Task: `slack.post_message`
 
 Posts a message to slack using the slack message API. The message can be a simple string or a complex object. The message object is documented here: [Slack messaging payload documentation](https://api.slack.com/reference/messaging/payload).
 
