@@ -6,57 +6,95 @@
 
 ?> Note: The examples below are for information purposes only and may need altering to meet your exact needs. We recommend testing configs in a safe environment before use. This is particularly important for automated approvals or any processes that support critical flows.
 
-## Require small Terraform changes
+## Enforce a specific branch flow
+
+This example config allows a team to reject PRs into `main` branch that do not come from a `release/*` branch.
+
+Because Hiphops is configured at an account rather than repo level, this rule will be applied to all repositories uniformly. This saves you from repeating config
+in several places.
 
 ```yaml
-id: "Request small infra changes"
-resource: change_sensor
+---
+resource: sensor
+id: Enforce proper branch flow
 when:
-  labels: ["size/*large"]
-  changed_filenames:
-    - "*.tf"
-    - "*.tfvars"
-    - "*.tfstate"
-    - "*.tf.json"
-add_review:
-  approved: false
-  comment: This Terraform change is quite large. Please break it up into smaller changes.
+  event.hiphops.event: change
+  event.branch: main
+  event.source_branch: ["*", "!release/*"]
+tasks:
+- name: github.create_or_update_pr_review
+  input:
+    (path)repo: event.repo_name
+    (path)pr_number: event.pr_number
+    review_body: PRs into main must come from a release branch
+    approved: false
+```
+
+We can create several rules for branch flow in a single sensor.
+In this example we enforce flows on long-lived branches per environment.
+
+```yaml
+---
+resource: sensor
+id: Enforce proper branch flow
+when:
+  event.hiphops.event: change
+tasks:
+- name: github.create_or_update_pr_review
+  when:
+    event.branch: main
+    event.source_branch: ["*", "!stage"]
+  input:
+    (path)repo: event.repo_name
+    (path)pr_number: event.pr_number
+    review_body: PRs into prod must come from stage
+    approved: false
+
+- name: github.create_or_update_pr_review
+  when:
+    event.branch: stage
+    event.source_branch: ["*", "!dev"]
+  input:
+    (path)repo: event.repo_name
+    (path)pr_number: event.pr_number
+    review_body: PRs into stage must come from dev
+    approved: false
 ```
 
 ---
 
-## Label styling changes
+## Auto label PRs
+
+Automatically applying custom labels is useful for triaging. It also can be used to drive workflows e.g. in GitHub actions.
 
 ```yaml
-id: "Label style changes"
-resource: change_sensor
+resource: change
+id: Label style changes
 when:
-  changed_filenames: ["*.css", "*.jss"]
-apply_labels:
-  labels: ["styling"]
+  event.hiphops.event: pull_request
+  event.changed_filenames: ["*.css", "*.jss"]
+tasks:
+- name: github.apply_pr_labels
+  input:
+    (path)repo: event.repo_name
+    (path)pr_number: event.pr_number
+    labels: ["styling"]
 ```
 
-Automatically applying custom labels also allows you to run complex workflows in response to Hiphops data. Triggering a GitHub Action based on a specific label is quite straightforward.
-
----
-
-## Approve changes to "safe" files only
-
-This one takes a bit of understanding. We match all files, then remove files that
-are in `docs/`, `*.md` etc. This would give us an empty match if the change *only* altered those files. We then use the `*_not` variant to flip that result, giving us exclusive matching. Nice!
+However, Hiphops also generates a set of labels for you. You can choose to apply these to your PR based on prefix. Here we apply the `size/*` and `kind/*` labels for auto-sizing and categorisation.
 
 ```yaml
-id: "Approve safe file changes"
+---
+resource: sensor
+id: Add PR labels
 when:
-  branch:
-    - "main"
-  changed_filenames_not:
-    - "*"
-    - "!docs/*"
-    - "!*.md"
-    - "!*.MD"
-    - "!*.rst"
-add_review:
-  approved: true
-  comment: Automatically approving changes to internal docs
+  event.hiphops.event: change
+tasks:
+  - name: github.apply_pr_labels
+    input:
+      (path)repo: event.repo_name
+      (path)pr_number: event.pr_number
+      (path)labels: event.labels
+      matching: ["size/*", "kind/*"]
+      update: true
 ```

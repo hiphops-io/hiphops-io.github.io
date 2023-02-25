@@ -2,6 +2,17 @@
 >
 > <cite>Kent Beck</cite>
 
+<details>
+<summary>Self-assessment (Click to expand)</summary>
+
+```json
+{
+  "foo": "bar"
+}
+```
+
+</details>
+
 ## What is Hiphops?
 
 Hiphops is a platform that gives you the ability to create _secure_, highly automated development flows.
