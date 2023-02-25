@@ -1,0 +1,107 @@
+{
+  "project_id": "ffe0089b-120a-4b3b-afc2-784e64ac3b6a",
+  "id": "36547967-f34a-4920-9dba-530acea18f51",
+  "created_at": "2023-02-24T20:50:34.215132+00:00",
+  "updated_at": "2023-02-24T21:34:42.620997+00:00",
+  "source": "GITHUB_COM",
+  "source_id": "123456789",
+  "source_url": "https://github.com/example-com/apps/pull/4",
+  "pr_number": 4,
+  "title": "Dummy push",
+  "body": "",
+  "sha": "ca22b78d01e7aa1dbc2cf726be703c13100b7ad3",
+  "merge_sha": "ee1adc332cf08e368260e4ad27ea5c5724f54f87",
+  "branch": "main",
+  "source_branch": "test-1",
+  "repo_name": "apps",
+  "source_repo_name": "apps",
+  "full_repo_name": "example-com/apps",
+  "full_source_repo_name": "example-com/apps",
+  "additions": 0,
+  "deletions": 0,
+  "status": "OPEN",
+  "author_id": null,
+  "annotations": {},
+  "health": {
+    "score": 99.12294149398804,
+    "label": "very-high",
+    "description": "The change's health is rated as `very high`"
+  },
+  "kind": {
+    "score": 96.49176597595215,
+    "label": "maintenance",
+    "description": "This change has been categorised as maintenance"
+  },
+  "size": {
+    "score": 100,
+    "label": "very-small",
+    "description": "This is a very small change with 0 addition(s), 0 deletion(s), and 1 file(s) impacted"
+  },
+  "ease": {
+    "score": 100,
+    "label": "very-high",
+    "description": "The work on this change was submitted in a single commit and is the work of a single author"
+  },
+  "focus": {
+    "score": 100,
+    "label": "very-high",
+    "description": "The author has worked on multiple changes in this repository whilst completing this work"
+  },
+  "changed_filenames": ["something.txt"],
+  "commits": [
+    {
+      "sha": "ca22b78d01e7aa1dbc2cf726be703c13100b7ad3",
+      "id": "C_kwDOI-l1p9oAKGNhMjJiNzhkMDFlN2FhMWRiYzJjZjcyNmJlNzAzYzEzMTAwYjdhZDM",
+      "url": "https://github.com/example-com/apps/commit/ca22b78d01e7aa1dbc2cf726be703c13100b7ad3",
+      "message": "Dummy push",
+      "author": {
+        "name": "adeveloper",
+        "email": "adeveloper@example.com"
+      },
+      "committer": {
+        "name": "adeveloper",
+        "email": "adeveloper@example.com"
+      },
+      "verification": {
+        "verified": false,
+        "reason": "unsigned"
+      }
+    }
+  ],
+  "file_changes": [
+    {
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "filename": "something.txt",
+      "status": "added",
+      "additions": 0,
+      "deletions": 0,
+      "changes": 0
+    }
+  ],
+  "all_commits_verified": false,
+  "shas": ["ca22b78d01e7aa1dbc2cf726be703c13100b7ad3"],
+  "labels": [
+    "health/very-high",
+    "size/very-small",
+    "ease/very-high",
+    "focus/very-high",
+    "kind/maintenance"
+  ],
+  "health_score": 99.12294149398804,
+  "size_score": 100,
+  "focus_score": 100,
+  "ease_score": 100,
+  "author": null,
+  "hiphops": {
+    "event": "change",
+    "source": "hiphops",
+    "action": ""
+  },
+  "markdown": {
+    "header": "![Hiphops.io banner](https://v1.hiphops.io/external-assets/pr-comment-banner.svg)",
+    "labels": "## Labels\n\n![](https://img.shields.io/badge/health-very--high-7C40C8?style=for-the-badge) ![](https://img.shields.io/badge/size-very--small-7C40C8?style=for-the-badge) ![](https://img.shields.io/badge/ease-very--high-7C40C8?style=for-the-badge) ![](https://img.shields.io/badge/focus-very--high-7C40C8?style=for-the-badge) ![](https://img.shields.io/badge/kind-maintenance-7C40C8?style=for-the-badge) ",
+    "scores": "## Scores\n\n\n\n| Overall `99%` | Size `100%` | Focus `100%` | Ease `100%` |\n| :---: | :---: | :---: | :---: |\n| ![10 out of 10 score](https://v1.hiphops.io/external-assets/health-score-10.svg)  | ![10 out of 10 score](https://v1.hiphops.io/external-assets/health-score-10.svg) | ![10 out of 10 score](https://v1.hiphops.io/external-assets/health-score-10.svg) | ![10 out of 10 score](https://v1.hiphops.io/external-assets/health-score-10.svg) |\n",
+    "rundown": "## Rundown\n\n**This looks like a `very-small` `maintenance` change. This change's health is rated as `very-high`.** Given this health score, it may need fewer reviewers.\n\n<!-- Show health descriptions as bullet points -->\n- This is a very small change with 0 addition(s), 0 deletion(s), and 1 file(s) impacted\n- The author has worked on multiple changes in this repository whilst completing this work\n- The work on this change was submitted in a single commit and is the work of a single author\n\n\n\n",
+    "footer": "> To understand what each section of this analysis means and how Hiphops arrives at its conclusions, read [about change analysis](https://docs.hiphops.io/#/README?id=change-analysis-overview)."
+  }
+}

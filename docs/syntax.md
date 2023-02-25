@@ -70,7 +70,7 @@ You can filter using javascript expressions or Unix style pattern matching (and 
 
 If a `when` block doesn't match, that sensor or task will be skipped for this event.
 
-If prefixed with the annotation `(not)`, the entire match condition is inverted - matching when all of the criteria on the RHS evaluate as false.
+If prefixed with the `(not)` decorator, the result of the match condition is inverted - matching when all of the criteria on the RHS evaluate as false. Effectively just a boolean toggle.
 
 Keys are either `$` or paths to properties on the pipeline run context, their values are the conditions that property must meet. Some examples given the following context:
 
@@ -193,6 +193,44 @@ tasks:
 
 ---
 
+## Input
+
+Many tasks take inputs - arguments that dictate the work the task should perform.
+Some inputs are optional, some are required, and they can be a variety of types (including primitives, complex objects and arrays). See the documentation for the task in question for details.
+
+For example, the following task's inputs specify that the task should create/update a comment saying "This is a comment" on PR 55 in the backend repo:
+```yaml
+tasks:
+  - name: github.create_or_update_pr_comment
+    input:
+      repo: backend
+      pr_number: 55
+      comment_body: This is a comment
+```
+
+Additionally, you can use the `(path)` decorator as a prefix to the input name (e.g. `(path)repo:`) to specify that the input value is a dot.path to a property on the context object. If you do this, and the path is valid at the time of evaluation, the value of that path will be looked up and substituted into the task input at the time of dispatch.
+
+Returning to the above example:
+```yaml
+tasks:
+  - name: github.create_or_update_pr_comment
+    input:
+      (path)repo: event.repo_name
+      (path)pr_number: event.pr_number
+      comment_body: This is a comment
+```
+
+In this task definition, the repo name and PR number are now coming via the `event` object within the context object (if, for example, the event in question was a `change` event). If the event was for PR 55 in the backend repo, the task would evaluate to the same values as the prior example.
+
+<div style="text-align: right">
+  <small>
+    <em>/ input</em>
+  </small>
+</div>
+
+---
+
+
 ## Depends
 
 A depends clause will ensure tasks do not run until their conditions are met. If multiple tasks have their dependencies met at the same time, they will be dispatched in parallel.
@@ -250,39 +288,42 @@ It is expected that all `depends` clauses in a list of tasks will eventually eva
 
 ---
 
+## Decorators e.g. `(not)` & `(path)`
 
-## Input
+You will notice in samples and recipes that some keys under `when`, `depends`, and `input` are prefixed with words in parentheses.
 
-Many tasks take inputs - arguments that dictate the work the task should perform.
-Some inputs are optional, some are required, and they can be a variety of types (including primitives, complex objects and arrays). See the documentation for the task in question for details.
+We call these decorators, and they're useful shortcuts that alter how a field is resolved. Using decorators means you can often avoid having to use more complex javascript expressions entirely.
 
-For example, the following task's inputs specify that the task should create/update a comment saying "This is a comment" on PR 55 in the backend repo:
-```yaml
-tasks:
-  - name: github.create_or_update_pr_comment
-    input:
-      repo: backend
-      pr_number: 55
-      comment_body: This is a comment
-```
+### `(not)`
 
-Additionally, you can use the `(path)` annotation as a prefix to the input name (e.g. `(path)repo:`) to specify that the input value is a dot.path to a property on the context object. If you do this, and the path is valid at the time of evaluation, the value of that path will be looked up and substitued into the task input at the time of dispatch.
+The `(not)` decorator is valid under `when` and `depends` blocks.
 
-Returning to the above example:
-```yaml
-tasks:
-  - name: github.create_or_update_pr_comment
-    input:
-      (path)repo: event.repo_name
-      (path)pr_number: event.pr_number
-      comment_body: This is a comment
-```
+It simply toggles the boolean result of a match.
 
-In this task definition, the repo name and PR number are now coming via the `event` object within the context object (if, for example, the event in question was a `change` event). If the event was for PR 55 in the backend repo, the task would evaluate to the same values as the prior example.
+e.g. `(not)branches: ["release/*"]` would return true if `release/*` did _not_ match the field `branches`
+
+### `(path)`
+
+The `(path)` decorator is valid under `input` blocks.
+
+It causes the value given to be evaluated as a json dot notation path. If a value exists in the context object on that path, then its value will be substituted in.
+
+This is super useful when you just want to wire in values from previous tasks or the incoming event.
+
+e.g. `(path)message: event.commit_message` would send the input field `message` with whatever value was present on the `commit_message` of the incoming event.
+
+### `(expr)`
+
+The `(expr)` decorator is valid under `input` blocks.
+
+This decorator causes the value given to be evaluated as a javascript expression.
+
+e.g. `(expr)some_input: "'yes' === 'no'"` would cause the value of `some_input` to be set to `false`
+
 
 <div style="text-align: right">
   <small>
-    <em>/ input</em>
+    <em>/ decorators</em>
   </small>
 </div>
 

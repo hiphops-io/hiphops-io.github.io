@@ -1,0 +1,42 @@
+{
+  "project_id": "ffe0089b-120a-4b3b-afc2-784e64ac3b6a",
+  "id": null,
+  "created_at": null,
+  "updated_at": null,
+  "source": "GITHUB_COM",
+  "source_id": "6023be9b31a7fbccae322ae2ed27ed01a518506c",
+  "source_url": "https://github.com/example-com/apps/commit/6023be9b31a7fbccae322ae2ed27ed01a518506c",
+  "version": null,
+  "message": "Debugging slack text expression",
+  "is_tag": false,
+  "sha": "6023be9b31a7fbccae322ae2ed27ed01a518506c",
+  "ref": "refs/heads/main",
+  "base_ref": null,
+  "repo_name": "apps",
+  "full_repo_name": "example-com/apps",
+  "annotations": null,
+  "pusher_id": null,
+  "git_pusher": {
+    "name": "adeveloper",
+    "email": "adeveloper@example.com"
+  },
+  "is_pre_release": null,
+  "shas": ["6023be9b31a7fbccae322ae2ed27ed01a518506c"],
+  "pusher": {
+    "id": null,
+    "created_at": null,
+    "updated_at": null,
+    "source": "GITHUB_COM",
+    "source_id": "456789",
+    "username": "adeveloper",
+    "image_url": "https://avatars.githubusercontent.com/u/456789?v=4",
+    "url": "https://github.com/adeveloper"
+  },
+  "changes": [],
+  "release_notes": [],
+  "hiphops": {
+    "event": "release_prepared",
+    "source": "hiphops",
+    "action": ""
+  }
+}
