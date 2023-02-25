@@ -1,16 +1,14 @@
 # Hiphops - Release manager
 
-The Hiphops release manager is both an event source and a task handler. This integration is built in. No setup is required.
+|Name|Incoming events|Has tasks|Integration|
+|:-------|:-------|:-------|:-------|
+|`releasemanager`|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|This integration is built in. No setup is required.|
 
-### Events
+---
 
-All releasemanager events have:
+## Event: `change`
 
-source: `hiphops`
-
-##### Event: `change`
-
-Calculates and tracks changes to your codebase. Applies the This event is triggered when a pull request is opened, closed, merged, reopened and edited.
+Calculates and tracks changes to your codebase. This event is triggered when a pull request is opened, closed, merged, reopened and edited.
 
 The analysis performed is documented at [Change Analysis](./concepts.md#change-analysis).
 
@@ -328,7 +326,7 @@ tasks:
 
 ---
 
-##### Event: `release_prepared`
+## Event: `release_prepared`
 
 This event is emitted when a github `push` occurs. It then prepares a release on the basis of the push. The user then has the option to store the release by using a sensor and applying the approprate task.
 
@@ -474,9 +472,9 @@ tasks:
       channel: "engineering"
 ```
 
-### Tasks
+---
 
-##### Task: `releasemanager.create_release`
+## Task: `releasemanager.create_release`
 
 Creates releases based on receiving the `release_prepared` event which this task processes.
 
@@ -622,7 +620,9 @@ Additionally, if successful it will respond with a `vars` object containing the 
 }
 ```
 
-##### Task: `releasemanager.generate_pr_analysis_comment`
+---
+
+## Task: `releasemanager.generate_pr_analysis_comment`
 
 Generates a comment for a PR based on the analysis of the PR in the `change` event. See the [Change Analysis](./concepts.md#change-analysis) section for more details.
 
