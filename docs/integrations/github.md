@@ -7,9 +7,7 @@ _Integrating with GitHub enables you to automate standard developer flows, view 
 |`github`|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|Integrated as part of project creation in the UI|
 
 
-The structure of GitHub events is nearly identical to the events directly emitted by Github, described in their docs: https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads.
-
-The only difference is that they also contain the following properties at the event root:
+The structure of GitHub events is mostly identical to the events directly emitted by Github. The only difference is that they also contain the following properties at the event root:
 
 ```yaml
 project_id: <the current project>
@@ -28,7 +26,7 @@ actions: `opened`, `closed`, `reopened`, `merged`, `edited`, `assigned`, `unassi
 <details>
 <summary>See sample event</summary>
 
-[github PR sample](../_sample_events/github_pull_request.json ':include')
+[GitHub PR sample](../_sample_events/github_pull_request.json ':include')
 
 </details>
 
@@ -43,7 +41,7 @@ actions: `N/A`
 <details>
 <summary>See sample event</summary>
 
-[github push sample](../_sample_events/github_push.json ':include')
+[GitHub push sample](../_sample_events/github_push.json ':include')
 
 </details>
 
@@ -58,19 +56,15 @@ Merges a PR's source branch into its target branch.
 
 Assuming this is being triggered in response to an event that contains data about the PR, it's likely you'll want to pass the head SHA along in the `head_sha` input - if this is supplied, the merge will only go ahead if no further commits have been pushed since the event was triggered.
 
-###### Task structure
-
-This goes in the `tasks` block of a sensor.
-
 ```yaml
 tasks:
-  - name: github.merge_pr
-    input:
-      repo: backend # String - The name of the repository the PR is in
-      pr_number: 55 # Number - The PR number
-      merge_comment_title: Auto-merged this PR! # Optional string - The commit message title that will provided with the merge. Defaults to the PR title
-      head_sha: 939abcd18feaa12345bdb # Optional string - The SHA the branch head must be at for the merge to proceed, to prevent race conditions. If not provided the merge will proceed without checking the SHA
-      merge_method: merge # Optional string - One of “merge”, “squash” or “rebase”. The merge method the PR will be merged with defaults to “merge” if not set
+- name: github.merge_pr
+  input:
+    repo: backend # String - The name of the repository the PR is in
+    pr_number: 55 # Number - The PR number
+    merge_comment_title: Auto-merged this PR! # Optional string - The commit message title that will provided with the merge. Defaults to the PR title
+    head_sha: 939abcd18feaa12345bdb # Optional string - The SHA the branch head must be at for the merge to proceed, to prevent race conditions. If not provided the merge will proceed without checking the SHA
+    merge_method: merge # Optional string - One of “merge”, “squash” or “rebase”. The merge method the PR will be merged with defaults to “merge” if not set
 ```
 
 ###### Responds with
@@ -157,13 +151,13 @@ If update had been false (or unset), then it would only add `size/medium`, not a
 
 ```yaml
 tasks:
-  - name: github.apply_pr_labels
-    input:
-      repo: backend # String - The name of the repository the PR is in
-      pr_number: 55 # Number - The PR number
-      labels: ["kind/fix", "size/medium", "health/good"] # String array - The labels to be applied to the PR
-      matching: ["kind/*", "size/*"] # String array - Each string is a glob matching pattern that will be applied against labels, such that only the labels that have a match will be applied. If update is true, then existing labels on the PR that have a match will be removed too
-      update: true # Boolean - If true, attempt to update existing labels, or if false just apply labels as new - if matching is provided, this is used to determine which labels will be updated. Defaults to false
+- name: github.apply_pr_labels
+  input:
+    repo: backend # String - The name of the repository the PR is in
+    pr_number: 55 # Number - The PR number
+    labels: ["kind/fix", "size/medium", "health/good"] # String array - The labels to be applied to the PR
+    matching: ["kind/*", "size/*"] # String array - Each string is a glob matching pattern that will be applied against labels, such that only the labels that have a match will be applied. If update is true, then existing labels on the PR that have a match will be removed too
+    update: true # Boolean - If true, attempt to update existing labels, or if false just apply labels as new - if matching is provided, this is used to determine which labels will be updated. Defaults to false
 ```
 
 ###### Responds with
@@ -188,7 +182,7 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
-If successful it will respond with a `vars` object, that has - against the key `pr_files` - an array of data about the PR's files matching the output of [Github's list pull requests files endpoint](https://docs.github.com/en/rest/pulls/pulls#list-pull-requests-files).
+If successful it will respond with a `vars` object, that has - against the key `pr_files` - an array of data about the PR's files matching the output of [GitHub's list pull requests files endpoint](https://docs.github.com/en/rest/pulls/pulls#list-pull-requests-files).
 
 Example:
 
