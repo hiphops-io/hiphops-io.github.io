@@ -171,7 +171,7 @@ Everything else is truthy, but that includes some common gotchas:
 
 A task can be defined within the `tasks` array on a sensor. Tasks will perform work and can have dependencies between them. Tasks that have their conditions met are triggered in parallel. Sequential execution can be defined using `depends` which is documented in the next section.
 
-Available task names and their inputs are defined in the [integration docs](integrations.md)
+Available task names and their inputs are defined in the Integrations section
 
 ```yaml
 tasks:

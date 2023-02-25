@@ -2,16 +2,6 @@
 >
 > <cite>Kent Beck</cite>
 
-<details>
-<summary>Self-assessment (Click to expand)</summary>
-
-```json
-{
-  "foo": "bar"
-}
-```
-
-</details>
 
 ## What is Hiphops?
 
