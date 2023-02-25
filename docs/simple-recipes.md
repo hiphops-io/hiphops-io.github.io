@@ -99,7 +99,7 @@ tasks:
       update: true
 ```
 
-## Create a release in Hiphops
+## Create a release
 
 For every push event, Hiphops prepares a potential release.
 Releases will gather all the changes they contain and generate release notes, plus some other useful data.
