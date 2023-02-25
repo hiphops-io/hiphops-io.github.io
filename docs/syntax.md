@@ -33,7 +33,7 @@ _Note: Whilst the id field is optional, it's highly recommended._
 
 See [When](#when-1) syntax.
 
-_Note: An empty or missing `when` clause will match all events._
+!> Sensors will almost always want a when clause in practice, as otherwise the sensor will trigger for every single event in your project. The when block schema is defined below
 
 
 ##### `tasks` _array <small>(required)</small>_
@@ -45,64 +45,6 @@ A list of [Task](#task) configs
     <em>/ sensor</em>
   </small>
 </div>
-
----
-
-## When
-
-The when clause allows you to filter for specific events based on almost anything.
-
-```yaml
-when:
-  event.hiphops.event: "pull_request" # Simple pattern match filtering for events of type `pull_request`
-  event.hiphops.action: "opened" # Simple pattern match. With the above, matches when a pull request was opened.
-  event.branch: ["feature/*", "main"] # Simple pattern match with array of matches
-  event.source_branch: ["*", "!feature/*"] # Simple pattern match with a negative pattern
-  (not)event.changed_filenames: ["!*.md"] # An inverted (not) match condition. Matches when all changed files are *.md files.
-  $: "event.size.score >= 90" # A javascript expression. Matches based on js truthiness/falsiness of result
-```
-
-##### How matching works
-
-When blocks are sets of key/value pairs defining match clauses. Each individual rule must match for a `when` to evaluate to true (i.e. the clauses are `AND`ed together).
-
-You can filter using javascript expressions or Unix style pattern matching (and any combination of the two) at both the sensor and per task level.
-
-If a `when` block doesn't match, that sensor or task will be skipped for this event.
-
-If prefixed with the `(not)` decorator, the result of the match condition is inverted - matching when all of the criteria on the RHS evaluate as false. Effectively just a boolean toggle.
-
-Keys are either `$` or paths to properties on the pipeline run context, their values are the conditions that property must meet. Some examples given the following context:
-
-```js
-// Example context
-{
-  "event": {
-    "project_id": "01234567-0123-abcd-1234-12345678abcd",
-    "hiphops": {
-      "source": "hiphops",
-      "event": "demo_event",
-      "action": "ping"
-    },
-    "greeting": "Hello",
-    "greeting_length": 5,
-    "alt_greetings": [
-      "Hey",
-      "Hi",
-      "Ello guvnor!"
-    ]
-  },
-  "tasks": {...}
-}
-```
-
-```yaml
-# This clause would match as all key/value conditions match
-when:
-  $: "event.greeting_length == event.greeting.length"
-  event.hiphops.event: "demo_event"
-  event.alt_greetings: ["*", "!goodbye"]
-```
 
 ---
 
@@ -230,6 +172,63 @@ In this task definition, the repo name and PR number are now coming via the `eve
 
 ---
 
+## When
+
+The when clause allows you to filter for specific events based on almost anything.
+
+```yaml
+when:
+  event.hiphops.event: "pull_request" # Simple pattern match filtering for events of type `pull_request`
+  event.hiphops.action: "opened" # Simple pattern match. With the above, matches when a pull request was opened.
+  event.branch: ["feature/*", "main"] # Simple pattern match with array of matches
+  event.source_branch: ["*", "!feature/*"] # Simple pattern match with a negative pattern
+  (not)event.changed_filenames: ["!*.md"] # An inverted (not) match condition. Matches when all changed files are *.md files.
+  $: "event.size.score >= 90" # A javascript expression. Matches based on js truthiness/falsiness of result
+```
+
+##### How matching works
+
+When blocks are sets of key/value pairs defining match clauses. Each individual rule must match for a `when` to evaluate to true (i.e. the clauses are `AND`ed together).
+
+You can filter using javascript expressions or Unix style pattern matching (and any combination of the two) at both the sensor and per task level.
+
+If a `when` block doesn't match, that sensor or task will be skipped for this event.
+
+If prefixed with the `(not)` decorator, the result of the match condition is inverted - matching when all of the criteria on the RHS evaluate as false. Effectively just a boolean toggle.
+
+Keys are either `$` or paths to properties on the pipeline run context, their values are the conditions that property must meet. Some examples given the following context:
+
+```js
+// Example context
+{
+  "event": {
+    "project_id": "01234567-0123-abcd-1234-12345678abcd",
+    "hiphops": {
+      "source": "hiphops",
+      "event": "demo_event",
+      "action": "ping"
+    },
+    "greeting": "Hello",
+    "greeting_length": 5,
+    "alt_greetings": [
+      "Hey",
+      "Hi",
+      "Ello guvnor!"
+    ]
+  },
+  "tasks": {...}
+}
+```
+
+```yaml
+# This clause would match as all key/value conditions match
+when:
+  $: "event.greeting_length == event.greeting.length"
+  event.hiphops.event: "demo_event"
+  event.alt_greetings: ["*", "!goodbye"]
+```
+
+---
 
 ## Depends
 
