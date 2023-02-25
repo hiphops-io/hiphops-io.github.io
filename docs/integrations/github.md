@@ -25,7 +25,14 @@ hiphops:
 
 actions: `opened`, `closed`, `reopened`, `merged`, `edited`, `assigned`, `unassigned`, `labeled`, `unlabeled`, `synchronize`, `converted_to_draft`, `ready_for_review`, `locked`, `unlocked`, `review_requested`, `review_request_removed`, `auto_merge_enabled`, `auto_merge_disabled`
 
-For the source event structure, see [GitHub pull request event docs](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#pull_request)
+<details>
+<summary>See sample event</summary>
+
+[github PR sample](../_sample_events/github_pull_request.json ':include')
+
+</details>
+
+For the details of the source event's possible values, see [GitHub pull request event docs](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#pull_request)
 
 ---
 
@@ -33,7 +40,14 @@ For the source event structure, see [GitHub pull request event docs](https://doc
 
 actions: `N/A`
 
-For the source event structure, see [GitHub push event docs](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#push)
+<details>
+<summary>See sample event</summary>
+
+[github push sample](../_sample_events/github_push.json ':include')
+
+</details>
+
+For the full source event structure, see [GitHub push event docs](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#push)
 
 
 ---
