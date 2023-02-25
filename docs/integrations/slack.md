@@ -53,7 +53,7 @@ tasks:
 
 ---
 
-## Task: `slack.post_message`
+## Task: `post_message`
 
 Posts a message to slack using the slack message API. The message can be a simple string or a complex object. The message object is documented here: [Slack messaging payload documentation](https://api.slack.com/reference/messaging/payload).
 

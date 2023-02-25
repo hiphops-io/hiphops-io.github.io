@@ -38,7 +38,7 @@ For the source event structure, see [GitHub push event docs](https://docs.github
 
 ---
 
-## Task: `github.merge_pr`
+## Task: `merge_pr`
 
 Merges a PR's source branch into its target branch.
 
@@ -65,7 +65,7 @@ Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_me
 
 ---
 
-## Task: `github.create_or_update_pr_comment`
+## Task: `create_or_update_pr_comment`
 
 Creates or updates a comment on a PR.
 
@@ -90,7 +90,7 @@ Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_me
 
 ---
 
-## Task: `github.create_or_update_pr_review`
+## Task: `create_or_update_pr_review`
 
 Creates or updates a review on a PR.
 
@@ -117,7 +117,7 @@ Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_me
 
 ---
 
-## Task: `github.apply_pr_labels`
+## Task: `apply_pr_labels`
 
 Applies labels to a PR.
 
@@ -158,7 +158,7 @@ Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_me
 
 ---
 
-## Task: `github.fetch_pr_files`
+## Task: `fetch_pr_files`
 
 Fetches details about the files changed in a PR, placing the data in `vars.pr_files` for use by other tasks.
 
@@ -201,7 +201,7 @@ Example:
 
 ---
 
-## Task: `github.create_release`
+## Task: `create_release`
 
 Creates a release in Github. Will create the corresponding tag if it doesn't already exist.
 
@@ -225,7 +225,7 @@ Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_mes
 
 ---
 
-## Task: `github.create_tag`
+## Task: `create_tag`
 
 Creates a tag in Github.
 
@@ -263,7 +263,7 @@ Example:
 
 ---
 
-## Task: `github.create_branch`
+## Task: `create_branch`
 
 Creates a branch in Github.
 
@@ -298,7 +298,7 @@ Example:
 
 ---
 
-## Task: `github.fetch_pr_commits`
+## Task: `fetch_pr_commits`
 
 Fetches details about the files changed in a PR, placing the data in `vars.pr_commits` for use by other tasks.
 
@@ -408,7 +408,7 @@ Example:
 
 ---
 
-## Task: `github.fetch_repo_prs`
+## Task: `fetch_repo_prs`
 
 Fetches details about the PRs in a repo, placing the data in `vars.repo_prs` for use by other tasks.
 
@@ -768,7 +768,7 @@ Example:
 
 ---
 
-## Task: `github.github.create_repo_webhook`
+## Task: `create_repo_webhook`
 
 Creates a webhook for a particular repo in Github. Documentation for this (especially the events input) can be found [here](https://docs.github.com/en/rest/reference/repos#create-a-repository-webhook).
 
@@ -786,7 +786,7 @@ tasks:
 
 ---
 
-## Task: `github.github.create_org_webhook`
+## Task: `create_org_webhook`
 
 Creates a webhook for your organization in Github. Documentation for this (especially the events input) can be found [here](https://docs.github.com/en/rest/orgs/webhooks?apiVersion=2022-11-28#create-an-organization-webhook).
 

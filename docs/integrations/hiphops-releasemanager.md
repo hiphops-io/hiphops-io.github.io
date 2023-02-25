@@ -474,7 +474,7 @@ tasks:
 
 ---
 
-## Task: `releasemanager.create_release`
+## Task: `create_release`
 
 Creates releases based on receiving the `release_prepared` event which this task processes.
 
@@ -622,7 +622,7 @@ Additionally, if successful it will respond with a `vars` object containing the 
 
 ---
 
-## Task: `releasemanager.generate_pr_analysis_comment`
+## Task: `generate_pr_analysis_comment`
 
 Generates a comment for a PR based on the analysis of the PR in the `change` event. See the [Change Analysis](./concepts.md#change-analysis) section for more details.
 
