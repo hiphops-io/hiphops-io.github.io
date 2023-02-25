@@ -98,3 +98,60 @@ tasks:
       matching: ["size/*", "kind/*"]
       update: true
 ```
+
+## Create a release in Hiphops
+
+For every push event, Hiphops prepares a potential release.
+Releases will gather all the changes they contain and generate release notes, plus some other useful data.
+
+In this sensor we listen for prepared releases on the `main` branch in all repos and then create that release within Hiphops with a generated CalVer version.
+
+```yaml
+---
+resource: sensor
+id: Create a release
+when:
+  event.hiphops.source: hiphops
+  event.hiphops.event: release_prepared
+  event.ref: refs/heads/main
+
+tasks:
+  - name: releasemanager.create_release
+    id: release
+    input:
+      (path)release: event
+      annotations:
+        env: live
+      version_template: "v$calyy.$calm.$cald"
+```
+
+In this sensor we do the same thing, but we also create the release in GitHub along with generated release notes.
+
+```yaml
+---
+resource: sensor
+id: Create a release
+when:
+  event.hiphops.source: hiphops
+  event.hiphops.event: release_prepared
+  event.ref: refs/heads/main
+
+tasks:
+  - name: releasemanager.create_release
+    id: release
+    input:
+      (path)release: event
+      annotations:
+        env: live
+      version_template: "v$calyy.$calm.$cald"
+  
+  - name: github.create_release
+    depends:
+      $: tasks.release.SUCCESS
+    input:
+      (path)repo: event.repo_name
+      (path)tag: vars.release.version
+      (path)release_name: vars.release.version
+      (expr)release_body: event.release_note || event.message
+      (path)target: event.sha
+```

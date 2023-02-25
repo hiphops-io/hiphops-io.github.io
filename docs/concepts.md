@@ -39,55 +39,55 @@ When a sensor matches an event, a pipeline run is created within Hiphops. This c
 
 ```json
 {
-  "id": "69b4b222-0f12-4253-8f8e-ca43199b6fc2", # String - unique id for this pipeline run
-  "state": { # Object - a cumulative list of states of the pipeline run. Here the run completed with a `SUCCESS` state (states are `RUNNING`, `SUCCESS`, `FAILURE`). Pipeline runs fail if any task fails.
-    "RUNNING": "2023-02-23T10:19:18.923Z", # String - timestamp of when the pipeline run started
-    "SUCCESS": "2023-02-23T10:19:26.725Z" # String - timestamp of when the pipeline run completed
+  "id": "69b4b222-0f12-4253-8f8e-ca43199b6fc2", // String - unique id for this pipeline run
+  "state": { //  Object - a cumulative list of states of the pipeline run. Here the run completed with a `SUCCESS` state (states are `RUNNING`, `SUCCESS`, `FAILURE`). Pipeline runs fail if any task fails.
+    "RUNNING": "2023-02-23T10:19:18.923Z", // String - timestamp of when the pipeline run started
+    "SUCCESS": "2023-02-23T10:19:26.725Z" // String - timestamp of when the pipeline run completed
   },
-  "system": true, # Boolean - false if defined in a user `hiphops.yaml` file, true if defined by the system
-  "sensor": { # The sensor that triggered this pipeline run
-    "resource": "sensor", # String - only "sensor is currently supported"
-    "id": "Prepare releases from Github push events", # String - name of the sensor
-    "when": { # Object - if all fields match, the sensor will trigger (a pipeline run is only created if the sensor matches)
-      "event.hiphops.source": "github", # String - a matching expression
+  "system": true, // Boolean - false if defined in a user `hiphops.yaml` file, true if defined by the system
+  "sensor": { // The sensor that triggered this pipeline run
+    "resource": "sensor", // String - only "sensor is currently supported"
+    "id": "Prepare releases from Github push events", // String - name of the sensor
+    "when": { // Object - if all fields match, the sensor will trigger (a pipeline run is only created if the sensor matches)
+      "event.hiphops.source": "github", // String - a matching expression
       "event.hiphops.event": "push",
       "event.deleted": "false"
     }
-    "tasks": [ # Tasks that the pipeline run will execute (if the are able to run). In this case, both tasks can run in parallel as they do not depend on each other
+    "tasks": [ // Tasks that the pipeline run will execute (if the are able to run). In this case, both tasks can run in parallel as they do not depend on each other
       {
-        "name": "system.releasemanager.prepare_release_from_push",  # String - the name of the task to run. These are defined integrations that can be executed
-        "input": { # Object - the input to the task. Tasks will require specific inputs to be provided
-          "(path)push_event": "event" # String - the "(path)" decorator indicates that the event object should be provided to the input, rather than a string
+        "name": "system.releasemanager.prepare_release_from_push",  //  String - the name of the task to run. These are defined integrations that can be executed
+        "input": { // Object - the input to the task. Tasks will require specific inputs to be provided
+          "(path)push_event": "event" // String - the "(path)" decorator indicates that the event object should be provided to the input, rather than a string
         }
       },
       {
-        "name": "slack.post_comment", # String - the name of the task to run. These are defined integrations that can be executed
+        "name": "slack.post_comment", // String - the name of the task to run. These are defined integrations that can be executed
         "input": {
-          "text": "A message to send", # String - the message to send (specific to the "slack.post_comment" task)
-          "channel": "general" # String - the channel to send the message to (specific to the "slack.post_comment" task)
+          "text": "A message to send", // String - the message to send (specific to the "slack.post_comment" task)
+          "channel": "general" // String - the channel to send the message to (specific to the "slack.post_comment" task)
         }
       }
     ],
   },
-  "project_id": "0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3", # String - the id of the project that this pipeline run belongs to (id can be found in the url when viewing a project in the Hiphops UI)
-  "lifecycle": { # Object - shows all the tasks, and their state.
-    "0": { # String - the index of the task in the `sensor.tasks` array. States are `PENDING`, `READY`, `RUNNING`, `SUCCESS`, `FAILURE`, `SKIPPED`. All states are present in order (a log of the state changes)
+  "project_id": "0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3", // String - the id of the project that this pipeline run belongs to (id can be found in the url when viewing a project in the Hiphops UI)
+  "lifecycle": { // Object - shows all the tasks, and their state.
+    "0": { // String - the index of the task in the `sensor.tasks` array. States are `PENDING`, `READY`, `RUNNING`, `SUCCESS`, `FAILURE`, `SKIPPED`. All states are present in order (a log of the state changes)
       "PENDING": "2023-02-23T10:19:18.923Z",
-      "task": { # Object - a copy of the task that is executed
+      "task": { // Object - a copy of the task that is executed
         "name": "system.releasemanager.prepare_release_from_push",
         "input": { "(path)push_event": "event" },
         "id": "0"
       },
       "READY": "2023-02-23T10:19:20.633Z",
       "RUNNING": "2023-02-23T10:19:23.028Z",
-      "SUCCESS": "2023-02-23T10:19:26.062703Z", # String - this task completed successfully
-      "result": "Preparation of release from Github push successful" # String - the result of the task. If it fails, then `error_message` will be set instead.
+      "SUCCESS": "2023-02-23T10:19:26.062703Z", // String - this task completed successfully
+      "result": "Preparation of release from Github push successful" //  String - the result of the task. If it fails, then `error_message` will be set instead.
     }
   },
-  "vars": {}, # Object - variables that are set by tasks during the pipeline run. These can be used in any expression of a task
-  "event": { # Object - the event that triggered this pipeline run. In this case a github "push" event
+  "vars": {}, // Object - variables that are set by tasks during the pipeline run. These can be used in any expression of a task
+  "event": { // Object - the event that triggered this pipeline run. In this case a github "push" event
     "project_id": "0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3",
-    "hiphops": { # Object - hiphops specific event data. Usually used in the `when` clause of a sensor
+    "hiphops": { // Object - hiphops specific event data. Usually used in the `when` clause of a sensor
       "source": "github",
       "event": "push"
     }
