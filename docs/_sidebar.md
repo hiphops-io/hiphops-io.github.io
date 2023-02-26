@@ -1,6 +1,7 @@
 - **Getting started**
   - [About Hiphops](about.md)
   - [Installation](installation.md)
+  - [Tutorials](tutorials.md)
 - **Reference**
   - [Concepts](concepts.md)
   - [Syntax](syntax.md)
