@@ -33,7 +33,7 @@ _Note: Whilst the id field is optional, it's highly recommended._
 
 See [When](#when-1) syntax.
 
-!> Sensors will almost always want a when clause in practice, as otherwise the sensor will trigger for every single event in your project. The when block schema is defined below
+!> Sensors will almost always need a `when` clause in practice, as without it the sensor will trigger for every single event in your project. The `when` block schema is defined below.
 
 
 ##### `tasks` _array <small>(required)</small>_
@@ -43,67 +43,6 @@ A list of [Task](#task) configs
 <div style="text-align: right">
   <small>
     <em>/ sensor</em>
-  </small>
-</div>
-
----
-
-##### Pattern matches
-
-Normal dot notation keys will be evaluated using a familiar Unix style syntax. They can either take a single string or array of strings.
-Under the hood, a single string is simply treated as an array with one entry.
-
-The pattern syntax is as follows:
-
-|Pattern|Meaning|
-|-------|-------|
-|`*`|matches in a glob-like fashion without matching across `/`|
-|`?`|matches any single character|
-|`[seq]`|matches any character in seq|
-|`[!seq]`|matches any character not in seq|
-|`!restofstring`|leading `!` negates the pattern|
-
-
-Some other notes on matching:
-
-- If you have an array of patterns for a field, they run top to bottom on an additive/subtractive basis.
-> Imagine putting items into a 'matched' bucket and taking negated items out again. If the bucket is empty at the end it doesn't match. Otherwise it does.
-
----
-
-##### Expression matches
-
-Matches can be evaluated as Javascript expressions, giving you the ability to make more complex decisions around the flow of your pipelines.
-
-To define an expression use the key `$`. An expression result will be evaluated for truthiness/falsiness to decide if the condition matches.
-
-Bear in mind that truthiness/falsiness is as defined by Javascript, which may not be the same as whatever language you are most familiar with.
-
-A quick cheat sheet:
-
-The following values are falsy:
-
-```js
-false
-0 // Zero (including negative zero & big int zero)
-undefined
-null
-'', "", `` // The empty string
-NaN
-```
-
-Everything else is truthy, but that includes some common gotchas:
-
-```js
-[] // An empty array <- Python devs take note!
-{} // An empty object <- Python devs take note!
-"0" // A string containing a single zero
-"false" // A string with the text “false”
-```
-
-<div style="text-align: right">
-  <small>
-    <em>/ when</em>
   </small>
 </div>
 
@@ -227,6 +166,65 @@ when:
   event.hiphops.event: "demo_event"
   event.alt_greetings: ["*", "!goodbye"]
 ```
+
+##### Pattern matches
+
+Normal dot notation keys will be evaluated using a familiar Unix style syntax. They can either take a single string or array of strings.
+Under the hood, a single string is simply treated as an array with one entry.
+
+The pattern syntax is as follows:
+
+|Pattern|Meaning|
+|-------|-------|
+|`*`|matches in a glob-like fashion without matching across `/`|
+|`?`|matches any single character|
+|`[seq]`|matches any character in seq|
+|`[!seq]`|matches any character not in seq|
+|`!restofstring`|leading `!` negates the pattern|
+
+
+Some other notes on matching:
+
+- If you have an array of patterns for a field, they run top to bottom on an additive/subtractive basis.
+> Imagine putting items into a 'matched' bucket and taking negated items out again. If the bucket is empty at the end it doesn't match. Otherwise it does.
+
+---
+
+##### Expression matches
+
+Matches can be evaluated as Javascript expressions, giving you the ability to make more complex decisions around the flow of your pipelines.
+
+To define an expression use the key `$`. An expression result will be evaluated for truthiness/falsiness to decide if the condition matches.
+
+Bear in mind that truthiness/falsiness is as defined by Javascript, which may not be the same as whatever language you are most familiar with.
+
+A quick cheat sheet:
+
+The following values are falsy:
+
+```js
+false
+0 // Zero (including negative zero & big int zero)
+undefined
+null
+'', "", `` // The empty string
+NaN
+```
+
+Everything else is truthy, but that includes some common gotchas:
+
+```js
+[] // An empty array <- Python devs take note!
+{} // An empty object <- Python devs take note!
+"0" // A string containing a single zero
+"false" // A string with the text “false”
+```
+
+<div style="text-align: right">
+  <small>
+    <em>/ when</em>
+  </small>
+</div>
 
 ---
 
