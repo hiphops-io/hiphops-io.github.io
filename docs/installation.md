@@ -21,13 +21,15 @@ Hiphops will analyse changes without any custom config, but that's not very inte
 
 ## Quickstart
 
-Hiphops can be configured by placing a file named `hiphops.yaml` in the root of a repository owned by a connected GitHub account.
+Decide which branch/repo you want to store your config. You config will be in a file named `hiphops.yaml` which you place in the root of a repository owned by a connected GitHub account.
 
-Once you've created a config, add the branch/repo name in your project settings. Hiphops will automatically detect and apply changes with no further setup required.
+Now add the branch/repo name in your project settings.
+
+Finally, create the config file in the repo and branch you specified. Hiphops will automatically detect and apply changes with no further setup required.
 
 If no custom config is set, the default pipeline matches all changes, runs analysis and stores the result, but takes no further action.
 
-> Note the extension must be `.yaml` and not `.yml` or variations thereof
+> Note the extension must be `.yaml` or `.yml`, not variations thereof
 
 ### Hello world
 
