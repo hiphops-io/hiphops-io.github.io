@@ -255,15 +255,15 @@ If successful it will respond with a `vars` object, that has &mdash; against the
 
 Example:
 
-```json
+```js
 {
   "vars": {
     "created_tag": {
-      "tag": "v23.01.05", # The tag name
-      "tag_ref": "refs/tags/v23.01.05", # The tag ref
-      "tagged_sha": "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07", # The SHA that was tagged
-      "tag_sha": "940bd336248efae0f9ee5bc7b2d5c985887b16ac", # The SHA of the tag object
-      "tag_message": "Final version of v23.01.05", # The tag message
+      "tag": "v23.01.05", // The tag name
+      "tag_ref": "refs/tags/v23.01.05", // The tag ref
+      "tagged_sha": "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07", // The SHA that was tagged
+      "tag_sha": "940bd336248efae0f9ee5bc7b2d5c985887b16ac", // The SHA of the tag object
+      "tag_message": "Final version of v23.01.05", // The tag message
     }
   }
 }
@@ -292,13 +292,13 @@ If successful it will respond with a `vars` object, that has - against the key `
 
 Example:
 
-```json
+```js
 {
   "vars": {
     "created_branch": {
-      "branch": "a-nice-branch", # The branch name
-      "branch_ref": "refs/heads/branches/a-nice-branch", # The branch ref
-      "sha": "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07", # The SHA of the branch
+      "branch": "a-nice-branch", // The branch name
+      "branch_ref": "refs/heads/branches/a-nice-branch", // The branch ref
+      "sha": "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07", // The SHA of the branch
     }
   }
 }

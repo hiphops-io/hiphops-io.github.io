@@ -121,7 +121,7 @@ Additionally, if successful, responds with a `vars` object containing the key `r
 
 ###### Example vars
 
-```json
+```js
 {
   "vars": {
     "release": {
@@ -132,14 +132,14 @@ Additionally, if successful, responds with a `vars` object containing the key `r
       "source": "GITHUB_COM",
       "source_id": "bbb920626b031b2aee41bec40500518624a0bfec",
       "source_url": "https://github.com/hiphops-io/backend/commit/bbb920626b031b2aee41bec40500518624a0bfec",
-      "version": "bbb9206", # String - version generated using the version template
+      "version": "bbb9206", // String - version generated using the version template
       "message": "Task update: handle applying PR labels in one github task (#610)\n\n* Task update: handle applying PR labels in one github task\r\n\r\n* Don't make no-op changes",
-      "is_tag": false, # Bool - is this release based off a tag?
+      "is_tag": false, // Bool - is this release based off a tag?
       "sha": "bbb920626b031b2aee41bec40500518624a0bfec",
       "ref": "refs/heads/release/snazzy-cobra",
       "repo_name": "backend",
-      "full_repo_name": "hiphops-io/backend", # String - target repo name with org
-      "annotations": { # Object - a set of annotations from the task input
+      "full_repo_name": "hiphops-io/backend", // String - target repo name with org
+      "annotations": { // Object - a set of annotations from the task input
         "app": "backend",
         "env": "dev"
       },
@@ -152,7 +152,7 @@ Additionally, if successful, responds with a `vars` object containing the key `r
       "shas": [
         "bbb920626b031b2aee41bec40500518624a0bfec"
       ],
-      "pusher": { # Object - can be null
+      "pusher": { // Object - can be null
         "id": "0ff85ad3-fbc1-407c-9bb4-caed8af51f22",
         "created_at": "2023-02-22T14:58:26.416878+00:00",
         "updated_at": "2023-02-22T14:58:26.416878+00:00",
@@ -162,16 +162,16 @@ Additionally, if successful, responds with a `vars` object containing the key `r
         "image_url": "https://avatars.githubusercontent.com/u/12345678?v=4",
         "url": "https://github.com/a-coder"
       },
-      "changes": [ # Array of Objects - List of changes - can be null
+      "changes": [ // Array of Objects - List of changes - can be null
         {
           "release_id": "0e8104e1-79a9-4306-8d36-90b6fbf8fb72",
           "change_id": "0e8104e1-79a9-4306-8d36-90b6fbf8fb72"
         }
       ],
-      "release_notes": [ # Array of Objects - List of release notes - can be null
+      "release_notes": [ // Array of Objects - List of release notes - can be null
         {
-          "version": "bbb9206", # String - version generated using the version template
-          "is_auto_generated": true, # Bool - are the notes auto generated?
+          "version": "bbb9206", // String - version generated using the version template
+          "is_auto_generated": true, // Bool - are the notes auto generated?
           "note": "Task update: handle applying PR labels in one github task (#610)",
           "release_id": "0e8104e1-79a9-4306-8d36-90b6fbf8fb72",
           "author_id": "0ff85ad3-fbc1-407c-9bb4-caed8af51f22"
