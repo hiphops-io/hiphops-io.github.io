@@ -31,7 +31,7 @@ _Note: Whilst the id field is optional, it's highly recommended._
 
 ##### `when` _object_
 
-See [When](#when-1) syntax.
+See [When](#when) syntax.
 
 !> Sensors will almost always need a `when` clause in practice, as without it the sensor will trigger for every single event in your project. The `when` block schema is defined below.
 
@@ -127,7 +127,7 @@ when:
 
 ##### How matching works
 
-When blocks are sets of key/value pairs defining match clauses. Each individual rule must match for a `when` to evaluate to true (i.e. the clauses are `AND`ed together).
+`when` blocks are sets of key/value pairs defining match clauses. Each individual rule must match for a `when` to evaluate to true (i.e. the clauses are `AND`ed together).
 
 You can filter using javascript expressions or Unix style pattern matching (and any combination of the two) at both the sensor and per task level.
 
@@ -230,11 +230,11 @@ Everything else is truthy, but that includes some common gotchas:
 
 ## Depends
 
-A depends clause will ensure tasks do not run until their conditions are met. If multiple tasks have their dependencies met at the same time, they will be dispatched in parallel.
+A `depends` clause will ensure tasks do not run until their conditions are met. If multiple tasks have their dependencies met at the same time, they will be dispatched in parallel.
 
-This flexible syntax allows you to create complex workflows simply by declaring what a task needs to begin executing.
+This flexible syntax allows you to create complex workflows simply by declaring what a task needs in order to begin executing.
 
-A depends clause follows the exact same syntax rules as a when clause, the difference is at what point they are evaluated and how they are used. (This is described in detail [below](#when-depends)).
+A `depends` clause follows the exact same syntax rules as a `when` clause, the difference is at what point they are evaluated and how they are used. (This is described in detail [below](#when-depends)).
 
 Given that the purpose of a `depends` clause is to create dependencies between tasks, you'll also find you reference different areas of the context object.
 
@@ -274,7 +274,7 @@ This ensures that the pre-conditions for the task have been met before a decisio
 >
 > - Once the tests _have_ completed, you only want to alert if there was a failure (`when`)
 
-It is expected that all `depends` clauses in a list of tasks will eventually evaluate to true unless an error has occurred. Conversely, `when` clauses have no such expectation. If you wish to make a task conditional (i.e. that task not executing is expected and desired in some cases) you should configure this behaviour within the `when` block.
+It is expected that all `depends` clauses in a list of tasks will eventually evaluate to true unless an error has occurred. Conversely, `when` clauses have no such expectation. If you wish to make a task conditional (i.e. you don't want that task to execute in some cases) you should configure this behaviour within the `when` block.
 
 
 <div style="text-align: right">
