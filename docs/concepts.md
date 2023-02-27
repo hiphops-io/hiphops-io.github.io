@@ -39,39 +39,39 @@ When a sensor matches an event, a pipeline run is created within Hiphops. This c
 
 ```json
 {
-  "id": "69b4b222-0f12-4253-8f8e-ca43199b6fc2", // String - unique id for this pipeline run
-  "state": { //  Object - a cumulative list of states of the pipeline run. Here the run completed with a `SUCCESS` state (states are `RUNNING`, `SUCCESS`, `FAILURE`). Pipeline runs fail if any task fails.
-    "RUNNING": "2023-02-23T10:19:18.923Z", // String - timestamp of when the pipeline run started
-    "SUCCESS": "2023-02-23T10:19:26.725Z" // String - timestamp of when the pipeline run completed
+  "id": "69b4b222-0f12-4253-8f8e-ca43199b6fc2", // String - unique id for this pipeline
+  "state": { //  Object - cumulative list of pipeline run states. Run has completed with `SUCCESS` (states are `RUNNING`, `SUCCESS`, `FAILURE`). Runs fail if any task fails.
+    "RUNNING": "2023-02-23T10:19:18.923Z", // String - timestamp of start
+    "SUCCESS": "2023-02-23T10:19:26.725Z" // String - timestamp of completion
   },
-  "system": true, // Boolean - false if defined in a user `hiphops.yaml` file, true if defined by the system
-  "sensor": { // The sensor that triggered this pipeline run
-    "resource": "sensor", // String - only "sensor is currently supported"
-    "id": "Prepare releases from Github push events", // String - name of the sensor
-    "when": { // Object - if all fields match, the sensor will trigger (a pipeline run is only created if the sensor matches)
+  "system": true, // Boolean - false if from user `hiphops.yaml` file; true if from system
+  "sensor": { // Object - sensor that triggered pipeline run
+    "resource": "sensor", // String - must be "sensor"
+    "id": "Prepare releases from Github push events", // String - name of sensor
+    "when": { // Object - if all fields match, triggers sensor (a pipeline run is only created if sensor matches)
       "event.hiphops.source": "github", // String - a matching expression
       "event.hiphops.event": "push",
       "event.deleted": "false"
     }
-    "tasks": [ // Tasks that the pipeline run will execute (if the are able to run). In this case, both tasks can run in parallel as they do not depend on each other
+    "tasks": [ // Tasks that pipeline run will execute (if they are able to run). In this case, both tasks can run in parallel as they do not depend on each other
       {
-        "name": "system.releasemanager.prepare_release_from_push",  //  String - the name of the task to run. These are defined integrations that can be executed
-        "input": { // Object - the input to the task. Tasks will require specific inputs to be provided
-          "(path)push_event": "event" // String - the "(path)" decorator indicates that the event object should be provided to the input, rather than a string
+        "name": "system.releasemanager.prepare_release_from_push", //  String - name of task to run. Here a pre-defined integration
+        "input": { // Object - input to the task. Tasks require specific inputs
+          "(path)push_event": "event" // String - the "(path)" decorator indicates that "event" is read as an object rather than a string
         }
       },
       {
-        "name": "slack.post_comment", // String - the name of the task to run. These are defined integrations that can be executed
+        "name": "slack.post_comment", //  String - name of task to run. Here a pre-defined integration
         "input": {
-          "text": "A message to send", // String - the message to send (specific to the "slack.post_comment" task)
-          "channel": "general" // String - the channel to send the message to (specific to the "slack.post_comment" task)
+          "text": "A message to send", // String - message to send (specific to the "slack.post_comment" task)
+          "channel": "general" // String - channel to send the message to (specific to the "slack.post_comment" task)
         }
       }
     ],
   },
-  "project_id": "0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3", // String - the id of the project that this pipeline run belongs to (id can be found in the url when viewing a project in the Hiphops UI)
-  "lifecycle": { // Object - shows all the tasks, and their state.
-    "0": { // String - the index of the task in the `sensor.tasks` array. States are `PENDING`, `READY`, `RUNNING`, `SUCCESS`, `FAILURE`, `SKIPPED`. All states are present in order (a log of the state changes)
+  "project_id": "0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3", // String - id of the project this pipeline run belongs to (id can be found in the url when viewing a project in the Hiphops UI)
+  "lifecycle": { // Object - shows all tasks, and their state.
+    "0": { // String - index of the task in the `sensor.tasks` array. States are `PENDING`, `READY`, `RUNNING`, `SUCCESS`, `FAILURE`, `SKIPPED`. All states are present in order (a log of the state changes)
       "PENDING": "2023-02-23T10:19:18.923Z",
       "task": { // Object - a copy of the task that is executed
         "name": "system.releasemanager.prepare_release_from_push",
@@ -80,12 +80,12 @@ When a sensor matches an event, a pipeline run is created within Hiphops. This c
       },
       "READY": "2023-02-23T10:19:20.633Z",
       "RUNNING": "2023-02-23T10:19:23.028Z",
-      "SUCCESS": "2023-02-23T10:19:26.062703Z", // String - this task completed successfully
-      "result": "Preparation of release from Github push successful" //  String - the result of the task. If it fails, then `error_message` will be set instead.
+      "SUCCESS": "2023-02-23T10:19:26.062703Z", // String - task completed successfully
+      "result": "Preparation of release from Github push successful" //  String - result of task. If it fails, then `error_message` will be set instead.
     }
   },
-  "vars": {}, // Object - variables that are set by tasks during the pipeline run. These can be used in any expression of a task
-  "event": { // Object - the event that triggered this pipeline run. In this case a github "push" event
+  "vars": {}, // Object - variables set by tasks when they run. Can be used in any expression of a task
+  "event": { // Object - event that triggered this run. In this case a github "push" event
     "project_id": "0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3",
     "hiphops": { // Object - hiphops specific event data. Usually used in the `when` clause of a sensor
       "source": "github",
@@ -144,51 +144,51 @@ When a sensor matches an event, a pipeline run is created within Hiphops. This c
 
 Hiphops is designed from the ground up to support release oriented workflows, the humans in the loop and the environments that code travels through.
 
-In order to support this broad remit, the system handles and processes events , dispatches tasks and tracks results.
+In order to support this broad remit, the system handles and processes events, dispatches tasks and tracks results.
 
-Here we descibe the full lifecycle of an event coming into Hiphops. An example event Hiphops proccesses is a Github push event.
+Here we descibe the full lifecycle of an event coming into Hiphops. For example, an event could be a Github push event.
 
 #### 1. Event arrives
 
 When an event arrives, it is distributed to both the system sensors (these are used to run internal Hiphops tasks and also create new events for use by users), and user sensors (the ones you define in `hiphops.yaml`).
 
-Both flows run in parallel. Both flows are identical. From here on we will describe the flow which could be for either.
+Both flows run in parallel.
 
 #### 2. Sensors are tested to see if they match
 
-Each sensor (from `hiphops.yaml`) is tested to see if it matches the incoming event. This is done via the `when` clause of the sensor. If it matches, a `pipeline run` is created (see documentation of the `pipeline_run` object) to manages execution of the tasks for the sensor.
+Each sensor (from `hiphops.yaml`) is tested to see if it matches the incoming event. This is done via the `when` clause of the sensor. If the event and sensor match, a `pipeline run` is created (see "Pipelines" above for more) which manages the tasks to be run.
 
-A pipeline run consists of the sensor that triggered it, the event that triggered it, and the tasks that are to be executed as well, as the state of each task (and a few other bits).
+A pipeline run consists of the sensor that triggered it, the event that triggered it, and the tasks that are to be executed. It also manages the state of each task.
 
 #### 3. Each tasks is checked to see if it is ready to run
 
-The system now takes the list of tasks in the pipeline run and sets them all to pending. They remain pending until they are ready.
+The system sets the tasks in the pipeline run to pending. Each task remains pending until it is ready.
 
 A task is ready when its `depends` clause (same syntax as the `when` clause in the sensor) evaluates to true and the task's `when` clause (if present) is true.
 
-If the task's `when` clause evaluates to false, the task is skipped.
+If the task's `when` clause is false, the task is skipped.
 
 > Tasks can depend on each other (which allows them to run in sequence). For example, you may want to run a task to create a release, and then another task to get the release approved, and another to deploy that release. Each task would depend on the successful completion of the previous task.
 
-For example: a task `auto deploy` task may depend on completion of the `can_auto_deploy` task. If the `can_auto_deploy` task returns `true`, then the `auto_deploy` task is ready to run. But otherwise, the `auto_deploy` task is skipped.
+For example: an `auto_deploy` task may depend on completion of the `can_auto_deploy` task. If the `can_auto_deploy` task returns `true`, then the `auto_deploy` task is ready. Otherwise, the `auto_deploy` task is skipped.
 
 #### 4. Tasks are executed
 
 Once a task is ready, it is scheduled for execution.
 
-When a task is executed, it is marked as running in the pipeline run and the relevent Hiphops service or integration is sent the task to process.
+The task is marked as running in the pipeline run and sent to the relevent Hiphops service or integration to execute.
 
-Tasks are not timelimited in any way. Therefore Hiphops can easily support long running tasks (such as waiting for an approval from a human).
+Tasks are not timelimited. Therefore Hiphops can easily support long running tasks (such as waiting for an approval from a human).
 
 #### 5. Tasks return results
 
-All tasks must return a result.
+All tasks return a result.
 
-Whenever a task returns a result, the pipeline run is updated with the result and all pending tasks are checked to see if they can now be executed.
+The pipeline run is updated with the returned result of the task and then all remaining pending tasks are checked to see if they can now be set to ready.
 
-Some tasks, while running, create new events, which can then trigger new pipelines (as described in #1).
+> Some tasks, while running, create new events, which can then trigger new pipelines (as described in #1).
 
-Some tasks return `vars` which will be stored in the pipeline run and can be used in any expression of any task, but typically in the `input` section.
+> Some tasks return `vars` which will be stored in the pipeline run and can be used in the `input` section of another task.
 
 #### 6. Pipeline run completes
 
@@ -200,7 +200,7 @@ Failures are described in the next point.
 
 If a task fails, the pipeline run is marked as failed and ends, regardless of the outcome of any other tasks.
 
-If at any point, a task completes and no pending tasks can be started, the pipeline run is marked as failed and ends.
+If at any point a task completes and no pending tasks can be started, the pipeline is marked as failed.
 
 ## Changes
 
@@ -208,7 +208,7 @@ Changes are tracked and analysed pull requests.
 
 A change always starts with a pull request, but unlike a pull request its lifespan extends beyond merge.
 
-Changes in Hiphops are tracked as they are merged through branches, even if the merge method alters the underlying sha. They also contain lots of extra data useful for making decisions. Size metrics, category, commit signature checks being just some.
+Changes in Hiphops are tracked as they are merged through branches, even if the merge method alters the underlying sha. They also contain lots of extra data useful for making decisions. For example, they contain size metrics, categorization, and commit signature checks.
 
 
 ## Releases
@@ -217,7 +217,7 @@ Releases are versioned and annotated bundles of changes
 
 A release can be created in reaction to any push event (including the push event raised when you merge in a PR).
 
-Releases automatically detect the changes contained within them and make this information available via the Hiphops UI. This means you can see at a glance what work a release contains.
+Releases automatically detect the changes contained within them and make this information available via the Hiphops UI. This means you can see at a glance which changes a release contains.
 
 In order to properly gather the *new* changes in a release, we require the push to be to a branch that represents your current state. This allows us to create a delta from the comparison.
 
