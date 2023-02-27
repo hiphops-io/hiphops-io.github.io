@@ -47,6 +47,40 @@ actions: `N/A`
 
 For the full source event structure, see [GitHub push event docs](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#push)
 
+---
+
+## Task: `create_pr`
+
+Creates a PR in Github.
+
+```yaml
+tasks:
+  - name: github.create_pr # String - The name of the task
+    input:
+      repo: "backend" # String - the repository the PR should be created in
+      title: "A PR", # String - the PR title
+      source_branch: "release/branch", # String - the source branch the PR will merge in
+      taget_branch: "main", # String - the target branch the PR will be merging into
+      body: "This describes the PR", # String (optional) - the body of the PR
+      draft: false # Boolean (optional) - should the PR be created as a draft? Defaults to false
+```
+
+###### Responds with
+
+Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+
+If successful it will respond with a `vars` object, that has - against the key `pr_number` - the number of the newly created PR.
+
+Example:
+
+```js
+{
+  "vars": {
+    "pr_number": 466 // The PR number
+  }
+}
+```
+
 
 ---
 
