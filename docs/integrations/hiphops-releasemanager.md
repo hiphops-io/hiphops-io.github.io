@@ -60,7 +60,7 @@ tasks:
 
 The version template is a string. Any version template variables will be replaced to generate your version.
 
-These are the supported version template variables:
+The supported version template variables are:
 
 | Variable | Description |
 | --- | --- |
@@ -117,7 +117,7 @@ tasks:
 ###### Responds with
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
-Additionally, if successful it will respond with a `vars` object containing the key `release` as described below.
+Additionally, if successful, responds with a `vars` object containing the key `release` as described below.
 
 ###### Example vars
 
@@ -193,7 +193,7 @@ This task is usually followed by the `github.create_or_update_pr_comment` task.
 ###### Responds with
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
-Additionally, if successful it will respond with a `vars` object containing the key `change_analysis_comment`.
+Additionally, if successful, responds with a `vars` object containing the key `change_analysis_comment`.
 
 ###### Example vars
 

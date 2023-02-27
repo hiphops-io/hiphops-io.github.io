@@ -133,7 +133,7 @@ The input `labels` defines the labels that may be added to the PR. If you don't 
 
 However, if you do provide a list of glob-matching patterns in `matching` (e.g `["kind/*", "size/*"]`), then only the entries in `labels` that have a match in one or more of the entries in `matching` will be applied.
 
-By setting the update input to true, the task will treat the patterns in `matching` as a list of label patterns to be updated, and will first _remove_ labels matching a pattern before applying those labels from the `labels` input that match it.
+By setting the `update` input to `true`, the task will treat the patterns in `matching` as a list of label patterns to be updated, and will first _remove_ labels matching a pattern before applying those labels from the `labels` input that match it.
 
 So if we have a PR 55 in repository `backend` that currently has the labels `["kind/fix", "size/small", "thingy"]`, and this task is invoked with the input:
 ```yaml
@@ -147,7 +147,7 @@ So if we have a PR 55 in repository `backend` that currently has the labels `["k
 
 Then the task would first remove `size/small`, and then add `size/medium`. No other labels would be changed as they don't meet the criteria in `matching`.
 
-If update had been false (or unset), then it would only add `size/medium`, not attempting to update the existing labels.
+If `update` had been `false` (or unset), then it would only add `size/medium`, not attempting to update the existing labels.
 
 ```yaml
 tasks:
@@ -182,7 +182,7 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
-If successful it will respond with a `vars` object, that has - against the key `pr_files` - an array of data about the PR's files matching the output of [GitHub's list pull requests files endpoint](https://docs.github.com/en/rest/pulls/pulls#list-pull-requests-files).
+If successful it will respond with a `vars` object, that has &mdash; against the key `pr_files` &mdash; an array of data about the PR's files matching the output of [GitHub's list pull requests files endpoint](https://docs.github.com/en/rest/pulls/pulls#list-pull-requests-files).
 
 Example:
 
@@ -251,7 +251,7 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
-If successful it will respond with a `vars` object, that has - against the key `created_tag` - an object containing information about the created tag.
+If successful it will respond with a `vars` object, that has &mdash; against the key `created_tag` &mdash; an object containing information about the created tag.
 
 Example:
 
@@ -322,7 +322,7 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
-If successful it will respond with a `vars` object, that has - against the key `pr_commits` - an array of data about the PR's commits matching the output of [Github's list pull requests commits endpoint](https://docs.github.com/en/rest/pulls/pulls#list-commits-on-a-pull-request).
+If successful it will respond with a `vars` object, that has &mdash; against the key `pr_commits` &mdash; an array of data about the PR's commits matching the output of [Github's list pull requests commits endpoint](https://docs.github.com/en/rest/pulls/pulls#list-commits-on-a-pull-request).
 
 Example:
 
@@ -431,7 +431,7 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
-If successful it will respond with a `vars` object, that has - against the key `repo_prs` - an array of data about the repo's PRs matching the output of [Github's list pull requests endpoint](https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#list-pull-requests).
+If successful it will respond with a `vars` object, that has &mdash; against the key `repo_prs` &mdash; an array of data about the repo's PRs matching the output of [Github's list pull requests endpoint](https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#list-pull-requests).
 
 Example:
 
