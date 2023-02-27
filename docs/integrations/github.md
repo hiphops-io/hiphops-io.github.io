@@ -280,7 +280,7 @@ tasks:
   - name: github.create_branch # String - The name of the task
     input:
       repo: "integration-test" # String - the repository the branch should be created in
-      tag: "a-nice-branch" # String - the name of the branch
+      branch: "a-nice-branch" # String - the name of the branch
       sha: "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" # String - the SHA to create the branch for
 ```
 
