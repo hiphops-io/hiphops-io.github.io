@@ -307,7 +307,7 @@ Example:
 
 ## Task: `create_branch`
 
-Creates a branch in Github.
+Creates a branch in Github. One of `sha` and `branch_from` must be provided - if both are provided, only `branch_from` will be used.
 
 ```yaml
 tasks:
@@ -315,7 +315,8 @@ tasks:
     input:
       repo: "integration-test" # String - the repository the branch should be created in
       branch: "a-nice-branch" # String - the name of the branch
-      sha: "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" # String - the SHA to create the branch for
+      sha: "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" # String (optional - ignored if branch_from provided) - the SHA to create the branch for
+      branch_from: "main" # String (optional) - the SHA to create the branch for
 ```
 
 ###### Responds with
