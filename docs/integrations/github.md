@@ -51,7 +51,8 @@ For the full source event structure, see [GitHub push event docs](https://docs.g
 
 ## Task: `create_pr`
 
-Creates a PR in Github.
+Creates a PR in Github. If the `source_branch` does not exist, it will be created.
+Note that if the `source_branch` and `target_branch` have no difference in commits, this will create an empty commit.
 
 ```yaml
 tasks:
@@ -59,8 +60,8 @@ tasks:
     input:
       repo: "backend" # String - the repository the PR should be created in
       title: "A PR", # String - the PR title
-      source_branch: "release/branch", # String - the source branch the PR will merge in
-      target_branch: "main", # String - the target branch the PR will be merging into
+      source_branch: "release/branch", # String - the source branch the PR will merge in. If it does not exist it will be created
+      target_branch: "main", # String (optional) - the target branch the PR will be merging into. Defaults to the repository's default branch
       body: "This describes the PR", # String (optional) - the body of the PR
       draft: false # Boolean (optional) - should the PR be created as a draft? Defaults to false
 ```
