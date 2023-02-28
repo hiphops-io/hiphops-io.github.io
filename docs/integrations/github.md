@@ -60,7 +60,7 @@ tasks:
       repo: "backend" # String - the repository the PR should be created in
       title: "A PR", # String - the PR title
       source_branch: "release/branch", # String - the source branch the PR will merge in
-      taget_branch: "main", # String - the target branch the PR will be merging into
+      target_branch: "main", # String - the target branch the PR will be merging into
       body: "This describes the PR", # String (optional) - the body of the PR
       draft: false # Boolean (optional) - should the PR be created as a draft? Defaults to false
 ```
