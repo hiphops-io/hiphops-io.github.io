@@ -12,7 +12,9 @@ Calculates and tracks changes to your codebase. This event is triggered when a p
 
 The analysis performed is documented at [Change Analysis](./concepts.md#change-analysis).
 
-actions: `N/A`
+actions: `open`, `closed`, `merged`
+
+These actions represent the current status of the change.
 
 <details>
 <summary>See sample event</summary>
