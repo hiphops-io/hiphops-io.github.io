@@ -69,7 +69,22 @@ tasks:
 
 Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
+---
 
-###### Coming soon
+## Task: `send_response`
 
-_Ability to reply to a message directly using the `response_url` provided in the event._
+Sends a response message to slack using a `response_url` provided in response to other slack interactions - e.g. as a part of the `command` event, allowing response to be given to the user that used the command. The response can be a simple string or a complex object. The message object is documented here: [Slack messaging payload documentation](https://api.slack.com/reference/messaging/payload).
+
+```yaml
+tasks:
+  - name: slack.send_response
+    input:
+      response_url: "https://hooks.slack.com/commands/T02NVHE2ERJ/4902701257719/UNR6kqwSF5fCTH70RxWUe9M9" # String - The slack response URL to post to (will be valid for use 5 times, for 30 minutes from the time you receive it)
+      text: "Hello world" # String (optional) - A simple text message to respond with (if not provided, `response_payload` must be provided)
+      response_payload: "{ 'text': 'Some text' }" # Object (optional) - A complex object conforming to the Slack messaging format.
+      send_to_channel: true # Boolean (optional) - If false, the response will be sent as an ephemeral response, only visible to the user being responded to. If true, it will be sent to the channel the original message is in. Defaults to false.
+```
+
+###### Responds with
+
+Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
