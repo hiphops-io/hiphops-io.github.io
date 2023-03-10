@@ -844,3 +844,24 @@ tasks:
         - pull_request
       secret: "importantsecret" # String - The shared secret between Github and Hiphops which is used to validate the payload.
 ```
+
+---
+
+## Task: `dispatch_workflow`
+
+Dispatches a workflow for a given repository.
+
+```yaml
+tasks:
+- name: github.dispatch_workflow
+  input:
+    repo: backend # String - The name of the repository the workflow to dispatch is in
+    workflow: hello-world.yaml # String or Number - Either the name of the yaml file for the workflow to dispatch, as a string, or the ID of the workflow, as a number
+    branch_or_tag: main # String - The name of either a branch or tag to run the workflow against
+    inputs:
+      foo: bar # Optional object, with simple string key-value pairs - The inputs to provide the workflow run with
+```
+
+###### Responds with
+
+Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
