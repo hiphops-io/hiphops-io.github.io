@@ -49,13 +49,14 @@ Creates releases based on receiving the `release_prepared` event which this task
 ```yaml
 tasks:
   - name: releasemanager.create_release
-    id: <name of this task step>
     input:
       (path)release: event # this is the event received from the `release_prepared` event
-      annotations:
-        <[Optional] annotations as key value pair. common example would be env and app. Release will be annotated with these>
-      version_template: <template string for how the version should be generated>
-      is_prerelease: <true or false>
+      annotations: # Optional key value pairs of strings
+        app: myapp
+        env: prod
+        foo: bar
+      version_template: v$cal # Template string for how the version should be generated
+      is_prerelease: false # Optional boolean to flag if this is a pre-release or not. Defaults to false
 ```
 
 ###### Version templates
