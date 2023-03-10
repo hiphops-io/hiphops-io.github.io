@@ -19,7 +19,7 @@
   "full_source_repo_name": "example-com/apps",
   "additions": 0,
   "deletions": 0,
-  "status": "OPEN",
+  "status": "MERGED",
   "author_id": null,
   "annotations": {},
   "health": {
@@ -95,7 +95,7 @@
   "hiphops": {
     "event": "change",
     "source": "hiphops",
-    "action": ""
+    "action": "merged"
   },
   "markdown": {
     "header": "![Hiphops.io banner](https://v1.hiphops.io/external-assets/pr-comment-banner.svg)",
