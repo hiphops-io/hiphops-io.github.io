@@ -25,36 +25,18 @@ Actions are based on the underlying Github PR event.
 
 ---
 
-## Event: `release_prepared`
+## Task: `record_release`
 
-This event is emitted when a github `push` occurs. Hiphops then prepares a release on the basis of the push.
-
-You can choose to store the release in Hiphops with the `releasemanager.create_release` task.
-
-actions: `N/A`
-
-<details>
-<summary>See sample event</summary>
-
-[Release prepared sample](../_sample_events/releasemanager_release_prepared.json ':include')
-
-</details>
-
----
-
-## Task: `create_release`
-
-Creates releases based on receiving the `release_prepared` event which this task processes.
+Creates releases based on receiving the `change` event which this task processes.
 
 ```yaml
 tasks:
-  - name: releasemanager.create_release
+  - name: releasemanager.record_release
     input:
-      (path)release: event # this is the event received from the `release_prepared` event
+      (path)release: event # this is the event received from the `change` event
       annotations: # Optional key value pairs of strings
         app: myapp
         env: prod
-        foo: bar
       version_template: v$cal # Template string for how the version should be generated
       is_prerelease: false # Optional boolean to flag if this is a pre-release or not. Defaults to false
 ```
@@ -88,14 +70,14 @@ The supported version template variables are:
 ```yaml
 ---
 resource: sensor
-id: Create a dev release
+id: Record a dev release
 when:
   event.hiphops.source: hiphops
-  event.hiphops.event: release_prepared
+  event.hiphops.event: change
   event.repo_name: backend
-  event.ref: ["refs/heads/release/*"]
+  event.branch: ["release/*"]
 tasks:
-  - name: releasemanager.create_release
+  - name: releasemanager.record_release
     id: release
     input:
       (path)release: event
@@ -107,13 +89,15 @@ tasks:
 
 ```yaml
 tasks:
-  - name: releasemanager.create_release
+  - name: releasemanager.record_release
     input:
       (path)release: event
       annotations:
         env: dev
         app: "backend"
-      version_template: "$sha7"
+      version: "2.5.10"
+      title: "Release 2.5.10"
+      description: "Backend payment changes"
       is_prerelease: true
 ```
 
@@ -128,55 +112,23 @@ Additionally, if successful, responds with a `vars` object containing the key `r
 {
   "vars": {
     "release": {
-      "id": "0e8104e1-79a9-4306-8d36-90b6fbf8fb72",
-      "created_at": "2023-02-22T14:58:26.416878+00:00",
-      "updated_at": "2023-02-22T14:58:26.416878+00:00",
+      "id": "6feddbec-4ca8-4e56-8df4-55fc7059e621",
+      "created_at": "2023-03-09T23:10:43.884737+00:00",
+      "updated_at": "2023-03-09T23:13:38.350729+00:00",
       "project_id": "0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3",
       "source": "GITHUB_COM",
-      "source_id": "bbb920626b031b2aee41bec40500518624a0bfec",
-      "source_url": "https://github.com/hiphops-io/backend/commit/bbb920626b031b2aee41bec40500518624a0bfec",
-      "version": "bbb9206", // String - version generated using the version template
-      "message": "Task update: handle applying PR labels in one github task (#610)\n\n* Task update: handle applying PR labels in one github task\r\n\r\n* Don't make no-op changes",
-      "is_tag": false, // Bool - is this release based off a tag?
-      "sha": "bbb920626b031b2aee41bec40500518624a0bfec",
-      "ref": "refs/heads/release/snazzy-cobra",
+      "version": "v23.3.9",
       "repo_name": "backend",
-      "full_repo_name": "hiphops-io/backend", // String - target repo name with org
-      "annotations": { // Object - a set of annotations from the task input
+      "full_repo_name": "hiphops-io/backend",
+      "annotations": {
         "app": "backend",
-        "env": "dev"
+        "env": "prod"
       },
-      "pusher_id": "0ff85ad3-fbc1-407c-9bb4-caed8af51f22",
-      "git_pusher": {
-        "name": "A Coder",
-        "email": "a_coder@hiphops.io"
-      },
-      "is_pre_release": true,
-      "shas": [
-        "bbb920626b031b2aee41bec40500518624a0bfec"
-      ],
-      "pusher": { // Object - can be null
-        "id": "0ff85ad3-fbc1-407c-9bb4-caed8af51f22",
-        "created_at": "2023-02-22T14:58:26.416878+00:00",
-        "updated_at": "2023-02-22T14:58:26.416878+00:00",
-        "source": "GITHUB_COM",
-        "source_id": "0ff85ad3-fbc1-407c-9bb4-caed8af51f22",
-        "username": "a-coder",
-        "image_url": "https://avatars.githubusercontent.com/u/12345678?v=4",
-        "url": "https://github.com/a-coder"
-      },
-      "changes": [ // Array of Objects - List of changes - can be null
-        {
-          "release_id": "0e8104e1-79a9-4306-8d36-90b6fbf8fb72",
-          "change_id": "0e8104e1-79a9-4306-8d36-90b6fbf8fb72"
-        }
-      ],
+      "is_pre_release": false,
       "release_notes": [ // Array of Objects - List of release notes - can be null
         {
-          "version": "bbb9206", // String - version generated using the version template
           "is_auto_generated": true, // Bool - are the notes auto generated?
           "note": "Task update: handle applying PR labels in one github task (#610)",
-          "release_id": "0e8104e1-79a9-4306-8d36-90b6fbf8fb72",
           "author_id": "0ff85ad3-fbc1-407c-9bb4-caed8af51f22"
         }
       ]
