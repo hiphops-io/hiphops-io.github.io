@@ -67,7 +67,71 @@ tasks:
 
 ###### Responds with
 
-Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Additionally, responds with a `vars` object containing a key which is the ID of the message.
+
+###### Example vars
+
+```js
+{
+  "0": {
+    "ok": true,
+    "channel": "C12345678901",
+    "ts": "1678955555.666666",
+    "message": {
+      "bot_id": "B12345678901",
+      "type": "message",
+      "text": "1 new commit pushed to refs/heads/sandbox\n26209db",
+      "user": "U12345678901",
+      "ts": "1678955555.666666",
+      "app_id": "A12345678901",
+      "blocks": [
+        {
+          "type": "rich_text",
+          "block_id": "oADM",
+          "elements": [
+            {
+              "type": "rich_text_section",
+              "elements": [
+                {
+                  "type": "text",
+                  "text": "1 new commit pushed to refs/heads/sandbox\n26209db"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "team": "T12345678901",
+      "bot_profile": {
+        "id": "B12345678901",
+        "app_id": "A12345678901",
+        "name": "Hiphops",
+        "icons": {
+          "image_36": "https://avatars.slack-edge.com/2022-10-15/4227360167490_aa45faf3342d6ce1adf0_36.png",
+          "image_48": "https://avatars.slack-edge.com/2022-10-15/4227360167490_aa45faf3342d6ce1adf0_48.png",
+          "image_72": "https://avatars.slack-edge.com/2022-10-15/4227360167490_aa45faf3342d6ce1adf0_72.png"
+        },
+        "deleted": false,
+        "updated": 1675441190,
+        "team_id": "T12345678901"
+      }
+    },
+    "response_metadata": {
+      "scopes": [
+        "chat:write",
+        "commands",
+        "chat:write.public",
+        "channels:read"
+      ],
+      "acceptedScopes": [
+        "chat:write"
+      ]
+    }
+  }
+}
+```
+
 
 ---
 
