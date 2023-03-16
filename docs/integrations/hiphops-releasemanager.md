@@ -33,7 +33,7 @@ Creates releases based on receiving the `change` event which this task processes
 tasks:
   - name: releasemanager.record_release
     input:
-      (path)release: event # this is the event received from the `change` event
+      (path)change: event # this is the event received from the `change` event
       annotations: # Optional key value pairs of strings
         app: myapp
         env: prod
@@ -80,7 +80,7 @@ tasks:
   - name: releasemanager.record_release
     id: release
     input:
-      (path)release: event
+      (path)change: event
       annotations:
         env: live
       version_template: "v$calyy.$calm.$cald"
@@ -91,7 +91,7 @@ tasks:
 tasks:
   - name: releasemanager.record_release
     input:
-      (path)release: event
+      (path)change: event
       annotations:
         env: dev
         app: "backend"
