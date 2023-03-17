@@ -152,3 +152,41 @@ tasks:
 ###### Responds with
 
 Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+
+
+---
+
+## Task: `update_message`
+
+Update a message to slack using the slack message API. The message can be a simple string or a complex object. The underlying call is documented here: [Slack methods, chat.update](https://api.slack.com/methods/chat.update).
+
+```yaml
+tasks:
+  - name: slack.update_message
+    input:
+      channel_id: C12345678901 # String - returned from the post_message task and accessed at `vars["0"].channel` where the `"0"` is the ID of the post_message task
+      text: "Hello world" # Optional string - The message to post, which conforms to the slack payload format
+```
+
+###### Responds with
+
+Provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Additionally, responds with a `vars` object containing a key which is the ID of the message.
+
+###### Example vars
+
+```js
+{
+  "0": {
+    "ok": true,
+    "channel": "C024BE91L",
+    "ts": "1401383885.000061",
+    "text": "Updated text you carefully authored",
+    "message": {
+        "text": "Updated text you carefully authored",
+        "user": "U34567890"
+    }
+  }
+}
+```
+
