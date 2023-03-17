@@ -166,6 +166,17 @@ tasks:
     input:
       channel_id: C12345678901 # String - returned from the post_message task and accessed at `vars["0"].channel` where the `"0"` is the ID of the post_message task
       text: "Hello world" # Optional string - The message to post, which conforms to the slack payload format
+      (expr)attachments: ([{ text: "Attachment text" }]) # Optional array - The message to post, which conforms to the slack payload format
+      (expr)blocks: >
+        ([
+          {
+            type: "section",
+            text: {
+              type: "mrkdwn",
+              text: "This is a *bold* and _italic_ message with a link: <https://example.com|Example>",
+            },
+          },
+        ]) # Optional array - Block for of the message (see slack documentation linked above)
 ```
 
 ###### Responds with
