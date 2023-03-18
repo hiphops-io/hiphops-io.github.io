@@ -61,8 +61,12 @@ Posts a message to slack using the slack message API. The message can be a simpl
 tasks:
   - name: slack.post_message
     input:
-      channel: general # String - The name of the channel to post to
-      text: "Hello world" # String - The message to post, which conforms to the slack payload format
+      channel: general # Optional string - The name of the channel to post to. One of channel and channel_id must be provided
+      channel_id: "C12345678901" # Optional string - The ID of the channel to post to. One of channel and channel_id must be provided
+      text: "Hello world" # Optional string - The message to post, which conforms to the slack payload format. One of text, attachments and blocks must be provided
+      attachments: [] # Optional array - An array of attachments, which conform to the slack payload format. One of text, attachments and blocks must be provided
+      blocks: [] # Optional array - An array of blocks, which conform to the slack payload format. One of text, attachments and blocks must be provided
+      (expr)thread_ts: vars["0"].ts # Optional string - The timestamp of the message to reply to. This would come from the previous post_message task
 ```
 
 ###### Responds with
