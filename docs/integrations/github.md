@@ -461,6 +461,13 @@ tasks:
   - name: github.fetch_repo_prs
     input:
       repo: backend # String - The name of the repository to fetch PRs from
+      state: # Optional string - default 'all'
+      head: # Optional string - default see github documentation
+      base: # Optional string - default see github documentation
+      sort: # Optional string - default see github documentation
+      direction: # Optional string - default see github documentation
+      per_page: # Optional integer - default 100
+      page: # Optional integer - default see github documentation
 ```
 
 ###### Responds with
