@@ -37,7 +37,8 @@ tasks:
       annotations: # Optional key value pairs of strings
         app: myapp
         env: prod
-      version_template: v$cal # Template string for how the version should be generated
+      version: v1.0.0 # Optional string - set the version of the release. This or version_template must be set
+      version_template: v$cal # Optional string - template for how the version should be generated. This or version must be set
       is_prerelease: false # Optional boolean to flag if this is a pre-release or not. Defaults to false
 ```
 
