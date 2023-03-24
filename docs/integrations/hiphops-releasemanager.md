@@ -137,6 +137,79 @@ Additionally, if successful, responds with a `vars` object containing the key `r
 }
 ```
 
+
+---
+
+## Task: `generate_version`
+
+Creates a version string using the provided version template.
+
+```yaml
+tasks:
+  - name: releasemanager.generate_version
+    input:
+      version_template: v$cal # String - template for how the version should be generated. See below for supported variables
+```
+
+###### Version templates
+
+The version template is a string. Any version template variables will be replaced to generate your version.
+
+The supported version template variables for this task are:
+
+| Variable | Description |
+| --- | --- |
+| `$cal` | year.month.day |
+| `$calyyyy` | The current four digit year, zero padded |
+| `$calyy` | The current two digit year, zero padded |
+| `$caly` | The current year 1-2 digits |
+| `$calmm` | The current month, zero padded |
+| `$calm` | The current month |
+| `$calww` | The current week, zero padded |
+| `$calw` | The current week |
+| `$caldd` | The current day of the month, zero padded |
+| `$cald` | The current day of the month |
+| `$sha` | The full commit sha |
+| `$sha7` | The first 7 characters of the commit sha |
+| `$sha12` | The first 12 characters of the commit sha |
+| `$radjective` | A random adjective |
+| `$rnoun` | A random noun |
+| `$rword` | A random adjective or noun |
+
+
+###### Example tasks and sensors
+
+```yaml
+---
+resource: sensor
+id: Record a dev release
+when:
+  event.hiphops.source: hiphops
+  event.hiphops.event: change
+  event.branch: ["release/*"]
+tasks:
+  - name: releasemanager.generate_version
+    id: version
+    input:
+      version_template: "$radjective-$rnoun"
+```
+
+###### Responds with
+
+Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Additionally, responds with a `vars` object containing a key which is the ID of the message.
+
+###### Example vars
+
+```js
+{
+  "0": {
+    "version": "v23.3.9"
+  }
+}
+```
+
+
 ---
 
 ## Task: `generate_pr_analysis_comment`
