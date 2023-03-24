@@ -61,9 +61,9 @@ tasks:
       repo: "backend" # String - the repository the PR should be created in
       title: "A PR", # String - the PR title
       source_branch: "release/branch", # String - the source branch the PR will merge in. If it does not exist it will be created
-      target_branch: "main", # String (optional) - the target branch the PR will be merging into. Defaults to the repository's default branch
+      target_branch: "main", # String (optional) - the target branch the PR will be merging into. Default: repository's default branch
       body: "This describes the PR", # String (optional) - the body of the PR
-      draft: false # Boolean (optional) - should the PR be created as a draft? Defaults to false
+      draft: false # Boolean (optional) - should the PR be created as a draft? Default: false
 ```
 
 ###### Responds with
@@ -97,9 +97,9 @@ tasks:
   input:
     repo: backend # String - The name of the repository the PR is in
     pr_number: 55 # Number - The PR number
-    merge_comment_title: Auto-merged this PR! # Optional string - The commit message title that will provided with the merge. Defaults to the PR title
+    merge_comment_title: Auto-merged this PR! # Optional string - The commit message title that will provided with the merge. Default: PR title
     head_sha: 939abcd18feaa12345bdb # Optional string - The SHA the branch head must be at for the merge to proceed, to prevent race conditions. If not provided the merge will proceed without checking the SHA
-    merge_method: merge # Optional string - One of “merge”, “squash” or “rebase”. The merge method the PR will be merged with defaults to “merge” if not set
+    merge_method: merge # Optional string - Merge method the PR wull be merged with. One of “merge”, “squash” or “rebase”. Default: “merge”
 ```
 
 ###### Responds with
@@ -192,7 +192,7 @@ tasks:
     pr_number: 55 # Number - The PR number
     labels: ["kind/fix", "size/medium", "health/good"] # String array - The labels to be applied to the PR
     matching: ["kind/*", "size/*"] # String array - Each string is a glob matching pattern that will be applied against labels, such that only the labels that have a match will be applied. If update is true, then existing labels on the PR that have a match will be removed too
-    update: true # Boolean - If true, attempt to update existing labels, or if false just apply labels as new - if matching is provided, this is used to determine which labels will be updated. Defaults to false
+    update: true # Boolean - If true, attempt to update existing labels, or if false just apply labels as new - if matching is provided, this is used to determine which labels will be updated. Default: false
 ```
 
 ###### Responds with
@@ -256,9 +256,9 @@ tasks:
       tag_name: "7eafcf0107" # String - the name of the tag (e.g. v1.0.0). If it already exists, the release will use this. If it doesn’t exist, the tag will be created
       release_name: "a test release" # String - the name of the release
       release_body: "This release contains a fixes" # Optional string - the body text of the release
-      draft: false # Optional boolean - whether or not to create the release as a draft - defaults to false
-      prerelease: false # Optional boolean - whether or not to create the release as a prerelease - defaults to false
-      make_latest: true # Optional boolean - whether or not to mark the release as the latest for the repo - defaults to true.
+      draft: false # Optional boolean - Whether or not to create the release as a draft. Default: false
+      prerelease: false # Optional boolean - Whether or not to create the release as a prerelease. Default: false
+      make_latest: true # Optional boolean - Whether or not to mark the release as the latest for the repo. Default: true
       target: "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" # Optional string - the target to create the tag for, either a commit SHA or branch ref - required if the tag specified by tag_name does not exist.
 ```
 
@@ -278,7 +278,7 @@ tasks:
     input:
       repo: "integration-test" # String - the repository the tag should be created in
       tag: "v23.01.05" # String - the name of the tag
-      tag_message: "Final version of v23.01.05" # Optional string - the message that will be provided with the tag. If not supplied this will default to the same value as tag
+      tag_message: "Final version of v23.01.05" # Optional string - The message that will be provided with the tag. Default: same value as tag
       sha: "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" # String - the SHA to create the tag for
 ```
 
@@ -461,13 +461,13 @@ tasks:
   - name: github.fetch_repo_prs
     input:
       repo: backend # String - The name of the repository to fetch PRs from
-      state: # Optional string - default 'all'
-      head: # Optional string - default see github documentation
-      base: # Optional string - default see github documentation
-      sort: # Optional string - default see github documentation
-      direction: # Optional string - default see github documentation
-      per_page: # Optional integer - default 100
-      page: # Optional integer - default see github documentation
+      state: # Optional string - either "open", "closed", or "all" to filter by state. Default: "all"
+      head: # Optional string - filter pulls by head user or head organization and branch name in the format of "user:ref-name" or "organization:ref-name". For example: "github:new-script-format" or "octocat:test-branch".
+      base: # Optional string - filter pulls by base branch name. Example: gh-pages
+      sort: # Optional string - what to sort results by. Example: "popularity" will sort by number of comments. "long-running" will sort by date created and will limit to PRs open for more than a month with activity in the past month. One of: "created", "updated", "popularity", "long-running". Default: "created"
+      direction: # Optional string - direction of sort. Default: "desc" when sort is "created" or sort is not specified, otherwise "asc".
+      per_page: # Optional integer - number of results per page (max 100). Default: 100
+      page: # Optional integer - page number of results to fetch. Default: 1
 ```
 
 ###### Responds with
