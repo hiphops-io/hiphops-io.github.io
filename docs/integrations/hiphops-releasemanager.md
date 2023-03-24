@@ -34,11 +34,11 @@ tasks:
   - name: releasemanager.record_release
     input:
       (path)change: event # this is the event received from the `change` event
-      annotations: # Optional key value pairs of strings
+      annotations: # (Optional) key value pairs of strings
         app: myapp
         env: prod
       version_template: v$cal # Template string for how the version should be generated
-      is_prerelease: false # Optional boolean to flag if this is a pre-release or not. Defaults to false
+      is_prerelease: false # (Optional) boolean to flag if this is a pre-release or not. Default: false
 ```
 
 ###### Version templates

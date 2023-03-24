@@ -8,7 +8,7 @@ A sensor listens for events from your integrations, matching those events you se
 
 
 ```yaml
-id: My sensor # (Optional) Any string. Used to identify the sensor throughout the system
+id: My sensor # (Optional) string - Used to identify the sensor throughout the system
 resource: sensor # (Required) Currently only accepts a value of 'sensor'
 when: # (Optional)
   $: '"some expression" === event.a_property'
@@ -57,9 +57,9 @@ Available task names and their inputs are defined in the Integrations section
 ```yaml
 tasks:
 - name: slack.post_comment # Required string - The name of the task to run
-  when: # Optional - A when block. Remember events are already filtered by the sensor's own when block, so this isn't always necessary
+  when: # (Optional) - A when block. Remember events are already filtered by the sensor's own when block, so this isn't always necessary
     ...
-  depends: # Optional - A depends block. If no depends block is set the task will trigger immediately on event
+  depends: # (Optional) - A depends block. If no depends block is set the task will trigger immediately on event
     ...
   input: # Optional, depending on the task being called
     ... # The required input structure is defined by the task being called
