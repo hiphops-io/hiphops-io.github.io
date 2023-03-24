@@ -57,6 +57,8 @@ tasks:
 
 Posts a message to slack using the slack message API. The message can be a simple string or a complex object. The message object is documented here: [Slack messaging payload documentation](https://api.slack.com/reference/messaging/payload).
 
+Supports replying to a message by providing the `thread_ts` field.
+
 ```yaml
 tasks:
   - name: slack.post_message
@@ -169,6 +171,7 @@ tasks:
   - name: slack.update_message
     input:
       channel_id: C12345678901 # String - returned from the post_message task and accessed at `vars["0"].channel` where the `"0"` is the ID of the post_message task
+      (expr)ts: vars["0"].ts # Optional string - The timestamp of the message to update. This would come from the previous post_message or update_message task
       text: "Hello world" # Optional string - The message to post, which conforms to the slack payload format
       (expr)attachments: ([{ text: "Attachment text" }]) # Optional array - The message to post, which conforms to the slack payload format
       (expr)blocks: >
