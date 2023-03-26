@@ -62,7 +62,7 @@ The supported version template variables are:
 | `$sha` | The full commit sha |
 | `$sha7` | The first 7 characters of the commit sha |
 | `$sha12` | The first 12 characters of the commit sha |
-| `$find_semver` | searches ref, message and base_ref of release for a semver (in that order) |
+| `$findsemver` | searches ref, message and base_ref of release for a semver (in that order) |
 
 
 ###### Example tasks and sensors
@@ -149,6 +149,8 @@ tasks:
   - name: releasemanager.generate_version
     input:
       version_template: v$cal # String - template for how the version should be generated. See below for supported variables
+      sha: 1234567890 # (Optional) string - the sha to use for $sha variables. Only needed if using a $sha variable in the version template
+      semver_source: "String with semver v1.2.3" # (Optional) string - the string that is searched for semver by using the $find_semver template variable. Only needed if using $find_semver
 ```
 
 ###### Version templates
@@ -172,6 +174,7 @@ The supported version template variables for this task are:
 | `$sha` | The full commit sha |
 | `$sha7` | The first 7 characters of the commit sha |
 | `$sha12` | The first 12 characters of the commit sha |
+| `$findsemver` | searches ref, message and base_ref of release for a semver (in that order) |
 | `$radjective` | A random adjective |
 | `$rnoun` | A random noun |
 | `$rword` | A random adjective or noun |
@@ -196,7 +199,7 @@ tasks:
 
 ###### Responds with
 
-Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`). The `result` will contain the generated version string.
 Additionally, responds with a `vars` object containing a key which is the ID of the message.
 
 ###### Example vars
