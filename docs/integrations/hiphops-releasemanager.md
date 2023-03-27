@@ -37,8 +37,9 @@ tasks:
       annotations: # (Optional) key value pairs of strings
         app: myapp
         env: prod
-      version_template: v$cal # Template string for how the version should be generated
-      is_prerelease: false # (Optional) boolean to flag if this is a pre-release or not. Default: false
+      version: v1.0.0 # (Optional) string - set the version of the release. This or version_template must be set
+      version_template: v$cal # (Optional) string - template for how the version should be generated. This or version must be set
+      is_prerelease: false # (Optional) boolean - flag if this is a pre-release or not. Default: false
 ```
 
 ###### Version templates
@@ -63,6 +64,9 @@ The supported version template variables are:
 | `$sha7` | The first 7 characters of the commit sha |
 | `$sha12` | The first 12 characters of the commit sha |
 | `$findsemver` | searches ref, message and base_ref of release for a semver (in that order) |
+| `$radjective` | A random adjective |
+| `$rnoun` | A random noun |
+| `$rword` | A random adjective or noun |
 
 
 ###### Example tasks and sensors
