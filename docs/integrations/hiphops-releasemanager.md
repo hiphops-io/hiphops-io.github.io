@@ -63,7 +63,7 @@ The supported version template variables are:
 | `$sha` | The full commit sha |
 | `$sha7` | The first 7 characters of the commit sha |
 | `$sha12` | The first 12 characters of the commit sha |
-| `$find_semver` | searches ref, message and base_ref of release for a semver (in that order) |
+| `$findsemver` | searches ref, message and base_ref of release for a semver (in that order) |
 | `$radjective` | A random adjective |
 | `$rnoun` | A random noun |
 | `$rword` | A random adjective or noun |
