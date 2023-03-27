@@ -34,12 +34,12 @@ tasks:
   - name: releasemanager.record_release
     input:
       (path)change: event # this is the event received from the `change` event
-      annotations: # Optional key value pairs of strings
+      annotations: # (Optional) key value pairs of strings
         app: myapp
         env: prod
-      version: v1.0.0 # Optional string - set the version of the release. This or version_template must be set
-      version_template: v$cal # Optional string - template for how the version should be generated. This or version must be set
-      is_prerelease: false # Optional boolean to flag if this is a pre-release or not. Defaults to false
+      version: v1.0.0 # (Optional) string - set the version of the release. This or version_template must be set
+      version_template: v$cal # (Optional) string - template for how the version should be generated. This or version must be set
+      is_prerelease: false # (Optional) boolean - flag if this is a pre-release or not. Default: false
 ```
 
 ###### Version templates
@@ -140,6 +140,82 @@ Additionally, if successful, responds with a `vars` object containing the key `r
   }
 }
 ```
+
+
+---
+
+## Task: `generate_version`
+
+Creates a version string using the provided version template.
+
+```yaml
+tasks:
+  - name: releasemanager.generate_version
+    input:
+      version_template: v$cal # String - template for how the version should be generated. See below for supported variables
+      sha: 1234567890 # (Optional) string - the sha to use for $sha variables. Only needed if using a $sha variable in the version template
+      semver_source: "String with semver v1.2.3" # (Optional) string - the string that is searched for semver by using the $find_semver template variable. Only needed if using $find_semver
+```
+
+###### Version templates
+
+The version template is a string. Any version template variables will be replaced to generate your version.
+
+The supported version template variables for this task are:
+
+| Variable | Description |
+| --- | --- |
+| `$cal` | year.month.day |
+| `$calyyyy` | The current four digit year, zero padded |
+| `$calyy` | The current two digit year, zero padded |
+| `$caly` | The current year 1-2 digits |
+| `$calmm` | The current month, zero padded |
+| `$calm` | The current month |
+| `$calww` | The current week, zero padded |
+| `$calw` | The current week |
+| `$caldd` | The current day of the month, zero padded |
+| `$cald` | The current day of the month |
+| `$sha` | The full commit sha |
+| `$sha7` | The first 7 characters of the commit sha |
+| `$sha12` | The first 12 characters of the commit sha |
+| `$findsemver` | searches ref, message and base_ref of release for a semver (in that order) |
+| `$radjective` | A random adjective |
+| `$rnoun` | A random noun |
+| `$rword` | A random adjective or noun |
+
+
+###### Example tasks and sensors
+
+```yaml
+---
+resource: sensor
+id: Record a dev release
+when:
+  event.hiphops.source: hiphops
+  event.hiphops.event: change
+  event.branch: ["release/*"]
+tasks:
+  - name: releasemanager.generate_version
+    id: version
+    input:
+      version_template: "$radjective-$rnoun"
+```
+
+###### Responds with
+
+Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`). The `result` will contain the generated version string.
+Additionally, responds with a `vars` object containing a key which is the ID of the message.
+
+###### Example vars
+
+```js
+{
+  "0": {
+    "version": "v23.3.9"
+  }
+}
+```
+
 
 ---
 

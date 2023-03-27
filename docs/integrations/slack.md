@@ -29,7 +29,7 @@ A command entered on Slack such as `/hiphops foo arg1 arg2` would generate an ev
   "channel_id": "some_channel_id", // The channel from where the command originated
   "user_id": "some_user_id", // The user that sent the command
   "is_enterprise_install": "false" // String "true" | "false" - Whether the slack instance is an enteprise install
-  "enterprise_id": "some_enterprise_id" // Optional string, The enterprise ID if set
+  "enterprise_id": "some_enterprise_id" // (Optional) string, The enterprise ID if set
 }
 ```
 
@@ -63,12 +63,12 @@ Supports replying to a message by providing the `thread_ts` field.
 tasks:
   - name: slack.post_message
     input:
-      channel: general # Optional string - The name of the channel to post to. One of channel and channel_id must be provided
-      channel_id: "C12345678901" # Optional string - The ID of the channel to post to. One of channel and channel_id must be provided
-      text: "Hello world" # Optional string - The message to post, which conforms to the slack payload format. One of text, attachments and blocks must be provided
-      attachments: [] # Optional array - An array of attachments, which conform to the slack payload format. One of text, attachments and blocks must be provided
-      blocks: [] # Optional array - An array of blocks, which conform to the slack payload format. One of text, attachments and blocks must be provided
-      (expr)thread_ts: vars["0"].ts # Optional string - The timestamp of the message to reply to. This would come from the previous post_message task
+      channel: general # (Optional) string - The name of the channel to post to. One of channel and channel_id must be provided
+      channel_id: "C12345678901" # (Optional) string - The ID of the channel to post to. One of channel and channel_id must be provided
+      text: "Hello world" # (Optional) string - The message to post, which conforms to the slack payload format. One of text, attachments and blocks must be provided
+      attachments: [] # (Optional) array - An array of attachments, which conform to the slack payload format. One of text, attachments and blocks must be provided
+      blocks: [] # (Optional) array - An array of blocks, which conform to the slack payload format. One of text, attachments and blocks must be provided
+      (expr)thread_ts: vars["0"].ts # (Optional) string - The timestamp of the message to reply to. This would come from the previous post_message task
 ```
 
 ###### Responds with
@@ -150,9 +150,9 @@ tasks:
   - name: slack.send_response
     input:
       response_url: "https://hooks.slack.com/commands/T02NVHE2ERJ/4902701257719/UNR6kqwSF5fCTH70RxWUe9M9" # String - The slack response URL to post to (will be valid for use 5 times, for 30 minutes from the time you receive it)
-      text: "Hello world" # String (optional) - A simple text message to respond with (if not provided, `response_payload` must be provided)
-      response_payload: "{ 'text': 'Some text' }" # Object (optional) - A complex object conforming to the Slack messaging format.
-      send_to_channel: true # Boolean (optional) - If false, the response will be sent as an ephemeral response, only visible to the user being responded to. If true, it will be sent to the channel the original message is in. Defaults to false.
+      text: "Hello world" # (Optional) string - A simple text message to respond with (if not provided, `response_payload` must be provided)
+      response_payload: "{ 'text': 'Some text' }" # (Optional) object - A complex object conforming to the Slack messaging format.
+      send_to_channel: true # (Optional) boolean - If false, the response will be sent as an ephemeral response, only visible to the user being responded to. If true, it will be sent to the channel the original message is in. Default: false.
 ```
 
 ###### Responds with
@@ -171,9 +171,9 @@ tasks:
   - name: slack.update_message
     input:
       channel_id: C12345678901 # String - returned from the post_message task and accessed at `vars["0"].channel` where the `"0"` is the ID of the post_message task
-      (expr)ts: vars["0"].ts # Optional string - The timestamp of the message to update. This would come from the previous post_message or update_message task
-      text: "Hello world" # Optional string - The message to post, which conforms to the slack payload format
-      (expr)attachments: ([{ text: "Attachment text" }]) # Optional array - The message to post, which conforms to the slack payload format
+      (expr)ts: vars["0"].ts # (Optional) string - The timestamp of the message to update. This would come from the previous post_message or update_message task
+      text: "Hello world" # (Optional) string - The message to post, which conforms to the slack payload format
+      (expr)attachments: ([{ text: "Attachment text" }]) # (Optional) array - The message to post, which conforms to the slack payload format
       (expr)blocks: >
         ([
           {
@@ -183,7 +183,7 @@ tasks:
               text: "This is a *bold* and _italic_ message with a link: <https://example.com|Example>",
             },
           },
-        ]) # Optional array - Block for of the message (see slack documentation linked above)
+        ]) # (Optional) array - Block for of the message (see slack documentation linked above)
 ```
 
 ###### Responds with
