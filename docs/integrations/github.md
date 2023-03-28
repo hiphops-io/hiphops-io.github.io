@@ -872,3 +872,42 @@ tasks:
 ###### Responds with
 
 Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+
+
+---
+
+## Task: `fetch_workflow_run_logs`
+
+Fetches the logs for a workflow run (e.g the logs of a check suite).
+Typically you would run this against a workflow_run event, and get the workflow_run_id input value from the event.workflow_run.id property.
+
+Rather than returning the logs directly, they will be saved in a temporary storage location which can be fed to other tasks such as `releasemanager.save_material`. This storage location is returned in the task's `vars` object.
+
+```yaml
+tasks:
+- name: github.fetch_workflow_run_logs
+  id: workflow_logs
+  input:
+    repo: backend # String - The name of the repository the workflow run was in
+    workflow_run_id: 12345 #  Number - The ID of the workflow run, as a number
+```
+
+###### Responds with
+
+Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+
+If successful the returned `vars` object will have an object containing the key `log_file_location`, the value of which will be the temporary storage location the logs were saved to. 
+
+Example:
+
+Assumes that the task ID was set as `workflow_logs`.
+
+```js
+{
+  "vars": {
+    "workflow_logs": {
+      "log_file_location": "hiphops-project-0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3/scratch/3c500413-a29f-4d3a-a5bc-b3a4dccf9564/github.fetch_workflow_run_logs/4544497015.zip"
+    }
+  }
+}
+```

@@ -243,3 +243,64 @@ Additionally, if successful, responds with a `vars` object containing the key `c
   }
 }
 ```
+
+
+---
+
+## Task: `save_material`
+
+Combines one or more files into a .zip file and saves them as a material, which may be associated with a change.
+This can create files from text/JSON objects, or copy files from existing temporary storage locations, as provided by other tasks (such as `github.fetch_workflow_run_logs`).
+
+Materials are associated with changes by commit SHAs - when saving a material, you provide a SHA, and it will show as a material on any change that contains that SHA. Typically you will save materials in response to events related to the lifecycle of a change - such as when a check suite runs - which are often directly related to the state of a change at a particular SHA, and have that SHA available in their payload.
+By default, when viewing materials on a change in Hiphops, they will show a "latest" label if they relate to the current most recent SHA of a change (or the merge SHA after the change's underlying PR is merged), and an "out of date" label when related to an older SHA. Materials saved with the `outdate_on_sha` input set to `false`, however, will always show an "unchanging" label instead.
+
+Additionally, you can use annotations to simplify the display of these materials. Annotations are simple key: value strings that can be saved against a material. When viewing a change, only the latest material sharing a particular combination of annotations will be shown (e.g. if there are 3 materials with annotation `type: unit tests`, only the most recent will show). Materials without any annotations will always be shown.
+
+To use this task, you must provide at least one of the `create_files` and `copy_files` inputs. Both inputs lead to files being included in the material.
+`create_files`: this input is an object where the keys are strings representing the name of the file to include in the material's .zip file, and the values represent the contents of that file. Those values can either be strings, or they can be JSON objects (such as an event payload), which will be converted to strings when saving as files.
+`copy_files`: this input is either a single string, or an array of strings. Either way, they must be the full path to a file stored with Hiphops, typically coming from the output of another task. For example, the `log_file_location` output of the `github.fetch_workflow_run_logs` can be used as one of these values, resulting in the workflow run logs fetched by that task being added to the material .zip file.
+
+```yaml
+tasks:
+- name: releasemanager.save_material
+  id: save_material
+  input:
+    (expr)create_files: | # (Optional) key: value pairs where the key is a string and the value is a string or JSON object. Described above.
+      ({ "workflow_run.json": event })
+    (path)copy_files: vars.workflow_logs.log_file_location # (Optional) either a string, or an array of strings. These values are the locations of files stored with Hiphops, such as the output of the github.fetch_workflow_run_logs task. Described above.
+    name: workflow run logs # String - The name to assign the material
+    sha: 04febd94cb595a4e6a307c2510088a756c64e932 #  String - The SHA to associate the material with
+    type: MATERIAL # (Optional) enum - The type to assign the material. Values: MATERIAL, LOGS, TEST, EVIDENCE, APPROVAL, REPORT. Defaults to MATERIAL.
+    outdate_on_sha: false # (Optional) boolean - Whether to mark materials as out of date based on SHA, as described above. Defaults to true.
+    annotations: # (Optional) key: value pairs of strings. Used for hiding older materials, as described above.
+      key1: value1
+      key2: value2
+
+```
+
+###### Responds with
+
+Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+
+If successful the returned `vars` object will have an object containing the key `material`, the value of which will be an object containing details about the saved material. These details are mostly useful for debugging purposes.
+
+Example:
+
+Assumes that the task ID was set as `save_material`.
+
+```js
+{
+  "vars": {
+    "save_material": {
+      "material": {
+        "id": "dd647606-56bc-43a4-84a4-c9aa099fb59e", // The material ID
+        "sourceId": "e7ea0351b91ba26667ed5989d42152fda7b4a0b1", // The material SHA
+        "storageBucket": "hiphops-project-0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3", // The bucket the material is saved in
+        "fileName": "material/dd647606-56bc-43a4-84a4-c9aa099fb59e/dd647606-56bc-43a4-84a4-c9aa099fb59e.zip", // The file path of the saved material
+        "storagePath": "hiphops-project-0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3/material/dd647606-56bc-43a4-84a4-c9aa099fb59e/dd647606-56bc-43a4-84a4-c9aa099fb59e.zip" // The full location of the saved material file
+      }
+    }
+  }
+}
+```
