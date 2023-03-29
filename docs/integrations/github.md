@@ -889,7 +889,7 @@ tasks:
   id: workflow_logs
   input:
     repo: backend # String - The name of the repository the workflow run was in
-    workflow_run_id: 12345 #  Number - The ID of the workflow run, as a number
+    workflow_run_id: 12345 # Number - The ID of the workflow run, as a number
 ```
 
 ###### Responds with
