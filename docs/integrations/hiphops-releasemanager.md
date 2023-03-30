@@ -300,7 +300,6 @@ tasks:
 
 </details>
 
-</details>
 
 <details>
 <summary>Saving pull request reviews sensor</summary>
