@@ -249,8 +249,8 @@ Additionally, if successful, responds with a `vars` object containing the key `c
 
 ## Task: `save_material`
 
-Combines one or more files into a .zip file and saves them as a material, which may be associated with a change.
-This can create files from text/JSON objects, or copy files from existing temporary storage locations, as provided by other tasks (such as `github.fetch_workflow_run_logs`).
+Combines one or more files into a .zip file and saves them as a [material](concepts.md#materials), which may be associated with a change.
+This can create files from text/JSON objects, or copy files from existing temporary storage locations, as provided by other tasks (such as [`github.fetch_workflow_run_logs`](integrations/github.md#task-fetch_workflow_run_logs)).
 
 Materials are associated with changes by commit SHAs - when saving a material, you provide a SHA, and it will show as a material on any change that contains that SHA. Typically you will save materials in response to events related to the lifecycle of a change - such as when a check suite runs - which are often directly related to the state of a change at a particular SHA, and have that SHA available in their payload.
 By default, when viewing materials on a change in Hiphops, they will show a "latest" label if they relate to the current most recent SHA of a change (or the merge SHA after the change's underlying PR is merged), and an "out of date" label when related to an older SHA. Materials saved with the `outdate_on_sha` input set to `false`, however, will always show an "unchanging" label instead.
@@ -259,7 +259,7 @@ Additionally, you can use annotations to simplify the display of these materials
 
 To use this task, you must provide at least one of the `create_files` and `copy_files` inputs. Both inputs lead to files being included in the material.
 `create_files`: this input is an object where the keys are strings representing the name of the file to include in the material's .zip file, and the values represent the contents of that file. Those values can either be strings, or they can be JSON objects (such as an event payload), which will be converted to strings when saving as files.
-`copy_files`: this input is either a single string, or an array of strings. Either way, they must be the full path to a file stored with Hiphops, typically coming from the output of another task. For example, the `log_file_location` output of the `github.fetch_workflow_run_logs` can be used as one of these values, resulting in the workflow run logs fetched by that task being added to the material .zip file.
+`copy_files`: this input is either a single string, or an array of strings. Either way, they must be the full path to a file stored with Hiphops, typically coming from the output of another task. For example, the `log_file_location` output of the [`github.fetch_workflow_run_logs`](integrations/github.md#task-fetch_workflow_run_logs) task can be used as one of these values, resulting in the workflow run logs fetched by that task being added to the material .zip file.
 
 ```yaml
 tasks:
@@ -278,11 +278,45 @@ tasks:
 ```
 
 ###### Example sensors:
-  - [Saving check run completions](../_sample_sensors/check_run_save_material.yaml)
-  - [Saving check suite completions](../_sample_sensors/check_suite_save_material.yaml)
-  - [Saving workflow run completions, including logs](../_sample_sensors/workflow_run_save_material.yaml)
-  - [Saving pull request reviews](../_sample_sensors/pull_request_review_save_material.yaml)
-  - [Saving pull request comments](../_sample_sensors/pull_request_review_comment_save_material.yaml)
+
+<details>
+<summary>Saving check run completions sensor</summary>
+
+[Saving check run completions sensor](../_sample_sensors/check_run_save_material.yaml ':include')
+
+</details>
+
+<details>
+<summary>Saving check suite completions sensor</summary>
+
+[Saving check suite completions sensor](../_sample_sensors/check_suite_save_material.yaml ':include')
+
+</details>
+
+<details>
+<summary>Saving workflow run completions (including logs) sensor</summary>
+
+[Saving workflow run completions (including logs) sensor](../_sample_sensors/workflow_run_save_material.yaml ':include')
+
+</details>
+
+
+</details>
+
+<details>
+<summary>Saving pull request reviews sensor</summary>
+
+[Saving pull request reviews sensor](../_sample_sensors/pull_request_review_save_material.yaml ':include')
+
+</details>
+
+
+<details>
+<summary>Saving pull request review comments sensor</summary>
+
+[Saving pull request review comments sensor](../_sample_sensors/pull_request_review_comment_save_material.yaml ':include')
+
+</details>
 
 ###### Responds with
 

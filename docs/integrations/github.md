@@ -881,7 +881,7 @@ Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_me
 Fetches the logs for a workflow run (e.g the logs of a check suite).
 Typically you would run this against a workflow_run event, and get the workflow_run_id input value from the event.workflow_run.id property.
 
-Rather than returning the logs directly, they will be saved in a temporary storage location which can be fed to other tasks such as `releasemanager.save_material`. This storage location is returned in the task's `vars` object.
+Rather than returning the logs directly, they will be saved in a temporary storage location which can be fed to other tasks such as [`releasemanager.save_material`](integrations/hiphops-releasemanager.md#task-save_material). This storage location is returned in the task's `vars` object.
 
 ```yaml
 tasks:
@@ -893,7 +893,13 @@ tasks:
 ```
 
 ###### Example sensor:
-  [Fetching and saving workflow run logs](../_sample_sensors/workflow_run_save_material.yaml)
+
+<details>
+<summary>Saving workflow run completions (including logs) sensor</summary>
+
+[Saving workflow run completions (including logs) sensor](../_sample_sensors/workflow_run_save_material.yaml ':include')
+
+</details>
 
 ###### Responds with
 
