@@ -1,0 +1,28 @@
+---
+resource: sensor
+id: Record workflow run logs as material
+when:
+  event.hiphops.source: github
+  event.hiphops.event: workflow_run
+  event.hiphops.action: completed
+tasks:
+  - name: github.fetch_workflow_run_logs
+    id: workflow_logs
+    input:
+      (path)repo: event.workflow_run.repository.name
+      (path)workflow_run_id: event.workflow_run.id
+  - name: releasemanager.save_material
+    input:
+      (expr)name: |
+        (`${event.workflow_run.conclusion === "success" ? "✅" : "❌"}  Workflow run logs: ${event.workflow_run.name}`)
+      (path)sha: event.workflow_run.head_sha
+      (path)copy_files: vars.workflow_logs.log_file_location
+      (expr)create_files: '({ "workflow_run_completed.json": event })'
+      type: logs
+      (expr)annotations: |
+        ({
+          "event": "workflow_run",
+          "name": event.workflow_run.name
+        })
+    depends:
+      $: tasks["workflow_logs"].SUCCESS

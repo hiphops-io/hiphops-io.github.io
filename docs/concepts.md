@@ -322,3 +322,96 @@ The variables and structures are:
 - `pipeline_run` - The full pipeline run that is currently executing
 - `tasks` - A list of all tasks that are defined in the sensor. The tasks can be accessed either by their id or by their index in the list (the order as defined in the `hiphops.yaml` file)
 - `input` - The input to the task. This is the same as the `input` field in the `hiphops.yaml` file
+
+
+## Materials
+
+Materials are any kind of document, file or blob of data that you want to associate with a change (or, in the near future, a release).
+
+The most common reason you would want to do this is to track evidence of processes for audit purposes - for example, storing the logs of runs of PR checks as evidence of tests having been run, or recording a PR review approval as evidence changes are being peer reviewed.
+
+Materials are stored with the [`releasemanager.save_material`](integrations/hiphops-releasemanager.md#task-save_material) task.
+
+TODO:
+* What is the relationship between materials, changes and SHAs
+* How does outdating work
+* How do you use annotations/how does grouping work
+* What are the types
+
+### Relevant events
+
+You could feasibly have materials saved in response to any event, however some are more likely to be relevant than others.
+
+The following is a list of those events more likely to be relevant.
+
+ **Check suite**
+
+In Github, a Check Suite is a collection of checks that can be run against a repository - for example, a collection of tests to run in response to pushes on a pull request - which can, collectively, form a CI/CD process.
+
+The event we receive when a Check Suite completes includes a status, indicating whether the checks were successful or not, which we might want to reflect in a material.
+
+<details>
+<summary>See sample event and sensor</summary>
+
+[Check suite completed event](_sample_events/github_check_suite_completed.json ':include')
+
+[Saving check suite material sensor](_sample_sensors/check_suite_save_material.yaml ':include')
+
+</details>
+
+**Check run**
+
+In Github, a Check Run is a single check within a Check Suite - for example, one Check Run may run a repository's unit tests.
+
+The event we receive when a Check Run completes includes a status, indicating whether the check was successful or not, which we might want to reflect in a material.
+
+<details>
+<summary>See sample event and sensor</summary>
+
+[Check run completed event](_sample_events/github_check_run_completed.json ':include')
+
+[Saving check run material sensor](_sample_sensors/check_run_save_material.yaml ':include')
+
+</details>
+
+**Workflow run**
+
+In Github, a Workflow describes an automated process, and a Workflow Run is an instance of a Workflow's execution. All Check Runs have an associated Workflow Run that describes their execution, but a Workflow Run doesn't have to be a Check Run.
+
+Aside from being more generic than Check Suites/Runs, Workflow Runs can also be used to obtain logs of their execution, so if you require more detailed logging for audit purposes, you should consider having a sensor that fetches a Workflow Run's logs and saves them as a material. This is done by first using the [`github.fetch_workflow_run_logs`](integrations/github.md#task-fetch_workflow_run_logs) task, and then feeding its output to the [`releasemanager.save_material`](integrations/hiphops-releasemanager.md#task-save_material) task.
+
+<details>
+<summary>See sample event and sensor (includes log fetching & saving)</summary>
+
+[Workflow run completed event](_sample_events/github_workflow_run_completed.json ':include')
+
+[Saving workflow run logs material sensor](_sample_sensors/workflow_run_save_material.yaml ':include')
+
+</details>
+
+**PR review**
+
+When a review is submitted on a PR, we receive an event about it, containing details such as the user that made the review, and the status they gave it (e.g. `approved` or `changes_requested`). Given that these are often used as one form of approval, you may want to save these as materials.
+
+<details>
+<summary>See sample event and sensor</summary>
+
+[PR review submitted event](_sample_events/github_pull_request_review_submitted.json ':include')
+
+[Saving PR review material sensor](_sample_sensors/pull_request_review_save_material.yaml ':include')
+
+</details>
+
+**PR comment**
+
+We also receive events when you leave an individual review comment on a PR. This is less overtly useful than the review itself, but you may still want to record all such comments as materials for audit purposes.
+
+<details>
+<summary>See sample event and sensor</summary>
+
+[PR review comment created event](_sample_events/github_pull_request_review_comment_created.json ':include')
+
+[Saving PR review comment material sensor](_sample_sensors/pull_request_review_comment_save_material.yaml ':include')
+
+</details>
+

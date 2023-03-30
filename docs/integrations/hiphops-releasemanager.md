@@ -266,41 +266,24 @@ tasks:
 - name: releasemanager.save_material
   id: save_material
   input:
-    (expr)create_files: | # (Optional) key: value pairs where the key is a string and the value is a string or JSON object. Described above.
-      ({ "workflow_run.json": event })
-    (path)copy_files: vars.workflow_logs.log_file_location # (Optional) either a string, or an array of strings. These values are the locations of files stored with Hiphops, such as the output of the github.fetch_workflow_run_logs task. Described above.
+    (expr)create_files: '({ "workflow_run.json": event })' # (Optional) key: value pairs where the key is a string and the value is a string or JSON object. Described above.
+    (path)copy_files: vars.workflow_logs.log_file_location # (Optional) string or an array of strings - these values are the locations of files stored with Hiphops, such as the output of the github.fetch_workflow_run_logs task. Described above.
     name: workflow run logs # String - The name to assign the material
     sha: 04febd94cb595a4e6a307c2510088a756c64e932 #  String - The SHA to associate the material with
-    type: MATERIAL # (Optional) enum - The type to assign the material. Values: MATERIAL, LOGS, TEST, EVIDENCE, APPROVAL, REPORT. Defaults to MATERIAL.
+    type: material # (Optional) enum - The type to assign the material. Values: material, logs, test, evidence, approval, report. Defaults to material.
     outdate_on_sha: false # (Optional) boolean - Whether to mark materials as out of date based on SHA, as described above. Defaults to true.
-    annotations: # (Optional) key: value pairs of strings. Used for hiding older materials, as described above.
+    annotations:
       key1: value1
-      key2: value2
-
+      key2: value2 # (Optional) key: value pairs of strings - used for hiding older materials, as described above.
 ```
+
+###### Example sensors:
+  - [Saving check run completions](../_sample_sensors/check_run_save_material.yaml)
+  - [Saving check suite completions](../_sample_sensors/check_suite_save_material.yaml)
+  - [Saving workflow run completions, including logs](../_sample_sensors/workflow_run_save_material.yaml)
+  - [Saving pull request reviews](../_sample_sensors/pull_request_review_save_material.yaml)
+  - [Saving pull request comments](../_sample_sensors/pull_request_review_comment_save_material.yaml)
 
 ###### Responds with
 
-Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
-
-If successful the returned `vars` object will have an object containing the key `material`, the value of which will be an object containing details about the saved material. These details are mostly useful for debugging purposes.
-
-Example:
-
-Assumes that the task ID was set as `save_material`.
-
-```js
-{
-  "vars": {
-    "save_material": {
-      "material": {
-        "id": "dd647606-56bc-43a4-84a4-c9aa099fb59e", // The material ID
-        "sourceId": "e7ea0351b91ba26667ed5989d42152fda7b4a0b1", // The material SHA
-        "storageBucket": "hiphops-project-0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3", // The bucket the material is saved in
-        "fileName": "material/dd647606-56bc-43a4-84a4-c9aa099fb59e/dd647606-56bc-43a4-84a4-c9aa099fb59e.zip", // The file path of the saved material
-        "storagePath": "hiphops-project-0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3/material/dd647606-56bc-43a4-84a4-c9aa099fb59e/dd647606-56bc-43a4-84a4-c9aa099fb59e.zip" // The full location of the saved material file
-      }
-    }
-  }
-}
-```
+Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).

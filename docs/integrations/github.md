@@ -892,6 +892,9 @@ tasks:
     workflow_run_id: 12345 # Number - The ID of the workflow run, as a number
 ```
 
+###### Example sensor:
+  [Fetching and saving workflow run logs](../_sample_sensors/workflow_run_save_material.yaml)
+
 ###### Responds with
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
@@ -906,7 +909,7 @@ Assumes that the task ID was set as `workflow_logs`.
 {
   "vars": {
     "workflow_logs": {
-      "log_file_location": "hiphops-project-0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3/scratch/3c500413-a29f-4d3a-a5bc-b3a4dccf9564/github.fetch_workflow_run_logs/4544497015.zip"
+      "log_file_location": "github.fetch_workflow_run_logs/4544497015.zip"
     }
   }
 }

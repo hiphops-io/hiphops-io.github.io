@@ -1,0 +1,21 @@
+---
+resource: sensor
+id: Record check run event as material
+when:
+  event.hiphops.source: github
+  event.hiphops.event: check_run
+  event.hiphops.action: completed
+tasks:
+  - name: releasemanager.save_material
+    input:
+      (expr)name: |
+        (`${event.check_run.conclusion === "success" ? "✅" : "❌"}  Check run: ${event.check_run.name}`)
+      (path)sha: event.check_run.head_sha
+      (expr)create_files: '({ "check_run_completed.json": event })'
+      (expr)type: |
+        (event.check_run.name.toLowerCase().includes("checks") ? "test" : "evidence")
+      (expr)annotations: |
+        ({
+          "event": "check_run",
+          "name": event.check_run.name
+        })
