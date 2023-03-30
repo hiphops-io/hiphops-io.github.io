@@ -300,6 +300,7 @@ tasks:
 
 </details>
 <details>
+
 <summary>Saving pull request reviews sensor</summary>
 
 [Saving pull request reviews sensor](../_sample_sensors/pull_request_review_save_material.yaml ':include')
