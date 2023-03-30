@@ -309,7 +309,6 @@ tasks:
 
 </details>
 
-
 <details>
 <summary>Saving pull request review comments sensor</summary>
 
