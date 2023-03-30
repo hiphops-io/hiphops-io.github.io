@@ -1,0 +1,17 @@
+---
+resource: sensor
+id: Record check suite event as material
+when:
+  event.hiphops.source: github
+  event.hiphops.event: check_suite
+  event.hiphops.action: completed
+tasks:
+  - name: releasemanager.save_material
+    input:
+      (expr)name: |
+        (`${event.check_suite.conclusion === "success" ? "✅" : "❌"}  Check suite completed`)
+      (path)sha: event.check_suite.head_sha
+      (expr)create_files: '({ "check_suite_completed.json": event })'
+      type: evidence
+      annotations:
+        event: check_suite
