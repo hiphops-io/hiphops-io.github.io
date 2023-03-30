@@ -299,7 +299,6 @@ tasks:
 [Saving workflow run completions (including logs) sensor](../_sample_sensors/workflow_run_save_material.yaml ':include')
 
 </details>
-
 <details>
 <summary>Saving pull request reviews sensor</summary>
 
