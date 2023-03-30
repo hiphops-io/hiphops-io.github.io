@@ -332,11 +332,47 @@ The most common reason you would want to do this is to track evidence of process
 
 Materials are stored with the [`releasemanager.save_material`](integrations/hiphops-releasemanager.md#task-save_material) task.
 
-TODO:
-* What is the relationship between materials, changes and SHAs
-* How does outdating work
-* How do you use annotations/how does grouping work
-* What are the types
+### Material type
+
+When saving a material, you can assign a type to it (the default is just `material`). The possible values are: `material`, `logs`, `test`, `evidence`, `approval`, `report`.
+
+### Relationship to changes and SHAs
+
+Currently, a material is related to a change via the commit SHAs of that change. As a change is closely related to a PR, it contains 1 one more SHAs associated with the commits it consists of (and once merged, a merge SHA). When you save a material with [`releasemanager.save_material`](integrations/hiphops-releasemanager.md#task-save_material), you provide a SHA. For example, when saving a workflow run's logs as a material, you'd provide the SHA of the code that the workflow was run against - available in the workflow run event's `workflow_run.head_sha` property.
+
+The sharing of this SHA between material and change is what links them - when viewing a change in the Hiphops app, any material that is associated with a SHA that is part of that change will be displayed.
+
+Relatedly, a material's SHA is central to how we mark it as `unchanging`, `out of date` or `latest`:
+* When saving a material, if you set `outdate_on_sha` to `false`, it will always show as 'unchanging'.
+* If `outdate_on_sha` is `true`, and the material's SHA matches a change's head or merge SHA, it will show as `latest`.
+* If `outdate_on_sha` is `true`, and the material's SHA matches a change's SHA, but not its head or merge SHA, it will show as `out of date`.
+
+In this way, you can see if the code has moved on since the time when material was saved - useful for those materials that relate to a specific snapshot of your change.
+
+### Annotations and hiding older materials
+
+If you have sensors capturing materials related to check runs and other events that occur every time a push is made to a PR, you can very quickly end up with a lot of materials on an actively developed change - many of them simply being more recent versions of a prior material (e.g. the result of the same set of PR checks, for every time they were run in response to a push).
+
+You may instead want to see only the most recent version of such a material. This can be achieved by using annotations - simple key: value pairs of strings that you assign at the time of saving a material.
+
+If a material has annotations assigned to it, then all materials for a particular change that share the same set of annotations will be grouped up, with only the most recent one being shown when viewing the change.
+
+For example, if we are capturing the workflow run logs for two separate PR checks - "Unit tests" and "Terraform plan" - as materials, then we can assign them the following annotations:
+
+Note: these are incomplete snippets from a larger sensor - and in practice you are likely to assign these values with values from the event payloads themselves, with expressions.
+```yaml
+name: PR unit tests - logs
+annotations:
+  event: workflow_run
+  check: unit tests
+
+name: PR terraform plan - logs
+annotations:
+  event: workflow_run
+  check: terraform plan
+```
+
+The result of this will be only seeing a single entry for "PR unit tests - logs" and a single entry for "PR terraform plan - logs" when viewing a change, regardless of how many of them have been saved (as long as its at least one).
 
 ### Relevant events
 
