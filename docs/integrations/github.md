@@ -905,18 +905,15 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
-If successful the returned `vars` object will have an object containing the key `log_file_location`, the value of which will be the temporary storage location the logs were saved to. 
+If successful the returned `result` object will contain the key `log_file_location`, the value of which will be the temporary storage location the logs were saved to. It will also contain the key `message`, giving a simple indication of the success of the task. 
 
 Example:
 
-Assumes that the task ID was set as `workflow_logs`.
-
 ```js
 {
-  "vars": {
-    "workflow_logs": {
-      "log_file_location": "github.fetch_workflow_run_logs/4544497015.zip"
-    }
+  "result": {
+    "log_file_location": "github.fetch_workflow_run_logs/1575014991.zip",
+    "message": "Workflow logs 1575014991 fetched"
   }
 }
 ```

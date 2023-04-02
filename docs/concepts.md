@@ -81,7 +81,7 @@ When a sensor matches an event, a pipeline run is created within Hiphops. This c
       "READY": "2023-02-23T10:19:20.633Z",
       "RUNNING": "2023-02-23T10:19:23.028Z",
       "SUCCESS": "2023-02-23T10:19:26.062703Z", // String - task completed successfully
-      "result": "Preparation of release from Github push successful" //  String - result of task. If it fails, then `error_message` will be set instead.
+      "result": "Preparation of release from Github push successful" //  String or object - result of task. If it fails, then `error_message` will be set instead.
     }
   },
   "vars": {}, // Object - variables set by tasks when they run. Can be used in any expression of a task
@@ -182,7 +182,8 @@ Tasks are not timelimited. Therefore Hiphops can easily support long running tas
 
 #### 5. Tasks return results
 
-All tasks return a result.
+All tasks return a result (in the task response's `result` property). This `result` can either be a simple string message, or it can be a JSON object, with string keys and values of any type.
+If the task fails, it will return an `error_message` property instead.
 
 The pipeline run is updated with the returned result of the task and then all remaining pending tasks are checked to see if they can now be set to ready.
 
