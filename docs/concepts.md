@@ -182,7 +182,7 @@ Tasks are not timelimited. Therefore Hiphops can easily support long running tas
 
 #### 5. Tasks return results
 
-All tasks return a result (in the task response's `result` property). This `result` can either be a simple string message, or it can be a JSON object, with string keys and values of any type.
+All tasks return a result (in the task response's `result` property). This `result` can be any valid JSON (which includes objects, arrays, strings, numbers, booleans and `null`).
 If the task fails, it will return an `error_message` property instead.
 
 The pipeline run is updated with the returned result of the task and then all remaining pending tasks are checked to see if they can now be set to ready.

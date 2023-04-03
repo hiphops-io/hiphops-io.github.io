@@ -70,14 +70,17 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
-If successful it will respond with a `vars` object, that has - against the key `pr_number` - the number of the newly created PR.
+If successful the returned `result` object will contain the create PR number against the key `pr_number`.
+It will also contain the key `message`, giving a simple indication of the success of the task.
+
 
 Example:
 
 ```js
 {
-  "vars": {
-    "pr_number": 466 // The PR number
+  "result": {
+    "pr_number": 466,
+    "message": "Successfully created PR 466",
   }
 }
 ```
@@ -203,7 +206,7 @@ Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_me
 
 ## Task: `fetch_pr_files`
 
-Fetches details about the files changed in a PR, placing the data in `vars.pr_files` for use by other tasks.
+Fetches details about the files changed in a PR, returning the data for use by other tasks.
 
 ```yaml
 tasks:
@@ -217,13 +220,14 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
-If successful it will respond with a `vars` object, that has &mdash; against the key `pr_files` &mdash; an array of data about the PR's files matching the output of [GitHub's list pull requests files endpoint](https://docs.github.com/en/rest/pulls/pulls#list-pull-requests-files).
+If successful the returned `result` object will contain the key `pr_files`, an array of data about the PR's files matching the output of [GitHub's list pull requests files endpoint](https://docs.github.com/en/rest/pulls/pulls#list-pull-requests-files).
+It will also contain the key `message`, giving a simple indication of the success of the task.
 
 Example:
 
 ```json
 {
-  "vars": {
+  "result": {
     "pr_files": [
       {
         "sha": "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07",
@@ -237,7 +241,8 @@ Example:
         "contents_url": "https://api.github.com/repos/hiphops-io/integration-test/contents/e1ec5e842183b1878ccc61c8368108b1b1d6198c.txt?ref=22b88538a0fadf73b427fe749ae7bbbaece2ee57",
         "patch": "@@ -0,0 +1 @@\n+e1ec5e842183b1878ccc61c8368108b1b1d6198c\n\\ No newline at end of file"
       }
-    ]
+    ],
+    "message": "Github PR file data retrieved"
   }
 }
 ```
@@ -286,20 +291,22 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
-If successful it will respond with a `vars` object, that has &mdash; against the key `created_tag` &mdash; an object containing information about the created tag.
+If successful the returned `result` object will contain the key `created_tag`, an object containing information about the created tag.
+It will also contain the key `message`, giving a simple indication of the success of the task.
 
 Example:
 
 ```js
 {
-  "vars": {
+  "result": {
     "created_tag": {
       "tag": "v23.01.05", // The tag name
       "tag_ref": "refs/tags/v23.01.05", // The tag ref
       "tagged_sha": "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07", // The SHA that was tagged
       "tag_sha": "940bd336248efae0f9ee5bc7b2d5c985887b16ac", // The SHA of the tag object
       "tag_message": "Final version of v23.01.05", // The tag message
-    }
+    },
+    "message": "Successfully created tag v23.01.05",
   }
 }
 ```
@@ -324,18 +331,20 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
-If successful it will respond with a `vars` object, that has - against the key `created_branch` - an object containing information about the created branch.
+If successful the returned `result` object will contain the key `created_branch`, an object containing information about the created branch.
+It will also contain the key `message`, giving a simple indication of the success of the task. 
 
 Example:
 
 ```js
 {
-  "vars": {
+  "result": {
     "created_branch": {
-      "branch": "a-nice-branch", // The branch name
-      "branch_ref": "refs/heads/branches/a-nice-branch", // The branch ref
+      "branch": "a-branch", // The branch name
+      "branch_ref": "refs/heads/a-branch", // The branch ref
       "sha": "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07", // The SHA of the branch
-    }
+    },
+    "message": "Successfully created branch refs/heads/a-branch",
   }
 }
 ```
@@ -344,7 +353,7 @@ Example:
 
 ## Task: `fetch_pr_commits`
 
-Fetches details about the files changed in a PR, placing the data in `vars.pr_commits` for use by other tasks.
+Fetches details about the files changed in a PR, returning the data for use by other tasks.
 
 ```yaml
 tasks:
@@ -358,13 +367,14 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
-If successful it will respond with a `vars` object, that has &mdash; against the key `pr_commits` &mdash; an array of data about the PR's commits matching the output of [Github's list pull requests commits endpoint](https://docs.github.com/en/rest/pulls/pulls#list-commits-on-a-pull-request).
+If successful the returned `result` object will contain the key `pr_commits`, an array of data about the PR's commits matching the output of [Github's list pull requests commits endpoint](https://docs.github.com/en/rest/pulls/pulls#list-commits-on-a-pull-request).
+It will also contain the key `message`, giving a simple indication of the success of the task. 
 
 Example:
 
 ```json
 {
-  "vars": {
+  "result": {
     "pr_commits": [
       {
         "sha": "59f34daa2771a1e88d88ae442016643923ed85ef",
@@ -445,7 +455,8 @@ Example:
           }
         ]
       }
-    ]
+    ],
+    "message": "Github PR commit data retrieved"
   }
 }
 ```
@@ -454,7 +465,7 @@ Example:
 
 ## Task: `fetch_repo_prs`
 
-Fetches details about the PRs in a repo, placing the data in `vars.repo_prs` for use by other tasks.
+Fetches details about the PRs in a repo, returning the data for use by other tasks.
 
 ```yaml
 tasks:
@@ -474,13 +485,14 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
-If successful it will respond with a `vars` object, that has &mdash; against the key `repo_prs` &mdash; an array of data about the repo's PRs matching the output of [Github's list pull requests endpoint](https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#list-pull-requests).
+If successful the returned `result` object will contain the key `repo_prs`, an array of data about the repo's PRs matching the output of [Github's list pull requests endpoint](https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#list-pull-requests).
+It will also contain the key `message`, giving a simple indication of the success of the task.
 
 Example:
 
 ```json
 {
-  "vars": {
+  "result": {
     "repo_prs": [
       {
         "url": "https://api.github.com/repos/hiphops-io/integration-test/pulls/346",
@@ -812,7 +824,8 @@ Example:
         "auto_merge": null,
         "active_lock_reason": null
       }
-    ]
+    ],
+    "message": "Github repo PR data retrieved",
   }
 }
 ```
@@ -881,7 +894,8 @@ Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_me
 Fetches the logs for a workflow run (e.g the logs of a check suite).
 Typically you would run this against a workflow_run event, and get the workflow_run_id input value from the event.workflow_run.id property.
 
-Rather than returning the logs directly, they will be saved in a temporary storage location which can be fed to other tasks such as [`releasemanager.save_material`](integrations/hiphops-releasemanager.md#task-save_material). This storage location is returned in the task's `vars` object.
+Rather than returning the logs directly, they will be saved in a temporary storage location which can be fed to other tasks such as [`releasemanager.save_material`](integrations/hiphops-releasemanager.md#task-save_material).
+This storage location is returned in the task's `result` object.
 
 ```yaml
 tasks:
@@ -905,7 +919,8 @@ tasks:
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
 
-If successful the returned `result` object will contain the key `log_file_location`, the value of which will be the temporary storage location the logs were saved to. It will also contain the key `message`, giving a simple indication of the success of the task. 
+If successful the returned `result` object will contain the key `log_file_location`, the value of which will be the temporary storage location the logs were saved to.
+It will also contain the key `message`, giving a simple indication of the success of the task. 
 
 Example:
 
