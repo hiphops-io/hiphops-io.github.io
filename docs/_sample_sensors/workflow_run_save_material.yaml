@@ -16,7 +16,7 @@ tasks:
       (expr)name: |
         (`${event.workflow_run.conclusion === "success" ? "✅" : "❌"}  Workflow run logs: ${event.workflow_run.name}`)
       (path)sha: event.workflow_run.head_sha
-      (path)copy_files: vars.workflow_logs.log_file_location
+      (path)copy_files: tasks.workflow_logs.result.log_file_location
       (expr)create_files: '({ "workflow_run_completed.json": event })'
       type: logs
       (expr)annotations: |
@@ -25,4 +25,4 @@ tasks:
           "name": event.workflow_run.name
         })
     depends:
-      $: tasks["workflow_logs"].SUCCESS
+      $: tasks.workflow_logs.COMPLETE

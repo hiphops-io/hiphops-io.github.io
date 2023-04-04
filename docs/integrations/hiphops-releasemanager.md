@@ -107,7 +107,7 @@ tasks:
 
 ###### Responds with
 
-Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error_message`).
 If successful the returned `result` object will contain the key `release`, described below.
 It will also contain the key `message`, giving a simple indication of the success of the task.
 
@@ -205,7 +205,7 @@ tasks:
 
 ###### Responds with
 
-Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error_message`).
 If successful the returned `result` object will contain the generated version string under the key `version`.
 
 ###### Example result
@@ -229,14 +229,14 @@ This task is usually followed by the `github.create_or_update_pr_comment` task.
 
 ###### Responds with
 
-Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
-Additionally, if successful, responds with a `vars` object containing the key `change_analysis_comment`.
+Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error_message`).
+If successful the returned `result` object will contain an object containing the analysis comment body against the key `change_analysis_comment`.
 
-###### Example vars
+###### Example result
 
 ```json
 {
-  "vars": {
+  "result": {
     "change_analysis_comment": {
       "repo": "backend",
       "pr_number": 611,
@@ -319,5 +319,5 @@ tasks:
 
 ###### Responds with
 
-Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error_message`).
 If successful the returned `result` object will contain the key `material_id`, containing the saved material's ID, and the key `message`, a simple indication of the success of the task.

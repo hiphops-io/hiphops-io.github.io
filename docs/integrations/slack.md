@@ -68,12 +68,12 @@ tasks:
       text: "Hello world" # (Optional) string - The message to post, which conforms to the slack payload format. One of text, attachments and blocks must be provided
       attachments: [] # (Optional) array - An array of attachments, which conform to the slack payload format. One of text, attachments and blocks must be provided
       blocks: [] # (Optional) array - An array of blocks, which conform to the slack payload format. One of text, attachments and blocks must be provided
-      (expr)thread_ts: tasks["0"].ts # (Optional) string - The timestamp of the message to reply to. This would come from the previous post_message task
+      (path)thread_ts: tasks.0.ts # (Optional) string - The timestamp of the message to reply to. This would come from the previous post_message task
 ```
 
 ###### Responds with
 
-Provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error_message`).
 If successful the returned `result` object will contain details about the message, including its ID.
 
 ###### Example result
@@ -157,7 +157,7 @@ tasks:
 
 ###### Responds with
 
-Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error_message`).
 
 
 ---
@@ -170,8 +170,8 @@ Update a message to slack using the slack message API. The message can be a simp
 tasks:
   - name: slack.update_message
     input:
-      channel_id: C12345678901 # String - returned from the post_message task and accessed at `tasks["0"].channel` where the `"0"` is the ID of the post_message task
-      (expr)ts: tasks["0"].ts # (Optional) string - The timestamp of the message to update. This would come from the previous post_message or update_message task
+      channel_id: C12345678901 # String - returned from the post_message task and accessed at `tasks.0.channel` where the `"0"` is the ID of the post_message task
+      (path)ts: tasks.0.ts # (Optional) string - The timestamp of the message to update. This would come from the previous post_message or update_message task
       text: "Hello world" # (Optional) string - The message to post, which conforms to the slack payload format
       (expr)attachments: ([{ text: "Attachment text" }]) # (Optional) array - The message to post, which conforms to the slack payload format
       (expr)blocks: >
@@ -188,7 +188,7 @@ tasks:
 
 ###### Responds with
 
-Provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error_message`).
 If successful the returned `result` object will contain details about the message, including its ID.
 
 ###### Example result
