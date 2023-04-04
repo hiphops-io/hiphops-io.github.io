@@ -108,13 +108,14 @@ tasks:
 ###### Responds with
 
 Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
-Additionally, if successful, responds with a `vars` object containing the key `release` as described below.
+If successful the returned `result` object will contain the key `release`, described below.
+It will also contain the key `message`, giving a simple indication of the success of the task.
 
-###### Example vars
+###### Example result
 
 ```js
 {
-  "vars": {
+  "result": {
     "release": {
       "id": "6feddbec-4ca8-4e56-8df4-55fc7059e621",
       "created_at": "2023-03-09T23:10:43.884737+00:00",
@@ -136,7 +137,8 @@ Additionally, if successful, responds with a `vars` object containing the key `r
           "author_id": "0ff85ad3-fbc1-407c-9bb4-caed8af51f22"
         }
       ]
-    }
+    },
+    "message": "Release recorded"
   }
 }
 ```
@@ -203,14 +205,14 @@ tasks:
 
 ###### Responds with
 
-Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`). The `result` will contain the generated version string.
-Additionally, responds with a `vars` object containing a key which is the ID of the message.
+Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+If successful the returned `result` object will contain the generated version string under the key `version`.
 
-###### Example vars
+###### Example result
 
 ```js
 {
-  "0": {
+  "result": {
     "version": "v23.3.9"
   }
 }
@@ -267,7 +269,7 @@ tasks:
   id: save_material
   input:
     (expr)create_files: '({ "workflow_run.json": event })' # (Optional) key: value pairs where the key is a string and the value is a string or JSON object. Described above.
-    (path)copy_files: vars.workflow_logs.log_file_location # (Optional) string or an array of strings - these values are the locations of files stored with Hiphops, such as the output of the github.fetch_workflow_run_logs task. Described above.
+    (path)copy_files: tasks.workflow_logs.log_file_location # (Optional) string or an array of strings - these values are the locations of files stored with Hiphops, such as the output of the github.fetch_workflow_run_logs task. Described above.
     name: workflow run logs # String - The name to assign the material
     sha: 04febd94cb595a4e6a307c2510088a756c64e932 #  String - The SHA to associate the material with
     type: material # (Optional) enum - The type to assign the material. Values: material, logs, test, evidence, approval, report. Defaults to material.
@@ -318,3 +320,4 @@ tasks:
 ###### Responds with
 
 Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+If successful the returned `result` object will contain the key `material_id`, containing the saved material's ID, and the key `message`, a simple indication of the success of the task.
