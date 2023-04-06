@@ -40,9 +40,9 @@ When a sensor matches an event, a pipeline run is created within Hiphops. This c
 ```json
 {
   "id": "69b4b222-0f12-4253-8f8e-ca43199b6fc2", // String - unique id for this pipeline
-  "state": { //  Object - cumulative list of pipeline run states. Run has completed with `SUCCESS` (states are `RUNNING`, `SUCCESS`, `FAILURE`). Runs fail if any task fails.
+  "state": { //  Object - cumulative list of pipeline run states. Run has completed with `COMPLETE` (states are `RUNNING`, `COMPLETE`, `FAILURE`). Runs fail if any task fails.
     "RUNNING": "2023-02-23T10:19:18.923Z", // String - timestamp of start
-    "SUCCESS": "2023-02-23T10:19:26.725Z" // String - timestamp of completion
+    "COMPLETE": "2023-02-23T10:19:26.725Z" // String - timestamp of completion
   },
   "system": true, // Boolean - false if from user `hiphops.yaml` file; true if from system
   "sensor": { // Object - sensor that triggered pipeline run
@@ -71,7 +71,7 @@ When a sensor matches an event, a pipeline run is created within Hiphops. This c
   },
   "project_id": "0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3", // String - id of the project this pipeline run belongs to (id can be found in the url when viewing a project in the Hiphops UI)
   "lifecycle": { // Object - shows all tasks, and their state.
-    "0": { // String - index of the task in the `sensor.tasks` array. States are `PENDING`, `READY`, `RUNNING`, `SUCCESS`, `FAILURE`, `SKIPPED`. All states are present in order (a log of the state changes)
+    "0": { // String - index of the task in the `sensor.tasks` array. States are `PENDING`, `READY`, `RUNNING`, `COMPLETE`, `FAILURE`, `SKIPPED`. All states are present in order (a log of the state changes)
       "PENDING": "2023-02-23T10:19:18.923Z",
       "task": { // Object - a copy of the task that is executed
         "name": "system.releasemanager.prepare_release_from_push",
@@ -80,8 +80,8 @@ When a sensor matches an event, a pipeline run is created within Hiphops. This c
       },
       "READY": "2023-02-23T10:19:20.633Z",
       "RUNNING": "2023-02-23T10:19:23.028Z",
-      "SUCCESS": "2023-02-23T10:19:26.062703Z", // String - task completed successfully
-      "result": "Preparation of release from Github push successful" //  String or object - result of task. If it fails, then `error_message` will be set instead.
+      "COMPLETE": "2023-02-23T10:19:26.062703Z", // String - task completed successfully
+      "result": "Preparation of release from Github push successful" //  String or object - result of task. If it fails, then `error` will be set instead.
     }
   },
   "vars": {}, // Object - variables set by tasks when they run. Can be used in any expression of a task
@@ -183,7 +183,7 @@ Tasks are not timelimited. Therefore Hiphops can easily support long running tas
 #### 5. Tasks return results
 
 All tasks return a result (in the task response's `result` property). This `result` can be any valid JSON (which includes objects, arrays, strings, numbers, booleans and `null`). It cannot, however, be undefined.
-If the task fails, it will return an `error_message` property instead (and may also contain the error itself as an object in `result`).
+If the task fails, it will return an `error` property instead, a string message about what went wrong.
 
 The pipeline run is updated with the returned result of the task and then all remaining pending tasks are checked to see if they can now be set to ready.
 

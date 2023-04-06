@@ -68,7 +68,7 @@ tasks:
 
 ###### Responds with
 
-Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 If successful the returned `result` object will contain the create PR number against the key `pr_number`.
 It will also contain the key `message`, giving a simple indication of the success of the task.
@@ -107,7 +107,7 @@ tasks:
 
 ###### Responds with
 
-Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 ---
 
@@ -132,7 +132,7 @@ tasks:
 
 ###### Responds with
 
-Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 ---
 
@@ -159,7 +159,7 @@ tasks:
 
 ###### Responds with
 
-Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 ---
 
@@ -200,7 +200,7 @@ tasks:
 
 ###### Responds with
 
-Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 ---
 
@@ -218,7 +218,7 @@ tasks:
 
 ###### Responds with
 
-Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 If successful the returned `result` object will contain the key `pr_files`, an array of data about the PR's files matching the output of [GitHub's list pull requests files endpoint](https://docs.github.com/en/rest/pulls/pulls#list-pull-requests-files).
 It will also contain the key `message`, giving a simple indication of the success of the task.
@@ -269,7 +269,7 @@ tasks:
 
 ###### Responds with
 
-Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 ---
 
@@ -289,7 +289,7 @@ tasks:
 
 ###### Responds with
 
-Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 If successful the returned `result` object will contain the key `created_tag`, an object containing information about the created tag.
 It will also contain the key `message`, giving a simple indication of the success of the task.
@@ -329,7 +329,7 @@ tasks:
 
 ###### Responds with
 
-Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 If successful the returned `result` object will contain the key `created_branch`, an object containing information about the created branch.
 It will also contain the key `message`, giving a simple indication of the success of the task. 
@@ -365,7 +365,7 @@ tasks:
 
 ###### Responds with
 
-Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 If successful the returned `result` object will contain the key `pr_commits`, an array of data about the PR's commits matching the output of [Github's list pull requests commits endpoint](https://docs.github.com/en/rest/pulls/pulls#list-commits-on-a-pull-request).
 It will also contain the key `message`, giving a simple indication of the success of the task. 
@@ -483,7 +483,7 @@ tasks:
 
 ###### Responds with
 
-Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 If successful the returned `result` object will contain the key `repo_prs`, an array of data about the repo's PRs matching the output of [Github's list pull requests endpoint](https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#list-pull-requests).
 It will also contain the key `message`, giving a simple indication of the success of the task.
@@ -884,7 +884,7 @@ tasks:
 
 ###### Responds with
 
-Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 
 ---
@@ -917,7 +917,7 @@ tasks:
 
 ###### Responds with
 
-Provides the standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 If successful the returned `result` object will contain the key `log_file_location`, the value of which will be the temporary storage location the logs were saved to.
 It will also contain the key `message`, giving a simple indication of the success of the task. 
