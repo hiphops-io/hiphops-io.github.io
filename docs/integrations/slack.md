@@ -73,7 +73,7 @@ tasks:
 
 ###### Responds with
 
-Provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error_message`).
+Provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 If successful the returned `result` object will contain details about the message, including its ID.
 
 ###### Example result
@@ -157,7 +157,7 @@ tasks:
 
 ###### Responds with
 
-Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error_message`).
+Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 
 ---
@@ -188,7 +188,7 @@ tasks:
 
 ###### Responds with
 
-Provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error_message`).
+Provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 If successful the returned `result` object will contain details about the message, including its ID.
 
 ###### Example result
