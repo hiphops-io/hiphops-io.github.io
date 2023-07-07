@@ -1,0 +1,21 @@
+---
+resource: sensor
+id: Record PR review event as material
+when:
+  event.hiphops.source: github
+  event.hiphops.event: pull_request_review
+  event.hiphops.action: submitted
+  (not)event.review.state: commented
+tasks:
+  - name: releasemanager.save_material
+    input:
+      (expr)name: |
+        (`${event.review.state === "approved" ? "✅" : (event.review.state === "changes_requested" ? "❌" : "ℹ️")}  PR review submitted by ${event.review.user.login}`)
+      (path)sha: event.pull_request.head.sha
+      (expr)create_files: '({ "pull_request_review_submitted.json": event })'
+      type: approval
+      (expr)annotations: |
+        ({
+          "event": "pull_request_review",
+          "reviewer": event.review.user.login
+        })

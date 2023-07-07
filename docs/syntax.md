@@ -248,7 +248,7 @@ tasks:
   id: first
 - name: foo.some_second_task
   depends:
-    $: tasks.first.SUCCESS # Once the `first` task has successfully completed this property will be populated, meaning the task can trigger
+    $: tasks.first.COMPLETE # Once the `first` task has successfully completed this property will be populated, meaning the task can trigger
 ```
 
 

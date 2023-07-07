@@ -1,0 +1,22 @@
+---
+resource: sensor
+id: Test github rest integration
+when:
+  event.command: "github_rest"
+
+tasks:
+  - name: github.rest
+    id: rest
+    input:
+      route: "GET /repos/{owner}/{repo}/issues"
+      (expr)options: |
+        ({
+          repo: "backend",
+          per_page: 2
+        })
+  - name: slack.post_message
+    depends:
+      $: tasks.rest.COMPLETE
+    input:
+      channel: slack-integration-dev
+      $: "({text: `RESULT: ${JSON.stringify(tasks.rest.result, undefined, 2)}`})"

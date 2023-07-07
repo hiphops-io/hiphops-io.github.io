@@ -40,9 +40,9 @@ When a sensor matches an event, a pipeline run is created within Hiphops. This c
 ```json
 {
   "id": "69b4b222-0f12-4253-8f8e-ca43199b6fc2", // String - unique id for this pipeline
-  "state": { //  Object - cumulative list of pipeline run states. Run has completed with `SUCCESS` (states are `RUNNING`, `SUCCESS`, `FAILURE`). Runs fail if any task fails.
+  "state": { //  Object - cumulative list of pipeline run states. Run has completed with `COMPLETE` (states are `RUNNING`, `COMPLETE`, `FAILURE`). Runs fail if any task fails.
     "RUNNING": "2023-02-23T10:19:18.923Z", // String - timestamp of start
-    "SUCCESS": "2023-02-23T10:19:26.725Z" // String - timestamp of completion
+    "COMPLETE": "2023-02-23T10:19:26.725Z" // String - timestamp of completion
   },
   "system": true, // Boolean - false if from user `hiphops.yaml` file; true if from system
   "sensor": { // Object - sensor that triggered pipeline run
@@ -71,7 +71,7 @@ When a sensor matches an event, a pipeline run is created within Hiphops. This c
   },
   "project_id": "0395b0b2-0dcd-4dfb-89f8-65a36d32d9f3", // String - id of the project this pipeline run belongs to (id can be found in the url when viewing a project in the Hiphops UI)
   "lifecycle": { // Object - shows all tasks, and their state.
-    "0": { // String - index of the task in the `sensor.tasks` array. States are `PENDING`, `READY`, `RUNNING`, `SUCCESS`, `FAILURE`, `SKIPPED`. All states are present in order (a log of the state changes)
+    "0": { // String - index of the task in the `sensor.tasks` array. States are `PENDING`, `READY`, `RUNNING`, `COMPLETE`, `FAILURE`, `SKIPPED`. All states are present in order (a log of the state changes)
       "PENDING": "2023-02-23T10:19:18.923Z",
       "task": { // Object - a copy of the task that is executed
         "name": "system.releasemanager.prepare_release_from_push",
@@ -80,8 +80,8 @@ When a sensor matches an event, a pipeline run is created within Hiphops. This c
       },
       "READY": "2023-02-23T10:19:20.633Z",
       "RUNNING": "2023-02-23T10:19:23.028Z",
-      "SUCCESS": "2023-02-23T10:19:26.062703Z", // String - task completed successfully
-      "result": "Preparation of release from Github push successful" //  String - result of task. If it fails, then `error_message` will be set instead.
+      "COMPLETE": "2023-02-23T10:19:26.062703Z", // String - task completed successfully
+      "result": "Preparation of release from Github push successful" //  String or object - result of task. If it fails, then `error` will be set instead.
     }
   },
   "vars": {}, // Object - variables set by tasks when they run. Can be used in any expression of a task
@@ -182,7 +182,8 @@ Tasks are not timelimited. Therefore Hiphops can easily support long running tas
 
 #### 5. Tasks return results
 
-All tasks return a result.
+All tasks return a result (in the task response's `result` property). This `result` can be any valid JSON (which includes objects, arrays, strings, numbers, booleans and `null`). It cannot, however, be undefined.
+If the task fails, it will return an `error` property instead, a string message about what went wrong.
 
 The pipeline run is updated with the returned result of the task and then all remaining pending tasks are checked to see if they can now be set to ready.
 
@@ -322,3 +323,132 @@ The variables and structures are:
 - `pipeline_run` - The full pipeline run that is currently executing
 - `tasks` - A list of all tasks that are defined in the sensor. The tasks can be accessed either by their id or by their index in the list (the order as defined in the `hiphops.yaml` file)
 - `input` - The input to the task. This is the same as the `input` field in the `hiphops.yaml` file
+
+
+## Materials
+
+Materials are any kind of document, file or blob of data that you want to associate with a change (or, in the near future, a release).
+
+The most common reason you would want to do this is to track evidence of processes for audit purposes - for example, storing the logs of runs of PR checks as evidence of tests having been run, or recording a PR review approval as evidence changes are being peer reviewed.
+
+Materials are stored with the [`releasemanager.save_material`](integrations/hiphops-releasemanager.md#task-save_material) task.
+
+### Material type
+
+When saving a material, you can assign a type to it (the default is just `material`). The possible values are: `material`, `logs`, `test`, `evidence`, `approval`, `report`.
+
+### Relationship to changes and SHAs
+
+Currently, a material is related to a change via the commit SHAs of that change. As a change is closely related to a PR, it contains 1 one more SHAs associated with the commits it consists of (and once merged, a merge SHA). When you save a material with [`releasemanager.save_material`](integrations/hiphops-releasemanager.md#task-save_material), you provide a SHA. For example, when saving a workflow run's logs as a material, you'd provide the SHA of the code that the workflow was run against - available in the workflow run event's `workflow_run.head_sha` property.
+
+The sharing of this SHA between material and change is what links them - when viewing a change in the Hiphops app, any material that is associated with a SHA that is part of that change will be displayed.
+
+Relatedly, a material's SHA is central to how we mark it as `unchanging`, `out of date` or `latest`:
+* When saving a material, if you set `outdate_on_sha` to `false`, it will always show as 'unchanging'.
+* If `outdate_on_sha` is `true`, and the material's SHA matches a change's head or merge SHA, it will show as `latest`.
+* If `outdate_on_sha` is `true`, and the material's SHA matches a change's SHA, but not its head or merge SHA, it will show as `out of date`.
+
+In this way, you can see if the code has moved on since the time when material was saved - useful for those materials that relate to a specific snapshot of your change.
+
+### Annotations and hiding older materials
+
+If you have sensors capturing materials related to check runs and other events that occur every time a push is made to a PR, you can very quickly end up with a lot of materials on an actively developed change - many of them simply being more recent versions of a prior material (e.g. the result of the same set of PR checks, for every time they were run in response to a push).
+
+You may instead want to see only the most recent version of such a material. This can be achieved by using annotations - simple key: value pairs of strings that you assign at the time of saving a material.
+
+If a material has annotations assigned to it, then all materials for a particular change that share the same set of annotations will be grouped up, with only the most recent one being shown when viewing the change.
+
+For example, if we are capturing the workflow run logs for two separate PR checks - "Unit tests" and "Terraform plan" - as materials, then we can assign them the following annotations:
+
+Note: these are incomplete snippets from a larger sensor - and in practice you are likely to assign these values with values from the event payloads themselves, with expressions.
+```yaml
+name: PR unit tests - logs
+annotations:
+  event: workflow_run
+  check: unit tests
+
+name: PR terraform plan - logs
+annotations:
+  event: workflow_run
+  check: terraform plan
+```
+
+The result of this will be only seeing a single entry for "PR unit tests - logs" and a single entry for "PR terraform plan - logs" when viewing a change, regardless of how many of them have been saved (as long as its at least one).
+
+### Relevant events
+
+You could feasibly have materials saved in response to any event, however some are more likely to be relevant than others.
+
+The following is a list of those events more likely to be relevant.
+
+ **Check suite**
+
+In Github, a Check Suite is a collection of checks that can be run against a repository - for example, a collection of tests to run in response to pushes on a pull request - which can, collectively, form a CI/CD process.
+
+The event we receive when a Check Suite completes includes a status, indicating whether the checks were successful or not, which we might want to reflect in a material.
+
+<details>
+<summary>See sample event and sensor</summary>
+
+[Check suite completed event](_sample_events/github_check_suite_completed.json ':include')
+
+[Saving check suite material sensor](_sample_sensors/check_suite_save_material.yaml ':include')
+
+</details>
+
+**Check run**
+
+In Github, a Check Run is a single check within a Check Suite - for example, one Check Run may run a repository's unit tests.
+
+The event we receive when a Check Run completes includes a status, indicating whether the check was successful or not, which we might want to reflect in a material.
+
+<details>
+<summary>See sample event and sensor</summary>
+
+[Check run completed event](_sample_events/github_check_run_completed.json ':include')
+
+[Saving check run material sensor](_sample_sensors/check_run_save_material.yaml ':include')
+
+</details>
+
+**Workflow run**
+
+In Github, a Workflow describes an automated process, and a Workflow Run is an instance of a Workflow's execution. All Check Runs have an associated Workflow Run that describes their execution, but a Workflow Run doesn't have to be a Check Run.
+
+Aside from being more generic than Check Suites/Runs, Workflow Runs can also be used to obtain logs of their execution, so if you require more detailed logging for audit purposes, you should consider having a sensor that fetches a Workflow Run's logs and saves them as a material. This is done by first using the [`github.fetch_workflow_run_logs`](integrations/github.md#task-fetch_workflow_run_logs) task, and then feeding its output to the [`releasemanager.save_material`](integrations/hiphops-releasemanager.md#task-save_material) task.
+
+<details>
+<summary>See sample event and sensor (includes log fetching & saving)</summary>
+
+[Workflow run completed event](_sample_events/github_workflow_run_completed.json ':include')
+
+[Saving workflow run logs material sensor](_sample_sensors/workflow_run_save_material.yaml ':include')
+
+</details>
+
+**PR review**
+
+When a review is submitted on a PR, we receive an event about it, containing details such as the user that made the review, and the status they gave it (e.g. `approved` or `changes_requested`). Given that these are often used as one form of approval, you may want to save these as materials.
+
+<details>
+<summary>See sample event and sensor</summary>
+
+[PR review submitted event](_sample_events/github_pull_request_review_submitted.json ':include')
+
+[Saving PR review material sensor](_sample_sensors/pull_request_review_save_material.yaml ':include')
+
+</details>
+
+**PR comment**
+
+We also receive events when you leave an individual review comment on a PR. This is less overtly useful than the review itself, but you may still want to record all such comments as materials for audit purposes.
+
+<details>
+<summary>See sample event and sensor</summary>
+
+[PR review comment created event](_sample_events/github_pull_request_review_comment_created.json ':include')
+
+[Saving PR review comment material sensor](_sample_sensors/pull_request_review_comment_save_material.yaml ':include')
+
+</details>
+

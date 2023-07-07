@@ -147,11 +147,11 @@ tasks:
   
   - name: github.create_release
     depends:
-      $: tasks.release.SUCCESS
+      $: tasks.release.COMPLETE
     input:
       (path)repo: event.repo_name
-      (path)tag: vars.release.version
-      (path)release_name: vars.release.version
+      (path)tag_name: tasks.release.result.release.version
+      (path)release_name: tasks.release.result.release.version
       (expr)release_body: event.release_note || event.message
       (path)target: event.sha
 ```
