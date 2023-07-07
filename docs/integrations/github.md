@@ -111,6 +111,38 @@ Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`)
 
 ---
 
+## Task: `merge_pr_when_ready`
+
+Merges a PR's source branch into its target branch with auto-merge.
+
+When auto merge and branch protections are enabled on the repo, this sets the PR to automatically merge when ready.
+
+However, if the PR can be immediately merged, it will be immediately merged.
+
+(This task functions the same as `merge_pr` if auto-merge is not enabled or the PR is merge ready.)
+
+Assuming this is being triggered in response to an event that contains data about the PR, it's likely you'll want to pass the head SHA along in the `head_sha` input - if this is supplied, the merge will only go ahead if no further commits have been pushed since the event was triggered.
+
+```yaml
+tasks:
+- name: github.merge_pr_when_ready
+  input:
+    repo: backend # String - The name of the repository the PR is in
+    pr_number: 55 # Number - The PR number
+    merge_comment_title: Auto-merged this PR! # (Optional) string - The commit message title that will provided with the merge. Default: PR title
+    head_sha: 939abcd18feaa12345bdb # (Optional) string - The SHA the branch head must be at for the merge to proceed, to prevent race conditions. If not provided the merge will proceed without checking the SHA
+    merge_method: merge # (Optional) string - Merge method the PR wull be merged with. One of “merge”, “squash” or “rebase”. Default: “merge”
+```
+
+###### Responds with
+
+Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+
+`result` message will indicate if the PR was set to merge when ready or was immediately merged.
+
+
+---
+
 ## Task: `create_or_update_pr_comment`
 
 Creates or updates a comment on a PR.
@@ -920,7 +952,7 @@ tasks:
 Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 If successful the returned `result` object will contain the key `log_file_location`, the value of which will be the temporary storage location the logs were saved to.
-It will also contain the key `message`, giving a simple indication of the success of the task. 
+It will also contain the key `message`, giving a simple indication of the success of the task.
 
 Example:
 
@@ -929,6 +961,74 @@ Example:
   "result": {
     "log_file_location": "github.fetch_workflow_run_logs/1575014991.zip",
     "message": "Workflow logs 1575014991 fetched"
+  }
+}
+```
+
+
+---
+
+## Task: `rest`
+
+Access the full power of the [Github REST API](https://docs.github.com/en/rest).
+
+> Note: The integration will set `owner` for you, but otherwise leaves everything up to you.
+
+```yaml
+tasks:
+  - name: github.rest
+    id: rest
+    input:
+      route: "GET /repos/{owner}/{repo}/issues"
+      (expr)options: |
+        ({
+          repo: "backend",
+          per_page: 2
+        })
+```
+
+###### Example sensor:
+
+<details>
+<summary>Saving workflow run completions (including logs) sensor</summary>
+
+[Using Slack to get information through the REST API](../_sample_sensors/rest.yaml ':include')
+
+</details>
+
+###### Responds with
+
+Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
+
+If successful the returned `result` object will contain the reesults of the REST call.
+
+Example:
+
+```js
+{
+  "result": {
+    [
+      {
+        "id": 1782231228,
+        "state": "open",
+        "title": "An Issue",
+        "number": 796,
+        "created_at": "2023-06-30T09:45:55Z",
+
+        ...
+
+      },
+      {
+        "id": 1779335723,
+        "state": "open",
+        "title": "Another Issue",
+        "number": 793,
+        "created_at": "2023-06-28T16:50:28Z",
+
+        ...
+
+      }
+    ]
   }
 }
 ```
