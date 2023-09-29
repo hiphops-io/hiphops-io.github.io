@@ -1,8 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=swap');
+
+:root {
+  --base-font-size: 16px;
+  --theme-color   : #000 ;
+}
+
+body {
+  font-family: 'Instrument Sans', sans-serif;
+
+}
+
+/* Links */
+a {
+  color: #000 !important;
+}
+
+
+
+/* Logo in sidebar */
 .sidebar>.app-name>.app-name-link>img {
   display: block;
-  height: 7vh;
-  min-height: 35px;
+  height: 6vh;
+  min-height: 32px;
   object-fit: cover;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 1rem;
+  
+}
+
+/* Font stuff */
+.anchor span {
+    color: #000;
+}
+#hiphops {
+  font-weight: 500;
+  color: #000;
+  margin-bottom: 0px;
+}
+
+section.cover blockquote, section.cover p {
+    margin-top: 4px !important;
+    margin-bottom: 24px;
+    font-size: 20px;
+    color: #666;
+
+}
+
+.markdown-section {
+  color: #000;
+}
+
+
+/* Buttons in hero section */
+section.cover .cover-main>p:last-child a {
+    background-color: var(--theme-color,#000);
+    color: #fff !important;
+       letter-spacing: 0;
+    font-weight: 600;
+   
+}
+
+section.cover .cover-main>p:last-child a:last-child {
+    border-radius: 2rem;
+    background-color: #fff;
+    border: 1px solid #000;
+    box-sizing: border-box;
+    color: #000 !important;
+    letter-spacing: 0;
+    font-weight: 600;
+    margin: 0.5rem 0.5rem;
+}
+
+
+/* Quote */
+.markdown-section blockquote {
+    border-left: 2px solid #CCC !important;
+    border-left: 2px solid var(--theme-color,#CD72FC);
+    color: #000;
+    margin: 2em 0;
+    padding-left: 20px;
+}
+
+.markdown-section blockquote p {
+    font-weight: 500;
+    margin-left: 0;
+    line-height: 1.4;
+    color: #666;
+}
+
+
+/* Warning block */
+.markdown-section p.warn {
+    background: #F9EFFF;
+}
+
+/* Code container */
+.markdown-section code, .markdown-section pre {
+    background-color: #EEE;
+    border-radius: 4px;
+    color: #000;
 }

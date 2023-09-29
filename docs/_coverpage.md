@@ -1,11 +1,11 @@
 <!-- _coverpage.md -->
 
-![logo](_media/inverted-logo.svg ":size=200")
+![logo](_media/Casey-black.svg ":size=160")
 
-# Hiphops.io
+# HIPHOPS
 
-> Fully automate your dev process
+> Platform engineers. Let's dance (and read docs).
 
-[About Hiphops](#what-is-hiphops) [Get Started](installation.md)
+[Get Started](installation.md) [About Hiphops](#what-is-hiphops) 
 
-![color](#f0f0f0)
+![color](#fff)
