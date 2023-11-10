@@ -1,18 +1,21 @@
 - **Getting started**
   - [About Hiphops](about.md)
   - [Installation](installation.md)
-  - [Tutorials](tutorials.md)
-- **Reference**
-  - [Concepts](concepts.md)
+  <!-- Running model (top to bottom per message, first call wins, etc) -->
+  <!-- on blocks are assumed to run in parralel unless stated otherwise -->
+  <!-- Managing hiphops stuff (local dev, deployed instances, pipeline storage on sequences etc) -->
+  <!-- Multiple files handling -->
+  <!-- Syntax highlighting -->
+- **Writing .hops**
+  - [Structure](structure.md)
   - [Syntax](syntax.md)
-- **Integrations**
-  - [GitHub](integrations/github.md)
-  - [Slack](integrations/slack.md)
-  - [Hiphops - Release manager](integrations/hiphops-releasemanager.md)
-  - [Datadog <small>(coming soon)</small>](integrations/datadog.md)
-  - [Jira <small>(coming soon)</small>](integrations/jira.md)
-  - [ServiceNow <small>(coming soon)</small>](integrations/servicenow.md)
-  <!-- Add page for requesting an integration -->
-- **Recipes**
-  - [Simple Recipes](simple-recipes.md)
-<!-- - [Advanced Recipes](advanced-recipes.md) -->
+  - [Functions](functions.md)
+- **Apps**
+  - [GitHub](github.md)
+  - [Kubernetes](kubernetes.md)
+  - [OpenAI](openai.md)
+  - [Slack](slack.md)
+  - [100+ Coming Soon](coming-soon.md)
+- **Old**
+  - [Syntax](oldsyntax.md)
+

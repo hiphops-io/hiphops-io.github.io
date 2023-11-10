@@ -1,10 +1,4 @@
 # Coming Soon
 
-We're developing a number of huge additions to Hiphops at the moment. We can't share all of them just yet, but here's a sample of some we're excited about.
-
-
-## Controls scanning
-
-We're putting the final touches on this one, aiming for general release in mid-August.
-
-Controls scanning will periodically check connected tools for vulnerable config, alerting you to items that need addressing.
+We have 100+ SaaS, infra and built-in integrations in active development, coming soon.
+If your team need specific integrations and are keen to use Hiphops, please get in touch and we can discuss prioritising them for you.
