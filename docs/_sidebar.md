@@ -6,6 +6,8 @@
   <!-- Managing hiphops stuff (local dev, deployed instances, pipeline storage on sequences etc) -->
   <!-- Multiple files handling -->
   <!-- Syntax highlighting -->
+  <!-- Context object -->
+  <!-- Referencing values responses from other calls -->
 - **Writing .hops**
   - [Structure](structure.md)
   - [Syntax](syntax.md)

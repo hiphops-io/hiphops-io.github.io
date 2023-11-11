@@ -409,7 +409,7 @@ For more details, see the [section on 'param' blocks](#parameters-blockparam) be
 
 ---
 
-## Paremeters `[block:param]`
+## Parameters `[block:param]`
 
 `param` blocks can be defined within `task` blocks and accept the following:
 
@@ -572,7 +572,7 @@ on pullrequest {
 }
 ```
 
-There are plenty of built-in functions that are useful when writing hops configs, and these are defined in the Functions section on the left.<br>
+There are plenty of built-in functions that are useful when writing .hops configs, and these are defined in the Functions section on the left.<br>
 A few common ones to look at first are:
 
 - `alltrue()` accepts n-many boolean args and returns true if they are all true
