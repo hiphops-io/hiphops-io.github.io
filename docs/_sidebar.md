@@ -9,15 +9,14 @@
   <!-- Context object -->
   <!-- Referencing values responses from other calls -->
 - **Writing .hops**
-  - [Structure](structure.md)
+  - [Configuring](configuring.md)
   - [Syntax](syntax.md)
   - [Functions](functions.md)
+- **Running Hiphops**
+  - [TODO](oldsyntax.md)
 - **Apps**
   - [GitHub](github.md)
   - [Kubernetes](kubernetes.md)
   - [OpenAI](openai.md)
   - [Slack](slack.md)
   - [100+ Coming Soon](coming-soon.md)
-- **Old**
-  - [Syntax](oldsyntax.md)
-

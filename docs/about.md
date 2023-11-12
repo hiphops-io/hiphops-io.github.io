@@ -3,11 +3,18 @@
 **Hiphops is an open-source, highly extensible automation platform for tech teams.**
 
 It provides a powerful yet simple config language to define your pipelines, along with the custom UIs with which to trigger them.<br>
-By combining an orchestration layer, out of the box integrations, custom UIs and deep extensibility, Hiphops helps you automate in a way that is robust, accessible to all team members and free of boilerplate.
+
+Automate and orchestrate your SaaS tools, git repos and manual processes in a single platform. Out of the box SaaS integrations are paired with custom code execution, a powerful workflow syntax and configurable UIs.
+
 
 ---
 
 ## Features
+
+#### Control, orchestrate and automate your SaaS products 
+
+Out of the box, credential-free access to your tools means you have automations across your entire process in a few lines of config.
+
 
 #### Develop and test locally 👩‍💻
 
