@@ -1,36 +1,155 @@
 # GitHub
 
-_Integrating with GitHub enables you to automate standard developer flows, view your change and release data in Hiphops and monitor your GitHub account to maintain secure config._
+_Integrating with GitHub enables you to automate developer flows including approvals, merges, and releases._<br>
+_Using Hiphops enables easier and more sophisticated integrations with your other tools, such as Slack._
 
-|Name|Incoming events|Has tasks|Integration|
-|:-------|:-------|:-------|:-------|
-|`github`|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|Integrated as part of project creation in the UI|
+|Name|Listener|Worker|Setup|Auth|
+|:---|:-------|:-----|:----|:---|
+|`github`|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|Add via hiphops.io account page|Credential free (via GitHub App)|
 
 
-The structure of GitHub events is mostly identical to the events directly emitted by Github. The only difference is that they also contain the following properties at the event root:
-
-```yaml
-project_id: <the current project>
-hiphops:
-  source: github
-  event: <the event name>
-  action: <the event action>
-```
+> Note: The structure of GitHub events is mostly identical to the events directly emitted by Github.<br>
+> Whilst we'll show examples here, the GitHub docs are usually more exhaustive for exact event structures.
 
 ---
 
-## Event: `pull_request`
+## Event: `checksuite`
+
+actions: `completed`, `requested`, `rerequested`
+
+**Example usage:**
+
+```hcl
+# example.hops
+
+on checksuite {...} // Will trigger on any checksuite event
+
+on checksuite_completed {...} // Will trigger on any checksuite completed events
+
+on checksuite_requested { // Matches any checksuite requested event...
+  if = event.repository.name == "backend" // ... then filters to a specific repo
+  ...
+} 
+```
+
+**Example event:**
+
+[GitHub checksuite](../_sample_events/github_check_suite_completed.json ':include')
+
+
+For full details of this event's possible values, see [GitHub checksuite event docs](https://docs.github.com/en/webhooks/webhook-events-and-payloads#check_suite)
+
+---
+
+## Event: `checkrun`
+
+actions: `completed`, `requested`, `requested_action`, `rerequested`
+
+**Example usage:**
+
+```hcl
+# example.hops
+
+on checkrun {...} // Will trigger on any checkrun event
+
+on checkrun_completed {...} // Will trigger on any checkrun completed events
+
+on checkrun_requested { // Matches any checkrun requested event...
+  if = event.repository.name == "backend" // ... then filters to a specific repo
+  ...
+} 
+```
+
+**Example event:**
+
+[GitHub checkrun](../_sample_events/github_check_run_completed.json ':include')
+
+
+For full details of this event's possible values, see [GitHub checkrun event docs](https://docs.github.com/en/webhooks/webhook-events-and-payloads#check_run)
+
+---
+
+## Event: `issuecomment`
+
+actions: `created`, `deleted`, `edited`
+
+**Example usage:**
+
+```hcl
+# example.hops
+
+on issuecomment {...} // Will trigger on any issuecomment event
+
+on issuecomment_created {...} // Will trigger on any issuecomment created events
+
+on issuecomment_created { // Matches any issuecomment created event...
+  if = event.repository.name == "backend" // ... then filters to a specific repo
+  ...
+} 
+```
+
+**Example event:**
+
+[GitHub issuecomment](../_sample_events/github_issue_comment_created.json ':include')
+
+
+For full details of this event's possible values, see [GitHub issue_comment event docs](https://docs.github.com/en/webhooks/webhook-events-and-payloads#issue_comment)
+
+---
+
+## Event: `pullrequest`
 
 actions: `opened`, `closed`, `reopened`, `merged`, `edited`, `assigned`, `unassigned`, `labeled`, `unlabeled`, `synchronize`, `converted_to_draft`, `ready_for_review`, `locked`, `unlocked`, `review_requested`, `review_request_removed`, `auto_merge_enabled`, `auto_merge_disabled`
 
-<details>
-<summary>See sample event</summary>
+
+**Example usage:**
+
+```hcl
+# example.hops
+
+on pullrequest {...} // Will trigger on _any_ pullrequest action
+
+on pullrequest_opened {...} // Will trigger when a pullrequest is opened
+
+on pullrequest { // Matches any PR...
+  if = event.repository.name == "backend" // ... then filters to a specific repo
+}
+```
+
+**Example event:**
 
 [GitHub PR sample](../_sample_events/github_pull_request.json ':include')
 
-</details>
 
-For the details of the source event's possible values, see [GitHub pull request event docs](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#pull_request)
+For full details of this event's possible values, see [GitHub pull request event docs](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#pull_request)
+
+---
+
+## Event: `pullrequestreview`
+
+actions: `dismissed`, `edited`, `submitted`
+
+**Example usage:**
+
+```hcl
+# example.hops
+
+on pullrequestreview {...} // Will trigger on any pullrequestreview event
+
+on pullrequestreview_submitted {...} // Will trigger on any pullrequestreview submitted events
+
+on pullrequestreview_submitted { // Matches any pullrequestreview submitted event...
+  if = event.repository.name == "backend" // ... then filters to a specific repo
+  ...
+} 
+```
+
+**Example event:**
+
+[GitHub pullrequestreview](../_sample_events/github_pull_request_review_submitted.json ':include')
+
+
+For full details of this event's possible values, see [GitHub pull_request_review event docs](https://docs.github.com/en/webhooks/webhook-events-and-payloads#pull_request_review)
 
 ---
 
@@ -38,18 +157,57 @@ For the details of the source event's possible values, see [GitHub pull request 
 
 actions: `N/A`
 
-<details>
-<summary>See sample event</summary>
+**Example usage:**
+
+```hcl
+# example.hops
+
+on push {...} // Will trigger on push
+
+on push { // Matches any push...
+  if = event.ref == "refs/heads/main" // ... then filters by branch `main`
+  ...
+} 
+```
+
+**Example event:**
 
 [GitHub push sample](../_sample_events/github_push.json ':include')
 
-</details>
 
-For the full source event structure, see [GitHub push event docs](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#push)
+For full details of this event's possible values, see [GitHub push event docs](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#push)
 
 ---
 
-## Task: `create_pr`
+## Event: `workflowrun`
+
+actions: `completed`, `requested`, `in_progress`
+
+**Example usage:**
+
+```hcl
+# example.hops
+
+on workflowrun {...} // Will trigger on any workflowrun event
+
+on workflowrun_completed {...} // Will trigger on any workflowrun completed events
+
+on workflowrun_completed { // Matches any workflowrun completed event...
+  if = event.workflow.path == ".github/workflows/release.yaml" // ... then filters by the release.yaml workflow
+  ...
+} 
+```
+
+**Example event:**
+
+[GitHub workflowrun](../_sample_events/github_workflow_run_completed.json ':include')
+
+
+For full details of this event's possible values, see [GitHub workflowrun event docs](https://docs.github.com/en/webhooks/webhook-events-and-payloads#workflow_run)
+
+---
+
+## Call: `create_pr`
 
 Creates a PR in Github. If the `source_branch` does not exist, it will be created.
 Note that if the `source_branch` and `target_branch` have no difference in commits, this will create an empty commit.
@@ -88,7 +246,7 @@ Example:
 
 ---
 
-## Task: `merge_pr`
+## Call: `merge_pr`
 
 Merges a PR's source branch into its target branch.
 
@@ -111,7 +269,7 @@ Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`)
 
 ---
 
-## Task: `merge_pr_when_ready`
+## Call: `merge_pr_when_ready`
 
 Merges a PR's source branch into its target branch with auto-merge.
 
@@ -143,7 +301,7 @@ Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_me
 
 ---
 
-## Task: `create_or_update_pr_comment`
+## Call: `create_or_update_pr_comment`
 
 Creates or updates a comment on a PR.
 
@@ -168,7 +326,7 @@ Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`)
 
 ---
 
-## Task: `create_or_update_pr_review`
+## Call: `create_or_update_pr_review`
 
 Creates or updates a review on a PR.
 
@@ -195,7 +353,7 @@ Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`)
 
 ---
 
-## Task: `apply_pr_labels`
+## Call: `apply_pr_labels`
 
 Applies labels to a PR.
 
@@ -236,7 +394,7 @@ Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`)
 
 ---
 
-## Task: `fetch_pr_files`
+## Call: `fetch_pr_files`
 
 Fetches details about the files changed in a PR, returning the data for use by other tasks.
 
@@ -281,7 +439,7 @@ Example:
 
 ---
 
-## Task: `create_release`
+## Call: `create_release`
 
 Creates a release in Github. Will create the corresponding tag if it doesn't already exist.
 
@@ -305,7 +463,7 @@ Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 ---
 
-## Task: `create_tag`
+## Call: `create_tag`
 
 Creates a tag in Github.
 
@@ -345,7 +503,7 @@ Example:
 
 ---
 
-## Task: `create_branch`
+## Call: `create_branch`
 
 Creates a branch in Github. One of `sha` and `branch_from` must be provided - if both are provided, only `branch_from` will be used.
 
@@ -383,7 +541,7 @@ Example:
 
 ---
 
-## Task: `fetch_pr_commits`
+## Call: `fetch_pr_commits`
 
 Fetches details about the files changed in a PR, returning the data for use by other tasks.
 
@@ -495,7 +653,7 @@ Example:
 
 ---
 
-## Task: `fetch_repo_prs`
+## Call: `fetch_repo_prs`
 
 Fetches details about the PRs in a repo, returning the data for use by other tasks.
 
@@ -864,7 +1022,7 @@ Example:
 
 ---
 
-## Task: `create_repo_webhook`
+## Call: `create_repo_webhook`
 
 Creates a webhook for a particular repo in Github. Documentation for this (especially the events input) can be found [here](https://docs.github.com/en/rest/reference/repos#create-a-repository-webhook).
 
@@ -882,7 +1040,7 @@ tasks:
 
 ---
 
-## Task: `create_org_webhook`
+## Call: `create_org_webhook`
 
 Creates a webhook for your organization in Github. Documentation for this (especially the events input) can be found [here](https://docs.github.com/en/rest/orgs/webhooks?apiVersion=2022-11-28#create-an-organization-webhook).
 
@@ -899,7 +1057,7 @@ tasks:
 
 ---
 
-## Task: `dispatch_workflow`
+## Call: `dispatch_workflow`
 
 Dispatches a workflow for a given repository.
 
@@ -921,7 +1079,7 @@ Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`)
 
 ---
 
-## Task: `fetch_workflow_run_logs`
+## Call: `fetch_workflow_run_logs`
 
 Fetches the logs for a workflow run (e.g the logs of a check suite).
 Typically you would run this against a workflow_run event, and get the workflow_run_id input value from the event.workflow_run.id property.
@@ -968,7 +1126,7 @@ Example:
 
 ---
 
-## Task: `rest`
+## Call: `rest`
 
 Access the full power of the [Github REST API](https://docs.github.com/en/rest).
 

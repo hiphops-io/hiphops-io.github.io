@@ -4,8 +4,8 @@
 
 # HIPHOPS
 
-> Platform engineers. Let's dance (and read docs).
+> Automation lovers. Let's dance (and read docs).
 
-[Get Started](installation.md) [About Hiphops](#what-is-hiphops) 
+[Get Started](start-installation.md) [About Hiphops](start-about.md#what-is-hiphops) 
 
 ![color](#fff)

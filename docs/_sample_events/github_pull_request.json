@@ -1,5 +1,9 @@
 {
-  "project_id": "ffe0089b-120a-4b3b-afc2-784e64ac3b6a",
+  "hops": {
+    "source": "github",
+    "event": "pullrequest",
+    "action": "closed"
+  },
   "action": "closed",
   "number": 4,
   "pull_request": {
@@ -523,9 +527,5 @@
     "id": 789012345,
     "node_id": "MDIzOklodGAnbmF0aW8uSW5zdFGsbGF0aM9unzQyNDU4MPB="
   },
-  "hiphops": {
-    "source": "github",
-    "event": "pull_request",
-    "action": "closed"
-  }
+  "project_id": "ffe0089b-120a-4b3b-afc2-784e64ac3b6a"
 }

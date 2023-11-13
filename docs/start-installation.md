@@ -14,7 +14,7 @@ Installing Hiphops locally is simple, and requires no additional dependencies. I
 Those steps are detailed further below.
 
 
-### Download
+### Download Hiphops
 
 The Hiphops server and CLI is distributed as a single binary. Download the latest release for your platform [here](https://github.com/hiphops-io/hops/releases/latest).
 
@@ -43,21 +43,12 @@ Add your account key to your local Hiphops:
 
 `hops config addkey --keydata="COPY_PASTED_ACCOUNT_KEY"`
 
-> Important: Protect your account key! It grants full access to Hiphops, which by proxy grants access to any SaaS tools you've connected. It should only be shared with users that require privileges to create automations for these tools.
+!> Important: Protect your account key! It grants full access to Hiphops, which by proxy grants access to any SaaS tools you've connected. It should only be shared with users that require privileges to create automations for these tools.
 
-**All done**
+**All done** :tada:
 
 
-<!-- Setting up Hiphops is straighforward. You will need a GitHub account and around 2 minutes.
-
-1. Sign up here :point_right: [app.hiphops.io](https://app.hiphops.io)
-2. If you signed in with anything other than GitHub, you also need to [connect your personal GitHub account](https://app.hiphops.io/account)
-    > We only use your personal GitHub auth to connect you to your GitHub installation and set up your project. The GitHub installation you create next handles all the privileged access.
-3. Install the GitHub app by clicking 'Add project' on the [project page](https://app.hiphops.io/projects). Make sure to select the correct org/account when installing.
-
-?> Integrating with GitHub will become optional in a future release, but for now it remains a required step in creating a new project. -->
-
-## Quickstart
+<!-- ## Quickstart
 
 <!-- Decide which branch/repo you want to store your config. You config will be in a file named `hiphops.yaml` which you place in the root of a repository owned by a connected GitHub account.
 
@@ -69,23 +60,7 @@ If no custom config is set, the default pipeline matches all changes, runs analy
 
 > Note the extension must be `.yaml` or `.yml`, not variations thereof -->
 
-### Hello world
-
-<!-- What docs would be complete without a nice hello world to get you started?
-
-```yaml
----
-id: Hello world
-resource: sensor
-tasks:
-- name: slack.post_message
-  input:
-    channel: "general"
-    text: "Hello world!"
-``` -->
-
 ## What next?
 
-<!-- - Read about the core Hiphops [concepts](concepts.md#sensors)
-- To customise what events are captured and create some automations, check out the [config docs](syntax.md#sensor)
-- See what you can do with Hiphops through [example configs](simple-recipes.md#simple-recipes) -->
+1. Check out `Writing .hops` in the sidebar to create your first hops configs locally
+2. Follow our deployment guides to run a deployed Hiphops instance

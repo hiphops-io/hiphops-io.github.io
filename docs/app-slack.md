@@ -1,10 +1,16 @@
 # Slack
 
-|Name|Incoming events|Has tasks|Integration|
-|:-------|:-------|:-------|:-------|
-|`slack`|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|Integrated in a few clicks via the UI under project settings|
+_Integrating Slack enables you to automate common flows such as notifying when a pipeline ends or sending messages to users._<br>
+_As Hiphops exposes the full Slack REST API, the vast majority of Slack based flows can be created as part of Hiphops pipelines._
 
-_Integrating slack allows you to send messages to slack channels. It also allows you to create custom commands using the `/hiphops` slash command. This can be used to trigger sensors and perform tasks by creating a sensor in your `hiphops.yml` file._
+|Name|Listener|Worker|Setup|Auth|
+|:---|:-------|:-----|:----|:---|
+|`slack`|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|Add via hiphops.io account page|Credential free (via Slack App)|
+
+
+> Note: The structure of Slack events is mostly identical to the events directly emitted by Slack.<br>
+> Whilst we'll show examples here, the Slack docs are usually more exhaustive for exact event structures.
+
 
 ## Event: `command`
 

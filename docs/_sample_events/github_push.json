@@ -1,5 +1,8 @@
 {
-  "project_id": "ffe0089b-120a-4b3b-afc2-784e64ac3b6a",
+  "hops": {
+    "source": "github",
+    "event": "push"
+  },
   "ref": "refs/heads/main",
   "before": "52de346a1918fdc6d98c93690be4580acef793fc",
   "after": "c096bfa26576476d241d25f29d39f82432b8a6d8",
@@ -199,8 +202,5 @@
     "removed": [],
     "modified": ["foo.txt", "buzz.md", "src/bar.js"]
   },
-  "hiphops": {
-    "source": "github",
-    "event": "push"
-  }
+  "project_id": "ffe0089b-120a-4b3b-afc2-784e64ac3b6a"
 }
