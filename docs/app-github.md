@@ -43,7 +43,7 @@ For full details of this event's possible values, see [GitHub checksuite event d
 
 ## Event: `checkrun`
 
-actions: `completed`, `requested`, `requested_action`, `rerequested`
+actions: `completed`, `created`, `requested_action`, `rerequested`
 
 **Example usage:**
 
@@ -54,7 +54,7 @@ on checkrun {...} // Will trigger on any checkrun event
 
 on checkrun_completed {...} // Will trigger on any checkrun completed events
 
-on checkrun_requested { // Matches any checkrun requested event...
+on checkrun_created { // Matches any checkrun created event...
   if = event.repository.name == "backend" // ... then filters to a specific repo
   ...
 } 
@@ -209,19 +209,25 @@ For full details of this event's possible values, see [GitHub workflowrun event 
 
 ## Call: `create_pr`
 
-Creates a PR in Github. If the `source_branch` does not exist, it will be created.
-Note that if the `source_branch` and `target_branch` have no difference in commits, this will create an empty commit.
+Creates a PR in Github.
 
-```yaml
-tasks:
-  - name: github.create_pr # String - The name of the task
-    input:
-      repo: "backend" # String - the repository the PR should be created in
-      title: "A PR", # String - the PR title
-      source_branch: "release/branch", # String - the source branch the PR will merge in. If it does not exist it will be created
-      target_branch: "main", # (Optional) string - the target branch the PR will be merging into. Default: repository's default branch
-      body: "This describes the PR", # (Optional) string - the body of the PR
-      draft: false # (Optional) boolean - should the PR be created as a draft? Default: false
+If the `source_branch` does not exist, it will be created.<br>
+If the `source_branch` and `target_branch` have no difference in commits, it will create an empty commit.
+
+
+**Call structure:**
+
+```hcl
+call github_create_pr {
+  inputs = {
+    repo = "backend" // String - the repository the PR should be created in
+    title = "A PR" // String - the PR title
+    source_branch = "release/branch" // String - the source branch the PR will merge in. If it does not exist it will be created
+    target_branch = "main" // (Optional) string - the target branch the PR will be merging into. Default: repository's default branch
+    body = "This describes the PR" // (Optional) string - the body of the PR
+    draft = false // (Optional) boolean - should the PR be created as a draft? Default: false
+  }
+}
 ```
 
 ###### Responds with
