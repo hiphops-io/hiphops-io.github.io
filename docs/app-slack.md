@@ -1,7 +1,7 @@
 # Slack
 
 _Integrating Slack enables you to automate common flows such as notifying when a pipeline ends or sending messages to users._<br>
-_As Hiphops exposes the full Slack REST API, the vast majority of Slack based flows can be created as part of Hiphops pipelines._
+_As Hiphops exposes the full Slack REST Web API, the vast majority of Slack based flows can be created as part of Hiphops pipelines._
 
 |Name|Listener|Worker|Setup|Auth|
 |:---|:-------|:-----|:----|:---|
