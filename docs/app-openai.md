@@ -18,9 +18,9 @@ Calls the OpenAI REST API with the given parameters.
 ```hcl
 call openai_api {
   inputs = {
-    method = "POST" // (Optional) string - the HTTP method (default GET)
-    api_key = "the_api_key" // string - the OpenAI API key
-    path = "chat/completions" // endpoint path, for example: https://api.openai.com/v1/chat/completions
+    method = "POST" // (Optional) string - The HTTP method (default GET)
+    api_key = "the_api_key" // string - The OpenAI API key
+    path = "chat/completions" // The endpoint path, for example: https://api.openai.com/v1/chat/completions
     json = {
       "model": "gpt-3.5-turbo",
       "messages": [
@@ -29,15 +29,15 @@ call openai_api {
           "content": "Quote the first line of Hamlets famous speech"
         }
       ]
-    } // (Optional) object - the HTTP body as JSON (auto sets Content-Type header to application/json). Cannot be combined with data
-    data = "" // (Optional) string - the HTTP body. Cannot be combined with json
+    } // (Optional) object - The HTTP body as JSON (auto sets Content-Type header to application/json). Cannot be combined with data
+    data = "" // (Optional) string - The HTTP body. Cannot be combined with json
     headers = {
       "Content-Type": "multipart/form-data"
-    } // (Optional) array of string keys and values - the HTTP headers
+    } // (Optional) An array of string keys and values - the HTTP headers
     params = {
       "engine": "davinci"
-    } // (Optional) array of string keys and values - the HTTP query parameters
-    org_id = "the_org_id" // (Optional) string - the OpenAI organization ID
+    } // (Optional) An array of string keys and values - the HTTP query parameters
+    org_id = "the_org_id" // (Optional) string - The OpenAI organization ID
   }
 }
 ```
