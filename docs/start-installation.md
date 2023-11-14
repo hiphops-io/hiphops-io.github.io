@@ -43,7 +43,7 @@ Add your account key to your local Hiphops:
 
 `hops config addkey --keydata="COPY_PASTED_ACCOUNT_KEY"`
 
-!> Important: Protect your account key! It grants full access to Hiphops, which by proxy grants access to any SaaS tools you've connected. It should only be shared with users that require privileges to create automations for these tools.
+!> Important: Keep your account key safe. It should only be shared with trusted users that require privileges to create automations for your connected tools.
 
 **All done** :tada:
 

@@ -230,25 +230,22 @@ call github_create_pr {
 }
 ```
 
-###### Responds with
-
-Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
-
-If successful the returned `result` object will contain the create PR number against the key `pr_number`.
-It will also contain the key `message`, giving a simple indication of the success of the task.
-
-
-Example:
+**Example result:**
 
 ```js
 {
-  "result": {
-    "pr_number": 466,
-    "message": "Successfully created PR 466",
-  }
+  "hops": {
+    "started_at": "2023-11-13T23:57:20.336Z",
+    "finished_at": "2023-11-13T23:57:38.869Z",
+    "error": null
+  },
+  "errored": false,
+  "completed": true,
+  "done": true,
+  "body": "",
+  "json": { "pr_number": 70, "message": "Successfully created PR 70" }
 }
 ```
-
 
 ---
 
@@ -256,22 +253,36 @@ Example:
 
 Merges a PR's source branch into its target branch.
 
-Assuming this is being triggered in response to an event that contains data about the PR, it's likely you'll want to pass the head SHA along in the `head_sha` input - if this is supplied, the merge will only go ahead if no further commits have been pushed since the event was triggered.
+**Call structure:**
 
-```yaml
-tasks:
-- name: github.merge_pr
-  input:
-    repo: backend # String - The name of the repository the PR is in
-    pr_number: 55 # Number - The PR number
-    merge_comment_title: Auto-merged this PR! # (Optional) string - The commit message title that will provided with the merge. Default: PR title
-    head_sha: 939abcd18feaa12345bdb # (Optional) string - The SHA the branch head must be at for the merge to proceed, to prevent race conditions. If not provided the merge will proceed without checking the SHA
-    merge_method: merge # (Optional) string - Merge method the PR wull be merged with. One of “merge”, “squash” or “rebase”. Default: “merge”
+```hcl
+call github_merge_pr {
+  inputs = {
+    repo = "backend" // String - The name of the repository the PR is in
+    pr_number = 55 // Number - The PR number
+    merge_comment_title = "Auto-merged this PR!" // (Optional) string - The commit message title that will provided with the merge. Default = PR title
+    head_sha = "939abcd18feaa12345bdb" // (Optional) string - The SHA the branch head must be at for the merge to proceed, to prevent race conditions. If not provided the merge will proceed without checking the SHA
+    merge_method = "merge" // (Optional) string - Merge method the PR wull be merged with. One of “merge”, “squash” or “rebase”. Default = “merge”
+  }
+}
 ```
 
-###### Responds with
+**Example result:**
 
-Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
+```js
+{
+  "hops": {
+    "started_at": "2023-11-13T23:57:20.336Z",
+    "finished_at": "2023-11-13T23:57:38.869Z",
+    "error": null
+  },
+  "errored": false,
+  "completed": true,
+  "done": true,
+  "body": "",
+  "json": null
+}
+```
 
 ---
 
@@ -285,24 +296,40 @@ However, if the PR can be immediately merged, it will be immediately merged.
 
 (This task functions the same as `merge_pr` if auto-merge is not enabled or the PR is merge ready.)
 
-Assuming this is being triggered in response to an event that contains data about the PR, it's likely you'll want to pass the head SHA along in the `head_sha` input - if this is supplied, the merge will only go ahead if no further commits have been pushed since the event was triggered.
 
-```yaml
-tasks:
-- name: github.merge_pr_when_ready
-  input:
-    repo: backend # String - The name of the repository the PR is in
-    pr_number: 55 # Number - The PR number
-    merge_comment_title: Auto-merged this PR! # (Optional) string - The commit message title that will provided with the merge. Default: PR title
-    head_sha: 939abcd18feaa12345bdb # (Optional) string - The SHA the branch head must be at for the merge to proceed, to prevent race conditions. If not provided the merge will proceed without checking the SHA
-    merge_method: merge # (Optional) string - Merge method the PR wull be merged with. One of “merge”, “squash” or “rebase”. Default: “merge”
+**Call structure:**
+
+
+```hcl
+call github_merge_when_ready {
+  inputs = {
+    repo = "backend" // String - The name of the repository the PR is in
+    pr_number = 55 // Number - The PR number
+    merge_comment_title = "Auto-merged this PR!" // (Optional) string - The commit message title that will provided with the merge. Default = PR title
+    head_sha = "939abcd18feaa12345bdb" // (Optional) string - The SHA the branch head must be at for the merge to proceed, to prevent race conditions. If not provided the merge will proceed without checking the SHA
+    merge_method = "merge" // (Optional) string - Merge method the PR will be merged with. One of “merge”, “squash” or “rebase”. Default = “merge”
+  }
+}
 ```
 
-###### Responds with
+**Example result:**
 
-Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_message`).
+```js
+{
+  "hops": {
+    "started_at": "2023-11-13T23:57:20.336Z",
+    "finished_at": "2023-11-13T23:57:38.869Z",
+    "error": null
+  },
+  "errored": false,
+  "completed": true,
+  "done": true,
+  "body": "",
+  "json": null
+}
+```
 
-`result` message will indicate if the PR was set to merge when ready or was immediately merged.
+<!-- `result` message will indicate if the PR was set to merge when ready or was immediately merged. -->
 
 
 ---
@@ -311,24 +338,41 @@ Only provides standard task outputs (`SUCCESS`, `FAILURE`, `result` or `error_me
 
 Creates or updates a comment on a PR.
 
-If you are only going to have one task post comments to a given PR (e.g. the Hiphops analysis comment), then the first comment posted by the Hiphops app on the given PR is the one that will be updated each time.
+By default, this handler will update the first comment that was posted by Hiphops, or create a new comment if not found.
 
-However, if you intend to have multiple comments posted by Hiphops, you should add a `comment_identifier` that is distinct for each task - this will be appended to the end of the comment, and subsequent runs of the task (assuming it uses the same identifier) will update the comment on the PR that ends with that identifier.
+If you intend to have multiple, distinct comments posted by Hiphops you should add a `comment_identifier` that is unique for each comment.
 
+Passing this same `comment_identifier` to any `create_or_update_pr_comment` will result in that comment being updated if it exists.
 
-```yaml
-tasks:
-  - name: github.create_or_update_pr_comment
-    input:
-      repo: backend # String - The name of the repository the PR is in
-      pr_number: 55 # Number - The PR number
-      comment_body: This is a comment # String - The text to post in the comment
-      comment_identifier: my-comment-id-foo # (Optional) string - An identifier used for making updates to the same comment. This is only needed if you intend to have Hiphops post more than one comment to the same PR
+**Call structure:**
+
+```hcl
+call github_create_or_update_pr_comment {
+  inputs = {
+    repo = "backend" // String - The name of the repository the PR is in
+    pr_number = 55 // Number - The PR number
+    comment_body = "This is a comment" // String - The text to post in the comment
+    comment_identifier = "my-comment-id-foo" // (Optional) string - An identifier used for making updates to the same comment. This is only needed if you intend to have Hiphops post more than one comment to the same PR
+  }
+}
 ```
 
-###### Responds with
+**Example result:**
 
-Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
+```js
+{
+  "hops": {
+    "started_at": "2023-11-13T23:57:20.336Z",
+    "finished_at": "2023-11-13T23:57:38.869Z",
+    "error": null
+  },
+  "errored": false,
+  "completed": true,
+  "done": true,
+  "body": "",
+  "json": null
+}
+```
 
 ---
 
@@ -336,105 +380,135 @@ Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`)
 
 Creates or updates a review on a PR.
 
-If you mark a review as `approved: true` then the review will be approved. If marked as `approved: false` then it will instead be a request for changes.
+If you mark a review as `approved = true` then the review will be approved. If marked as `approved = false` then it will instead be a request for changes.
 
-If you are only going to have one task post reviews to a given PR, then the first review posted by the Hiphops app on the given PR is the one that will be updated each time.
+By default, this handler will update the first review that was created by Hiphops, or create a new review if not found.
 
-However, if you intend to have multiple reviews posted by Hiphops, you should add a `review_identifier` that is distinct for each task - this will be appended to the end of the review, and subsequent runs of the task (assuming it uses the same identifier) will update the review on the PR that ends with that identifier.
+If you intend to have multiple, distinct reviews posted by Hiphops you should add a `review_identifier` that is unique for each review.
 
-```yaml
-tasks:
-  - name: github.create_or_update_pr_review
-    input:
-      repo: backend # String - The name of the repository the PR is in
-      pr_number: 53 # Number - The PR number
-      approved: true # Boolean - Is the review an approval or request for changes
-      review_body: Auto approved your PR! # String - The text to post in the review
-      review_identifier: auto-approve-id-foo # (Optional) string - An identifier used for making updates to the same review. Only needed if you intend to have Hiphops post more than one review to the same PR
+Passing this same `review_identifier` to any `create_or_update_pr_review` will result in that review being updated if it exists.
+
+
+**Call structure:**
+
+```hcl
+call github_create_or_update_pr_review {
+  inputs = {
+    repo = "backend" // String - The name of the repository the PR is in
+    pr_number = 53 // Number - The PR number
+    approved = true // Boolean - Is the review an approval or request for changes
+    review_body = "Auto approved your PR!" // String - The text to post in the review
+    review_identifier = "auto-approve-id-foo" // (Optional) string - An identifier used for making updates to the same review. Only needed if you intend to have Hiphops post more than one review to the same PR
+  }
+}
 ```
 
-###### Responds with
+**Example result:**
 
-Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
+```js
+{
+  "hops": {
+    "started_at": "2023-11-13T23:57:20.336Z",
+    "finished_at": "2023-11-13T23:57:38.869Z",
+    "error": null
+  },
+  "errored": false,
+  "completed": true,
+  "done": true,
+  "body": "",
+  "json": null
+}
+```
 
 ---
 
 ## Call: `apply_pr_labels`
 
-Applies labels to a PR.
+Label a PR.
 
-The input `labels` defines the labels that may be added to the PR. If you don't provide a `matching` input too, then `labels` entries will just be added to the PR.
+The input `labels` defines the labels that may be added to the PR. 
 
-However, if you do provide a list of glob-matching patterns in `matching` (e.g `["kind/*", "size/*"]`), then only the entries in `labels` that have a match in one or more of the entries in `matching` will be applied.
+If you also provide the `matching` input, then only labels that match one of the patterns will be applied.
 
-By setting the `update` input to `true`, the task will treat the patterns in `matching` as a list of label patterns to be updated, and will first _remove_ labels matching a pattern before applying those labels from the `labels` input that match it.
+If you provide `matching` and `update = true` inputs, then the task will first remove any labels that match `matching` before applying the new labels.
 
-So if we have a PR 55 in repository `backend` that currently has the labels `["kind/fix", "size/small", "thingy"]`, and this task is invoked with the input:
-```yaml
-    input:
-      repo: backend
-      pr_number: 55
-      labels: ["kind/fix", "size/medium", "health/good"]
-      matching: ["kind/*", "size/*"]
-      update: true
+This allows you to update structured labels, e.g. `matching = ["kind/*"]` and `update = true` would allow you to modify the `kind/*` labels, rather than simply appending a new label.
+
+**Call structure:**
+
+```hcl
+call github_apply_pr_labels {
+  inputs = {
+    repo = "backend" // String - The name of the repository the PR is in
+    pr_number = 55 // Number - The PR number
+    labels = ["kind/fix", "size/medium", "health/good"] // String array - The labels to be applied to the PR
+    matching = ["kind/*", "size/*"] // (Optional) string array - Each string is a glob matching pattern that has the behaviour described above
+    update = true // (Optional) boolean - Defaults to false. If true, attempt to update existing labels. If false just apply labels directly
+  }
+}
 ```
 
-Then the task would first remove `size/small`, and then add `size/medium`. No other labels would be changed as they don't meet the criteria in `matching`.
+**Example result:**
 
-If `update` had been `false` (or unset), then it would only add `size/medium`, not attempting to update the existing labels.
-
-```yaml
-tasks:
-- name: github.apply_pr_labels
-  input:
-    repo: backend # String - The name of the repository the PR is in
-    pr_number: 55 # Number - The PR number
-    labels: ["kind/fix", "size/medium", "health/good"] # String array - The labels to be applied to the PR
-    matching: ["kind/*", "size/*"] # String array - Each string is a glob matching pattern that will be applied against labels, such that only the labels that have a match will be applied. If update is true, then existing labels on the PR that have a match will be removed too
-    update: true # Boolean - If true, attempt to update existing labels, or if false just apply labels as new - if matching is provided, this is used to determine which labels will be updated. Default: false
+```js
+{
+  "hops": {
+    "started_at": "2023-11-13T23:57:20.336Z",
+    "finished_at": "2023-11-13T23:57:38.869Z",
+    "error": null
+  },
+  "errored": false,
+  "completed": true,
+  "done": true,
+  "body": "",
+  "json": null
+}
 ```
-
-###### Responds with
-
-Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
 
 ---
 
 ## Call: `fetch_pr_files`
 
-Fetches details about the files changed in a PR, returning the data for use by other tasks.
+Fetch details about the files changed in a PR.
 
-```yaml
-tasks:
-  - name: github.fetch_pr_files
-    input:
-      repo: backend # String - The name of the repository the PR is in
-      pr_number: 55 # Number - The PR number
+Useful to make decisions about automated approvals, pipelines to run, other actions to take.
+
+**Call structure:**
+
+```hcl
+call github_fetch_pr_files {
+  inputs = {
+    repo = "backend" // String - The name of the repository the PR is in
+    pr_number = 55 // Number - The PR number
+  }
+}
 ```
 
-###### Responds with
+**Example result:**
 
-Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
-
-If successful the returned `result` object will contain the key `pr_files`, an array of data about the PR's files matching the output of [GitHub's list pull requests files endpoint](https://docs.github.com/en/rest/pulls/pulls#list-pull-requests-files).
-It will also contain the key `message`, giving a simple indication of the success of the task.
-
-Example:
-
-```json
+```js
 {
-  "result": {
+  "hops": {
+    "started_at": "2023-11-13T23:57:20.336Z",
+    "finished_at": "2023-11-13T23:57:38.869Z",
+    "error": null
+  },
+  "errored": false,
+  "completed": true,
+  "done": true,
+  "body": "",
+  "json": {
     "pr_files": [
       {
         "sha": "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07",
-        "filename": "e1ec5e842183b1878ccc61c8368108b1b1d6198c.txt",
+        "filename": "README.md",
         "status": "added",
         "additions": 1,
         "deletions": 0,
         "changes": 1,
-        "blob_url": "https://github.com/hiphops-io/integration-test/blob/22b88538a0fadf73b427fe749ae7bbbaece2ee57/e1ec5e842183b1878ccc61c8368108b1b1d6198c.txt",
-        "raw_url": "https://github.com/hiphops-io/integration-test/raw/22b88538a0fadf73b427fe749ae7bbbaece2ee57/e1ec5e842183b1878ccc61c8368108b1b1d6198c.txt",
-        "contents_url": "https://api.github.com/repos/hiphops-io/integration-test/contents/e1ec5e842183b1878ccc61c8368108b1b1d6198c.txt?ref=22b88538a0fadf73b427fe749ae7bbbaece2ee57",
+        "blob_url": "https://github.com/example-com/backend/blob/22b88538a0fadf73b427fe749ae7bbbaece2ee57/e1ec5e842183b1878ccc61c8368108b1b1d6198c.txt",
+        "raw_url": "https://github.com/example-com/backend/raw/22b88538a0fadf73b427fe749ae7bbbaece2ee57/e1ec5e842183b1878ccc61c8368108b1b1d6198c.txt",
+        "contents_url": "https://api.github.com/repos/example-com/backend/contents/e1ec5e842183b1878ccc61c8368108b1b1d6198c.txt?ref=22b88538a0fadf73b427fe749ae7bbbaece2ee57",
         "patch": "@@ -0,0 +1 @@\n+e1ec5e842183b1878ccc61c8368108b1b1d6198c\n\\ No newline at end of file"
       }
     ],
@@ -443,29 +517,48 @@ Example:
 }
 ```
 
+A successful (`completed = true`) call will contain the key `pr_files`, an array of data about the PR's files matching the output of [GitHub's list pull requests files endpoint](https://docs.github.com/en/rest/pulls/pulls#list-pull-requests-files).
+
+
 ---
 
 ## Call: `create_release`
 
 Creates a release in Github. Will create the corresponding tag if it doesn't already exist.
 
-```yaml
-tasks:
-  - name: github.create_release # String - The name of the task
-    input:
-      repo: "integration-test" # String - repository to create the release in
-      tag_name: "7eafcf0107" # String - the name of the tag (e.g. v1.0.0). If it already exists, the release will use this. If it doesn’t exist, the tag will be created
-      release_name: "a test release" # String - the name of the release
-      release_body: "This release contains a fixes" # (Optional) string - the body text of the release
-      draft: false # (Optional) boolean - Whether or not to create the release as a draft. Default: false
-      prerelease: false # (Optional) boolean - Whether or not to create the release as a prerelease. Default: false
-      make_latest: true # (Optional) boolean - Whether or not to mark the release as the latest for the repo. Default: true
-      target: "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" # (Optional) string - the target to create the tag for, either a commit SHA or branch ref - required if the tag specified by tag_name does not exist.
+**Call structure:**
+
+```hcl
+call github_create_release {
+  inputs = {
+    repo = "integration-test" // String - repository to create the release in
+    tag_name = "7eafcf0107" // String - the name of the tag (e.g. v1.0.0). If it already exists, the release will use this. If it doesn’t exist, the tag will be created
+    release_name = "a test release" // String - the name of the release
+    release_body = "This release contains a fixes" // (Optional) string - the body text of the release
+    draft = false // (Optional) boolean - Whether or not to create the release as a draft. Default = false
+    prerelease = false // (Optional) boolean - Whether or not to create the release as a prerelease. Default = false
+    make_latest = true // (Optional) boolean - Whether or not to mark the release as the latest for the repo. Default = true
+    target = "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" // (Optional) string - the target to create the tag for, either a commit SHA or branch ref - required if the tag specified by tag_name does not exist.
+  }
+}
 ```
 
-###### Responds with
+**Example result:**
 
-Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
+```js
+{
+  "hops": {
+    "started_at": "2023-11-13T23:57:20.336Z",
+    "finished_at": "2023-11-13T23:57:38.869Z",
+    "error": null
+  },
+  "errored": false,
+  "completed": true,
+  "done": true,
+  "body": "",
+  "json": null
+}
+```
 
 ---
 
