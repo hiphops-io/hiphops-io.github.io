@@ -95,7 +95,7 @@ Technically this means Hiphops dispatches every `call` several times as a pipeli
 
 #### Speed :zap:
 
-One advantage of this 'stupid simple' approach is speed. Whilst we evaluate your full pipeline for every state change, the evaluation is usually nothing more than a bunch of conditional statements executed by `go`. As such it's generally completed in sub-millisecond times.
+One advantage of this 'stupid simple' approach is speed. Whilst we evaluate your full pipeline for every state change, the evaluation is usually nothing more than a bunch of conditional statements executed by a persistent `go` process. As such it's generally completed in sub-millisecond times.
 
 All the complex stuff happens outside of your pipelines by app handlers specifically suited to that task.
 
