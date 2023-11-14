@@ -1,7 +1,5 @@
 # Deploying Hiphops to Kubernetes
 
-> Pardon our mess. This area of the docs is still under construction
-
 Deploying the hops executable to Kubernetes is straightforward.
 
 You will need to deploy a container that contains the hops executable which is available at Docker Hub under `hiphops/hiphops` and along side this your key file and your `.hops` file(s).
