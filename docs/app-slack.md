@@ -11,7 +11,13 @@ _As Hiphops exposes the full Slack REST Web API, the vast majority of Slack base
 
 ## Call: `api`
 
-Calls the Slack REST Web API with the given parameters.
+A simple proxy exposing the full Slack REST Web API through an authenticated instance of the Hiphops Slack App.
+
+Whilst we provide a number of helper calls that provide a more polished experience, this ensures any endpoint exposed by the Slack Web API can be used within pipelines.
+
+Refer to the full [Slack Web API](https://api.slack.com/web) for exhaustive information. Methods can be found at [Web API Methods](https://api.slack.com/methods).
+
+> Note: The app will handle auth, but everything else is transparent.
 
 **Call structure:**
 
@@ -167,7 +173,7 @@ call slack_api {
 }
 ```
 
-Full documentation for the REST Web API can be found [Using the Slack Web API](https://api.slack.com/web). Methods can be found at [Web API Methods](https://api.slack.com/methods).
+> Note: The top level keys and `hops` object will be consistent across calls, but the content within them will be a transparent forwarding of the result from the GitHub API. Refer to [Using the Slack Web API](https://api.slack.com/web) and [Web API Methods](https://api.slack.com/methods) for full result information per endpoint.
 
 ---
 

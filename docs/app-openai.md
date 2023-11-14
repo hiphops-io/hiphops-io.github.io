@@ -11,7 +11,9 @@ _Use OpenAIs capabilities for flows such as generating reports on your own data,
 
 ## Call: `api`
 
-Calls the OpenAI REST API with the given parameters.
+A simple proxy exposing the full OpenAI REST API.
+
+Full documentation for the REST API can be found [OpenAI API Reference](https://platform.openai.com/docs/api-reference).
 
 **Call structure:**
 
@@ -105,4 +107,4 @@ call openai_api {
 }
 ```
 
-Full documentation for the REST API can be found [OpenAI API Reference](https://platform.openai.com/docs/api-reference).
+> Note: The top level keys and `hops` object will be consistent across calls, but the content within them will be a transparent forwarding of the result from the OpenAI API. Refer to [OpenAI API Reference](https://platform.openai.com/docs/api-reference) for full result information per endpoint
