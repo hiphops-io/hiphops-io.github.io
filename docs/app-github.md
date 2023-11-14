@@ -566,28 +566,33 @@ call github_create_release {
 
 Creates a tag in Github.
 
-```yaml
-tasks:
-  - name: github.create_tag # String - The name of the task
-    input:
-      repo: "integration-test" # String - the repository the tag should be created in
-      tag: "v23.01.05" # String - the name of the tag
-      tag_message: "Final version of v23.01.05" # (Optional) string - The message that will be provided with the tag. Default: same value as tag
-      sha: "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" # String - the SHA to create the tag for
+**Call structure:**
+
+```hcl
+call github_create_tag {
+  inputs = {
+    repo = "integration-test" // String - the repository the tag should be created in
+    tag = "v23.01.05" // String - the name of the tag
+    tag_message = "Final version of v23.01.05" // (Optional) string - The message that will be provided with the tag. Default = same value as tag
+    sha = "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" // String - the SHA to create the tag for
+  }
+}
 ```
 
-###### Responds with
-
-Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
-
-If successful the returned `result` object will contain the key `created_tag`, an object containing information about the created tag.
-It will also contain the key `message`, giving a simple indication of the success of the task.
-
-Example:
+**Example result:**
 
 ```js
 {
-  "result": {
+  "hops": {
+    "started_at": "2023-11-13T23:57:20.336Z",
+    "finished_at": "2023-11-13T23:57:38.869Z",
+    "error": null
+  },
+  "errored": false,
+  "completed": true,
+  "done": true,
+  "body": "",
+  "json": {
     "created_tag": {
       "tag": "v23.01.05", // The tag name
       "tag_ref": "refs/tags/v23.01.05", // The tag ref
@@ -604,30 +609,37 @@ Example:
 
 ## Call: `create_branch`
 
-Creates a branch in Github. One of `sha` and `branch_from` must be provided - if both are provided, only `branch_from` will be used.
+Creates a branch in Github.
 
-```yaml
-tasks:
-  - name: github.create_branch # String - The name of the task
-    input:
-      repo: "integration-test" # String - the repository the branch should be created in
-      branch: "a-nice-branch" # String - the name of the branch
-      sha: "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" # String (optional) - the SHA to create the branch from. One of `sha` and `branch_from` must be provided - if both are provided, only `branch_from` will be used.
-      branch_from: "main" # String (optional) - the branch to create the branch from. One of `sha` and `branch_from` must be provided - if both are provided, only `branch_from` will be used.
+One of `sha` or `branch_from` must be provided - if both are provided, only `branch_from` will be used.
+
+**Call structure:**
+
+```hcl
+call github_create_branch {
+  inputs = {
+    repo = "integration-test" // String - the repository the branch should be created in
+    branch = "a-nice-branch" // String - the name of the branch
+    sha = "fd16ba92cbe98ce1747e512ab234d67ce3cc4a07" // String (optional) - the SHA to create the branch from
+    branch_from = "main" // String (optional) - the branch to create the branch from
+  }
+}
 ```
 
-###### Responds with
-
-Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
-
-If successful the returned `result` object will contain the key `created_branch`, an object containing information about the created branch.
-It will also contain the key `message`, giving a simple indication of the success of the task. 
-
-Example:
+**Example result:**
 
 ```js
 {
-  "result": {
+  "hops": {
+    "started_at": "2023-11-13T23:57:20.336Z",
+    "finished_at": "2023-11-13T23:57:38.869Z",
+    "error": null
+  },
+  "errored": false,
+  "completed": true,
+  "done": true,
+  "body": "",
+  "json": {
     "created_branch": {
       "branch": "a-branch", // The branch name
       "branch_ref": "refs/heads/a-branch", // The branch ref
@@ -642,28 +654,34 @@ Example:
 
 ## Call: `fetch_pr_commits`
 
-Fetches details about the files changed in a PR, returning the data for use by other tasks.
+Fetches details about the commits in a PR.
 
-```yaml
-tasks:
-  - name: github.fetch_pr_commits
-    input:
-      repo: backend # String - The name of the repository the PR is in
-      pr_number: 55 # Number - The PR number
+
+**Call structure:**
+
+```hcl
+call github_fetch_pr_commits {
+  inputs = {
+    repo = "integration-test" // String - the repository the branch should be created in
+    pr_number = 55 // Number - The PR number
+  }
+}
 ```
 
-###### Responds with
+**Example result:**
 
-Provides the standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
-
-If successful the returned `result` object will contain the key `pr_commits`, an array of data about the PR's commits matching the output of [Github's list pull requests commits endpoint](https://docs.github.com/en/rest/pulls/pulls#list-commits-on-a-pull-request).
-It will also contain the key `message`, giving a simple indication of the success of the task. 
-
-Example:
-
-```json
+```js
 {
-  "result": {
+  "hops": {
+    "started_at": "2023-11-13T23:57:20.336Z",
+    "finished_at": "2023-11-13T23:57:38.869Z",
+    "error": null
+  },
+  "errored": false,
+  "completed": true,
+  "done": true,
+  "body": "",
+  "json": {
     "pr_commits": [
       {
         "sha": "59f34daa2771a1e88d88ae442016643923ed85ef",
@@ -749,6 +767,9 @@ Example:
   }
 }
 ```
+
+If `completed = true` the result will contain the key `pr_commits`, an array of data about the PR's commits matching the output of [Github's list pull requests commits endpoint](https://docs.github.com/en/rest/pulls/pulls#list-commits-on-a-pull-request).
+
 
 ---
 
