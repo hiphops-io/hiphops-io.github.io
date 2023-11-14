@@ -5,212 +5,183 @@ _As Hiphops exposes the full Slack REST API, the vast majority of Slack based fl
 
 |Name|Listener|Worker|Setup|Auth|
 |:---|:-------|:-----|:----|:---|
-|`slack`|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|Add via hiphops.io account page|Credential free (via Slack App)|
+|`slack`|-|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|Add via hiphops.io account page|Credential free (via Slack App)|
 
 
 > Note: The structure of Slack events is mostly identical to the events directly emitted by Slack.<br>
 > Whilst we'll show examples here, the Slack docs are usually more exhaustive for exact event structures.
 
+---
 
-## Event: `command`
+## Call: `post_message`
 
-actions: Any command your user provides to the `/hiphops` slash command will be used to populate the `hiphops.action` field.
-For example, `/hiphops deploy` will have the action `deploy`.
+Posts a message to slack.
 
-A command entered on Slack such as `/hiphops foo arg1 arg2` would generate an event with the following structure:
+**Call structure:**
 
-```js
-{
-  "project_id": "12345677-0123-aaaa-bbbb-123456abcdef", // Your project's UUID
-  "hiphops": {
-    "source": "slack",
-    "event": "command",
-    "action": "foo", // User defined command
-  },
-  "command": "foo", // User defined command
-  "args": ["arg1", "arg2"], // An array of strings
-  "response_url": "https://hooks.slack.com/commands/T1234567ABC/12345678912345/T123abcDEF1234567", // A time limited URL to respond to message directly
-  "trigger_id": "some_id", // Can be used to trigger a modal
-  "team_id": "some_team_id", // The team from which the command originated
-  "channel_id": "some_channel_id", // The channel from where the command originated
-  "user_id": "some_user_id", // The user that sent the command
-  "is_enterprise_install": "false" // String "true" | "false" - Whether the slack instance is an enteprise install
-  "enterprise_id": "some_enterprise_id" // (Optional) string, The enterprise ID if set
+```hcl
+call slack_post_message {
+  inputs = {
+    channel = "general" // (Optional) string - The channel to post to. Must provide one of channel and channel_id
+    channel_id = "C12345678901" // (Optional) string - The ID of the channel to post to. Must provide one of channel and channel_id
+    text = "Hello world" // (Optional) string - The message to post. One of text, attachments and blocks must be provided
+    attachments = [] # (Optional) array - An array of attachments. One of text, attachments and blocks must be provided
+    blocks = [] # (Optional) array - An array of blocks. One of text, attachments and blocks must be provided
+    thread_ts = "1699915731.367659" // (Optional) string - The timestamp of the message to reply to. This comes from a previous post_message call
+  }
 }
 ```
 
-###### Example sensor
-
-This sensor simply posts a message to the `#general` slack channel when the `/hiphops` command is used, echoing the command and arguments.
-
-```yaml
----
-resource: sensor
-id: slack command receiver
-when:
-  event.hiphops.source: slack
-  event.hiphops.event: command
-tasks:
-  - name: slack.post_message
-    input:
-      channel: general
-      $: "({text: `Command: ${event.command}, Args: ${event.args}`})"
-```
-
----
-
-## Task: `post_message`
-
-Posts a message to slack using the slack message API. The message can be a simple string or a complex object. The message object is documented here: [Slack messaging payload documentation](https://api.slack.com/reference/messaging/payload).
-
-Supports replying to a message by providing the `thread_ts` field.
-
-```yaml
-tasks:
-  - name: slack.post_message
-    input:
-      channel: general # (Optional) string - The name of the channel to post to. One of channel and channel_id must be provided
-      channel_id: "C12345678901" # (Optional) string - The ID of the channel to post to. One of channel and channel_id must be provided
-      text: "Hello world" # (Optional) string - The message to post, which conforms to the slack payload format. One of text, attachments and blocks must be provided
-      attachments: [] # (Optional) array - An array of attachments, which conform to the slack payload format. One of text, attachments and blocks must be provided
-      blocks: [] # (Optional) array - An array of blocks, which conform to the slack payload format. One of text, attachments and blocks must be provided
-      (path)thread_ts: tasks.0.ts # (Optional) string - The timestamp of the message to reply to. This would come from the previous post_message task
-```
-
-###### Responds with
-
-Provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
-If successful the returned `result` object will contain details about the message, including its ID.
-
-###### Example result
+**Example result:**
 
 ```js
 {
-  "result": {
+  "context": "AppService",
+  "hops": {
+    "started_at": "2023-11-13T22:48:50.970Z",
+    "finished_at": "2023-11-13T22:48:51.433Z",
+    "error": null
+  },
+  "errored": false,
+  "completed": true,
+  "done": true,
+  "body": "",
+  "json": {
     "ok": true,
-    "channel": "C12345678901",
-    "ts": "1678955555.666666",
+    "channel": "CC7VAL05QBX",
+    "ts": "1699915731.367659",
     "message": {
-      "bot_id": "B12345678901",
+      "bot_id": "B1PW699QRLS",
       "type": "message",
-      "text": "1 new commit pushed to refs/heads/sandbox\n26209db",
-      "user": "U12345678901",
-      "ts": "1678955555.666666",
-      "app_id": "A12345678901",
+      "text": "Hello world",
+      "user": "UDITT4ER6UG",
+      "ts": "1699915731.367659",
+      "app_id": "ALTWA3CWFIH",
       "blocks": [
         {
           "type": "rich_text",
-          "block_id": "oADM",
+          "block_id": "4rV1",
           "elements": [
             {
               "type": "rich_text_section",
-              "elements": [
-                {
-                  "type": "text",
-                  "text": "1 new commit pushed to refs/heads/sandbox\n26209db"
-                }
-              ]
+              "elements": [{ "type": "text", "text": "Hello world" }]
             }
           ]
         }
       ],
-      "team": "T12345678901",
+      "team": "TMDM4I31SFD",
       "bot_profile": {
-        "id": "B12345678901",
-        "app_id": "A12345678901",
+        "id": "B1PW699QRLS",
+        "app_id": "ALTWA3CWFIH",
         "name": "Hiphops",
         "icons": {
-          "image_36": "https://avatars.slack-edge.com/2022-10-15/4227360167490_aa45faf3342d6ce1adf0_36.png",
-          "image_48": "https://avatars.slack-edge.com/2022-10-15/4227360167490_aa45faf3342d6ce1adf0_48.png",
-          "image_72": "https://avatars.slack-edge.com/2022-10-15/4227360167490_aa45faf3342d6ce1adf0_72.png"
+          "image_36": "https://avatars.slack-edge.com/2023-10-18/6059604623780_f8fa96b9cbe29d7f98e3_36.png",
+          "image_48": "https://avatars.slack-edge.com/2023-10-18/6059604623780_f8fa96b9cbe29d7f98e3_48.png",
+          "image_72": "https://avatars.slack-edge.com/2023-10-18/6059604623780_f8fa96b9cbe29d7f98e3_72.png"
         },
         "deleted": false,
-        "updated": 1675441190,
-        "team_id": "T12345678901"
+        "updated": 1697626969,
+        "team_id": "TMDM4I31SFD"
       }
     },
     "response_metadata": {
       "scopes": [
         "chat:write",
-        "commands",
         "chat:write.public",
+        "commands",
         "channels:read"
       ],
-      "acceptedScopes": [
-        "chat:write"
-      ]
+      "acceptedScopes": ["chat:write"]
     }
   }
 }
 ```
 
+For full details on the payload see [Slack messaging payload documentation](https://api.slack.com/reference/messaging/payload)
 
 ---
 
-## Task: `send_response`
+## Call: `update_message`
 
-Sends a response message to slack using a `response_url` provided in response to other slack interactions - e.g. as a part of the `command` event, allowing response to be given to the user that used the command. The response can be a simple string or a complex object. The message object is documented here: [Slack messaging payload documentation](https://api.slack.com/reference/messaging/payload).
+Updates an existing message.
 
-```yaml
-tasks:
-  - name: slack.send_response
-    input:
-      response_url: "https://hooks.slack.com/commands/T02NVHE2ERJ/4902701257719/UNR6kqwSF5fCTH70RxWUe9M9" # String - The slack response URL to post to (will be valid for use 5 times, for 30 minutes from the time you receive it)
-      text: "Hello world" # (Optional) string - A simple text message to respond with (if not provided, `response_payload` must be provided)
-      response_payload: "{ 'text': 'Some text' }" # (Optional) object - A complex object conforming to the Slack messaging format.
-      send_to_channel: true # (Optional) boolean - If false, the response will be sent as an ephemeral response, only visible to the user being responded to. If true, it will be sent to the channel the original message is in. Default: false.
+```hcl
+call slack_update_message {
+  inputs = {
+    channel_id = "C12345678901" // (Optional) string - The ID of the channel to post to
+    text = "Hello world" // (Optional) string - The message to post. One of text, attachments and blocks must be provided
+    attachments = [] # (Optional) array - An array of attachments. One of text, attachments and blocks must be provided
+    blocks = [] # (Optional) array - An array of blocks. One of text, attachments and blocks must be provided
+    ts = "1699915731.367659" // string - The timestamp of the message to update. This comes from a previous call
+  }
+}
 ```
 
-###### Responds with
-
-Only provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
-
-
----
-
-## Task: `update_message`
-
-Update a message to slack using the slack message API. The message can be a simple string or a complex object. The underlying call is documented here: [Slack methods, chat.update](https://api.slack.com/methods/chat.update).
-
-```yaml
-tasks:
-  - name: slack.update_message
-    input:
-      channel_id: C12345678901 # String - returned from the post_message task and accessed at `tasks.0.channel` where the `"0"` is the ID of the post_message task
-      (path)ts: tasks.0.ts # (Optional) string - The timestamp of the message to update. This would come from the previous post_message or update_message task
-      text: "Hello world" # (Optional) string - The message to post, which conforms to the slack payload format
-      (expr)attachments: ([{ text: "Attachment text" }]) # (Optional) array - The message to post, which conforms to the slack payload format
-      (expr)blocks: >
-        ([
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: "This is a *bold* and _italic_ message with a link: <https://example.com|Example>",
-            },
-          },
-        ]) # (Optional) array - Block for of the message (see slack documentation linked above)
-```
-
-###### Responds with
-
-Provides standard task outputs (`COMPLETE`, `FAILURE`, `result` or `error`).
-If successful the returned `result` object will contain details about the message, including its ID.
-
-###### Example result
+**Example result:**
 
 ```js
 {
-  "result": {
+  "hops": {
+    "started_at": "2023-11-14T17:27:16.834Z",
+    "finished_at": "2023-11-14T17:27:17.536Z",
+    "error": null
+  },
+  "errored": false,
+  "completed": true,
+  "done": true,
+  "body": "",
+  "json": {
     "ok": true,
-    "channel": "C024BE91L",
-    "ts": "1401383885.000061",
-    "text": "Updated text you carefully authored",
+    "channel": "CC7VAL05QBX",
+    "ts": "1699982264.011329",
+    "text": "Updated Hello world now",
     "message": {
-        "text": "Updated text you carefully authored",
-        "user": "U34567890"
+      "bot_id": "B1PW699QRLS",
+      "type": "message",
+      "text": "Updated Hello world now",
+      "user": "UDITT4ER6UG",
+      "app_id": "ALTWA3CWFIH",
+      "blocks": [
+        {
+          "type": "rich_text",
+          "block_id": "4rV1",
+          "elements": [
+            {
+              "type": "rich_text_section",
+              "elements": [
+                { "type": "text", "text": "Updated Hello world now" }
+              ]
+            }
+          ]
+        }
+      ],
+      "team": "TMDM4I31SFD",
+      "bot_profile": {
+        "id": "B1PW699QRLS",
+        "app_id": "ALTWA3CWFIH",
+        "name": "Hiphops Sandbox",
+        "icons": {
+          "image_36": "https://avatars.slack-edge.com/2023-10-18/6059604623780_f8fa96b9cbe29d7f98e3_36.png",
+          "image_48": "https://avatars.slack-edge.com/2023-10-18/6059604623780_f8fa96b9cbe29d7f98e3_48.png",
+          "image_72": "https://avatars.slack-edge.com/2023-10-18/6059604623780_f8fa96b9cbe29d7f98e3_72.png"
+        },
+        "deleted": false,
+        "updated": 1697626969,
+        "team_id": "TMDM4I31SFD"
+      },
+      "edited": { "user": "B1PW699QRLS", "ts": "1699982837.000000" }
+    },
+    "response_metadata": {
+      "scopes": [
+        "chat:write",
+        "chat:write.public",
+        "commands",
+        "channels:read"
+      ],
+      "acceptedScopes": ["chat:write"]
     }
   }
 }
 ```
 
+For full details on the payload see [Slack messaging payload documentation](https://api.slack.com/reference/messaging/payload)
