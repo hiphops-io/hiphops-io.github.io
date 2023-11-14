@@ -13,6 +13,168 @@ _As Hiphops exposes the full Slack REST API, the vast majority of Slack based fl
 
 ---
 
+## Call: `api`
+
+Calls the Slack REST Web API with the given parameters.
+
+**Call structure:**
+
+```hcl
+call slack_api {
+  inputs = {
+    method = "POST" // (Optional) string - The HTTP method (default GET)
+    path = "conversations.list" // The endpoint path
+    json = {} // (Optional) object - The HTTP body as JSON (auto sets Content-Type header to application/json). Cannot be combined with data
+    data = "" // (Optional) string - The HTTP body. Cannot be combined with json
+    headers = {
+      "Content-Type": "multipart/form-data"
+    } // (Optional) An array of string keys and values - the HTTP headers
+    params = {
+      "key": "value"
+    } // (Optional) An array of string keys and values - the HTTP query parameters
+  }
+}
+```
+
+**Example result:**
+
+```js
+{
+  "hops": {
+    "started_at": "2023-11-14T17:44:45.172Z",
+    "finished_at": "2023-11-14T17:44:45.403Z",
+    "error": null
+  },
+  "errored": false,
+  "completed": true,
+  "done": true,
+  "body": "",
+  "json": {
+    "ok": true,
+    "channels": [
+      {
+        "id": "C043KSV1F1S",
+        "name": "general",
+        "is_channel": true,
+        "is_group": false,
+        "is_im": false,
+        "is_mpim": false,
+        "is_private": false,
+        "created": 1638108664,
+        "is_archived": true,
+        "is_general": false,
+        "unlinked": 0,
+        "name_normalized": "general",
+        "is_shared": false,
+        "is_org_shared": false,
+        "is_pending_ext_shared": false,
+        "pending_shared": [],
+        "context_team_id": "T02NVHE2ERJ",
+        "updated": 1652366946835,
+        "parent_conversation": null,
+        "creator": "U043AR3145C",
+        "is_ext_shared": false,
+        "shared_team_ids": ["T02NVHE2ERJ"],
+        "pending_connected_team_ids": [],
+        "is_member": false,
+        "topic": {
+          "value": "General discussion.",
+          "creator": "U043AR3145C",
+          "last_set": 1641981040
+        },
+        "purpose": {
+          "value": "General",
+          "creator": "U043AR3145C",
+          "last_set": 1638108665
+        },
+        "previous_names": ["general1"],
+        "num_members": 0
+      },
+      {
+        "id": "C02NVHE2M52",
+        "name": "specific",
+        "is_channel": true,
+        "is_group": false,
+        "is_im": false,
+        "is_mpim": false,
+        "is_private": false,
+        "created": 1638108476,
+        "is_archived": false,
+        "is_general": true,
+        "unlinked": 0,
+        "name_normalized": "specific",
+        "is_shared": false,
+        "is_org_shared": false,
+        "is_pending_ext_shared": false,
+        "pending_shared": [],
+        "context_team_id": "T02NVHE2ERJ",
+        "updated": 1689072147105,
+        "parent_conversation": null,
+        "creator": "U043AR3145C",
+        "is_ext_shared": false,
+        "shared_team_ids": ["T02NVHE2ERJ"],
+        "pending_connected_team_ids": [],
+        "is_member": false,
+        "topic": {
+          "value": "",
+          "creator": "U043AR3145C",
+          "last_set": 1688127252
+        },
+        "purpose": {
+          "value": "Specific discussion.",
+          "creator": "U043AR3145C",
+          "last_set": 1638108476
+        },
+        "properties": {
+          "canvas": {
+            "file_id": "F1PW699QRLS",
+            "is_empty": true,
+            "quip_thread_id": "VF9X546HG8F"
+          }
+        },
+        "previous_names": ["specific1"],
+        "num_members": 6
+      }
+    ],
+    "response_metadata": { "next_cursor": "" }
+  },
+  "status_code": 200,
+  "headers": {
+    "date": "Tue, 14 Nov 2023 17:44:45 GMT",
+    "server": "Apache",
+    "vary": "Accept-Encoding",
+    "x-slack-req-id": "SOOT8UH76NVEXFJ6W9X4E965MNA9KB7I",
+    "x-content-type-options": "nosniff",
+    "x-xss-protection": "0",
+    "pragma": "no-cache",
+    "cache-control": "private, no-cache, no-store, must-revalidate",
+    "expires": "Sat, 26 Jul 1997 05:00:00 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "x-accepted-oauth-scopes": "channels:read,groups:read,mpim:read,im:read,read",
+    "x-oauth-scopes": "chat:write,chat:write.public,commands,channels:read",
+    "access-control-expose-headers": "x-slack-req-id, retry-after",
+    "access-control-allow-headers": "slack-route, x-slack-version-ts, x-b3-traceid, x-b3-spanid, x-b3-parentspanid, x-b3-sampled, x-b3-flags",
+    "strict-transport-security": "max-age=31536000; includeSubDomains; preload",
+    "referrer-policy": "no-referrer",
+    "x-slack-unique-id": "ZJFK4924QMJTC8QE5MN4S1EYXWH",
+    "x-slack-backend": "r",
+    "access-control-allow-origin": "*",
+    "content-length": "2124",
+    "x-envoy-attempt-count": "1",
+    "x-envoy-upstream-service-time": "168",
+    "x-server": "slack-www-hhvm-main-iad-iysm",
+    "x-slack-shared-secret-outcome": "no-match",
+    "x-edge-backend": "envoy-www",
+    "x-slack-edge-shared-secret-outcome": "no-match",
+    "connection": "close"
+  }
+}
+```
+
+Full documentation for the REST Web API can be found [Using the Slack Web API](https://api.slack.com/web). Methods can be found at [Web API Methods](https://api.slack.com/methods).
+
+---
+
 ## Call: `post_message`
 
 Posts a message to slack.
