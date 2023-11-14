@@ -30,7 +30,7 @@ You can also add `port-forward: true` to a local dev Hiphops config to avoid hav
 
 ### Configuring a non-default location for ~/.kube/config 
 
-If your kubeconfig is in a non-default location or if you wish to access a one Kubernetes cluster from inside a different Kubernetes cluster, you can pass it through as an argument to hops.
+If your kubeconfig is in a non-default location or if you wish to access one Kubernetes cluster from inside a different Kubernetes cluster, you can pass it through as an argument to hops.
 
 e.g.
 
