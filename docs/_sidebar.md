@@ -11,7 +11,7 @@
   - [Syntax](hops-syntax.md)
   - [Context/Variables](hops-context.md)
   - [Functions](hops-functions.md)
-- **Managing Hiphops**
+- **Deploying Hiphops**
   - [Kubernetes Deployment](deploy-k8s.md)
 - **Apps**
   - [GitHub](app-github.md)
