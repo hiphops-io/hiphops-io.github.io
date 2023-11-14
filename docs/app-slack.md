@@ -7,10 +7,6 @@ _As Hiphops exposes the full Slack REST API, the vast majority of Slack based fl
 |:---|:-------|:-----|:----|:---|
 |`slack`|-|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|Add via hiphops.io account page|Credential free (via Slack App)|
 
-
-> Note: The structure of Slack events is mostly identical to the events directly emitted by Slack.<br>
-> Whilst we'll show examples here, the Slack docs are usually more exhaustive for exact event structures.
-
 ---
 
 ## Call: `api`
