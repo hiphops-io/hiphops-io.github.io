@@ -76,7 +76,7 @@ You can see the event format for every call's result in their docs (in the left 
 > A call won't run until its if statement evaluates to true.
 
 
-### Evaluation loop
+## Evaluation loop
 
 As mentioned above, Hiphops pipelines are fully event driven. Expressions are only evaluated when there's a new event (such as a `call` returning a result).
 
