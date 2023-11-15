@@ -48,19 +48,8 @@ Add your account key to your local Hiphops:
 **All done** :tada:
 
 
-<!-- ## Quickstart
-
-<!-- Decide which branch/repo you want to store your config. You config will be in a file named `hiphops.yaml` which you place in the root of a repository owned by a connected GitHub account.
-
-Now add the branch/repo name in your project settings.
-
-Finally, create the config file in the repo and branch you specified. Hiphops will automatically detect and apply changes with no further setup required.
-
-If no custom config is set, the default pipeline matches all changes, runs analysis and stores the result, but takes no further action.
-
-> Note the extension must be `.yaml` or `.yml`, not variations thereof -->
-
 ## What next?
 
+1. Follow the [Quickstart guide](start-quickstart.md) to get Hiphops up and running with your first pipeline
 1. Check out `Writing .hops` in the sidebar to create your first hops configs locally
-2. Follow our deployment guides to run a deployed Hiphops instance
+1. Follow our deployment guides to run a deployed Hiphops instance

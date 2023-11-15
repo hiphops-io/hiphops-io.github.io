@@ -12,7 +12,7 @@ _The Hiphops Kubernetes app enables you to run custom containers as part of your
 For most users that already use Kubernetes regularly, Hiphops will 'just work'.
 
 The Kubernetes app is bundled with hops. It can be ran separately, but if you run
-`hops start server` it'll kick off along with all the other components and handle `k8s` calls. This is the easiest way to get going.
+`hops start` it'll kick off along with all the other components and handle `k8s` calls. This is the easiest way to get going.
 
 The app will look in the default locations (i.e. `~/.kube/config`) for your Kubernetes config file and use the current context to connect to your cluster.
 
@@ -24,7 +24,7 @@ If you're running hops locally against a remote cluster, then you'll need to be 
 
 Hiphops handles this for you automatically, you just need to tell it to create ad-hoc port-forwards, like so:
 
-`hops start server --port-forward`
+`hops start --port-forward`
 
 You can also add `port-forward: true` to a local dev Hiphops config to avoid having to set this everytime you run hops.
 
@@ -32,7 +32,7 @@ You can also add `port-forward: true` to a local dev Hiphops config to avoid hav
 
 If your kubeconfig is in a non-default location or if you wish to access one Kubernetes cluster from inside a different Kubernetes cluster, you can pass it through as an argument to hops.
 
-e.g. `hops start server --kubeconfig=/path/to/kube/config`
+e.g. `hops start --kubeconfig=/path/to/kube/config`
 
 
 ---

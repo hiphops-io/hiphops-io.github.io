@@ -1,11 +1,7 @@
 - **Getting started**
   - [About Hiphops](start-about.md)
   - [Installation](start-installation.md)
-  <!-- Running model (top to bottom per message, first call wins, etc) -->
-  <!-- on blocks are assumed to run in parralel unless stated otherwise -->
-  <!-- Managing hiphops stuff (local dev, deployed instances, pipeline storage on sequences etc) -->
-  <!-- Context object -->
-  <!-- Referencing values responses from other calls -->
+  - [Quickstart](start-quickstart.md)
 - **Writing .hops**
   - [Configuring Pipelines](hops-configuring.md)
   - [Syntax](hops-syntax.md)
@@ -19,3 +15,7 @@
   - [OpenAI](app-openai.md)
   - [Slack](app-slack.md)
   - [100+ Coming Soon](app-coming-soon.md)
+
+<!-- TODO: Managing hiphops stuff (local dev, deployed instances, pipeline storage on sequences etc) -->
+<!-- Concepts -->
+<!-- Tutorials (create a task, etc) -->
