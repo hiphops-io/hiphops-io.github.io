@@ -30,7 +30,7 @@ We created an empty .hops config in the previous step `~/.hops/quickstart.hops`
 
 Go ahead and open that in an editor. Using `HCL` for syntax highlighting will make this more pleasant.
 
-Past the following:
+Paste the following:
 
 ```hcl
 # quickstart.hops
