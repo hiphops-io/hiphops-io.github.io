@@ -104,5 +104,7 @@ Most pipelines will be much more sophisticated than this, stitching together fun
 
 As a next step, we'd suggest looking through the events and calls offered by each app for inspiration, then create a pipeline of your own.
 
+> Remember to kill the hops process when you're done
+
 **Enjoy automating!**
 
