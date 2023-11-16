@@ -2,15 +2,30 @@
 
 Hiphops is fully event driven, with every pipeline triggered by events and every call/result being transmitted via events.
 
-We dive into the details of the evaluation loop at the bottom of this page, but you will rarely need that level of detail when writing pipelines.
+Your pipelines will have access to context variables (which come from these events) so here we show how you can address them in your code.
 
-What _is_ relevant however is the fact that your pipelines will have access to context variables (which come from these events) and how you can address them in your code.
+> Note: We dive into the details of the evaluation loop in the [Evaluation loop](#evaluation-loop) section, but you will rarely need that level of detail when writing pipelines.
 
 ## Context overview
 
 ### Source event
 
 Every single pipeline that runs will have an `event` context. This is the source event that triggers the run, and without it no run can begin.
+
+Source events contain a `hops` metadata object at the top level, which has info on the event itself. The rest of the event content is specific to the event type.
+
+The `hops` metadata for a source event looks like this:
+
+```json
+{
+  "hops": {
+    "source": "github",
+    "event": "checksuite",
+    "action": "completed"
+  },
+  // ... Rest of the event data
+}
+```
 
 To illustrate accessing the `event`, here's a super simple Hiphops pipeline that automatically labels a `fix` PR, using the event context throughout.<br>
 It is triggered by a `pullrequest` event from our GitHub app.
@@ -35,6 +50,25 @@ on pullrequest_opened {
 Since this pipeline uses the `pullrequest` event, we'd usually look at the docs for that event as we create the pipeline. This helps us to understand what data is available.
 
 ### Result events
+
+Result events are returned by finished calls in your pipeline. You should receive a result even if the call failed, in which case it will have the property `errored = true`
+
+Most app calls will have a similar result structure, though you should always consult the docs for that specific call. The common structure is:
+
+```json
+{
+   "hops": {
+    "started_at": "2023-11-13T23:57:20.336Z", // When the app started handling the call (_not_ when your pipeline dispatched it)
+    "finished_at": "2023-11-13T23:57:38.869Z", // When the app finsihed handling the call (_not_ when your pipeline received it)
+    "error": null // Any extra error info, if the call errored
+  },
+  "errored": false, // True if the call failed to complete
+  "completed": true, // True if the call completed successfully
+  "done": true, // True whenever the call is finished (successful or otherwise). Provided as syntactic sugar e.g. allowing if = mycall.done to run a step regardless of outcome
+  "body": "", // See specific calls to understand what this will contain. Will always be a string
+  "json": null // See specific calls to understand with this will contain. Will always be valid decoded JSON, (Remember: JSON is not necessarily an object with keys)
+}
+```
 
 Now, let's add another step to the above pipeline and show how we can access the results of a previous call.
 

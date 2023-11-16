@@ -34,7 +34,7 @@ on checksuite_requested { // Matches any checksuite requested event...
 
 **Example event:**
 
-[GitHub checksuite](../_sample_events/github_check_suite_completed.json ':include')
+[GitHub checksuite](_sample_events/github_check_suite_completed.json ':include')
 
 
 For full details of this event's possible values, see [GitHub checksuite event docs](https://docs.github.com/en/webhooks/webhook-events-and-payloads#check_suite)
@@ -62,7 +62,7 @@ on checkrun_created { // Matches any checkrun created event...
 
 **Example event:**
 
-[GitHub checkrun](../_sample_events/github_check_run_completed.json ':include')
+[GitHub checkrun](_sample_events/github_check_run_completed.json ':include')
 
 
 For full details of this event's possible values, see [GitHub checkrun event docs](https://docs.github.com/en/webhooks/webhook-events-and-payloads#check_run)
@@ -90,7 +90,7 @@ on issuecomment_created { // Matches any issuecomment created event...
 
 **Example event:**
 
-[GitHub issuecomment](../_sample_events/github_issue_comment_created.json ':include')
+[GitHub issuecomment](_sample_events/github_issue_comment_created.json ':include')
 
 
 For full details of this event's possible values, see [GitHub issue_comment event docs](https://docs.github.com/en/webhooks/webhook-events-and-payloads#issue_comment)
@@ -118,7 +118,7 @@ on pullrequest { // Matches any PR...
 
 **Example event:**
 
-[GitHub PR sample](../_sample_events/github_pull_request.json ':include')
+[GitHub PR sample](_sample_events/github_pull_request.json ':include')
 
 
 For full details of this event's possible values, see [GitHub pull request event docs](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#pull_request)
@@ -146,7 +146,7 @@ on pullrequestreview_submitted { // Matches any pullrequestreview submitted even
 
 **Example event:**
 
-[GitHub pullrequestreview](../_sample_events/github_pull_request_review_submitted.json ':include')
+[GitHub pullrequestreview](_sample_events/github_pull_request_review_submitted.json ':include')
 
 
 For full details of this event's possible values, see [GitHub pull_request_review event docs](https://docs.github.com/en/webhooks/webhook-events-and-payloads#pull_request_review)
@@ -172,7 +172,7 @@ on push { // Matches any push...
 
 **Example event:**
 
-[GitHub push sample](../_sample_events/github_push.json ':include')
+[GitHub push sample](_sample_events/github_push.json ':include')
 
 
 For full details of this event's possible values, see [GitHub push event docs](https://docs.github.com/webhooks-and-events/webhooks/webhook-events-and-payloads#push)
@@ -200,7 +200,7 @@ on workflowrun_completed { // Matches any workflowrun completed event...
 
 **Example event:**
 
-[GitHub workflowrun](../_sample_events/github_workflow_run_completed.json ':include')
+[GitHub workflowrun](_sample_events/github_workflow_run_completed.json ':include')
 
 
 For full details of this event's possible values, see [GitHub workflowrun event docs](https://docs.github.com/en/webhooks/webhook-events-and-payloads#workflow_run)
