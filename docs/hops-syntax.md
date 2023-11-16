@@ -4,8 +4,10 @@
 Here's a super simple example of the .hops syntax that shows how pipelines hang together.
 
 ```hcl
-// Defines the event (pullrequest) and action (merged) that triggers this pipeline
-on pullrequest_merged {
+// Defines the event (pullrequest) and action (closed) that triggers this pipeline
+on pullrequest_closed {
+  if = event.pull_request.merged
+
   // Call the slack app on the post_message handler function
   call slack_post_message {
     inputs = {
@@ -20,11 +22,11 @@ on pullrequest_merged {
 > Note: The events and app calls available to you will depend on the apps you've integrated.<br>
 > Look under each app on the left for specific event structures, calls they expose, and other app specific information.
 
-`on` is a type of block. Blocks sometimes have words immediately after them (like `pullrequest_merged` above). This is called the label.<br>
+`on` is a type of block. Blocks sometimes have words immediately after them (like `pullrequest_closed` above). This is called the label.<br>
 
 `inputs` is an attribute. Attributes have `=` immediately after them.
 
-Some blocks can appear inside other blocks, as above with `call slack_post_message` inside the `on pullrequest_merged` block.
+Some blocks can appear inside other blocks, as above with `call slack_post_message` inside the `on pullrequest_closed` block.
 
 Each block is described below, along with the attributes and blocks that are valid to appear within them.
 
@@ -67,9 +69,9 @@ It must meet the following validation rules:
 
 Example `label`:
 
-`on pullrequest {...}` would be triggered by any `pullrequest` event, such as `merged`, `opened` etc
+`on pullrequest {...}` would be triggered by any `pullrequest` event, such as `closed`, `opened` etc
 
-`on pullrequest_merged {...}` would be triggered by `pullrequest` `merged` events only.
+`on pullrequest_closed {...}` would be triggered by `pullrequest` `closed` events only.
 
 > Available events and actions are defined in the docs for the corresponding app.
 
@@ -216,7 +218,7 @@ Example `if`:
 
 ```hcl
 call github_api {
- if = event.hops.action == "merged" // Call will only execute if the event action is 'merged'
+ if = event.hops.action == "closed" // Call will only execute if the event action is 'closed'
  ...
 }
 ```
