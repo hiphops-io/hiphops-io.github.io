@@ -1235,7 +1235,7 @@ call github_merge_pr {
   inputs = {
     repo = "backend" // String - The name of the repository the PR is in
     pr_number = 55 // Number - The PR number
-    merge_comment_title = "Auto-merged this PR!" // (Optional) string - The commit message title that will provided with the merge. Default = PR title
+    merge_comment_title = "Auto-merged this PR!" // (Optional) string - The commit message title that will be provided with the merge. Default = PR title
     head_sha = "939abcd18feaa12345bdb" // (Optional) string - The SHA the branch head must be at for the merge to proceed, to prevent race conditions. If not provided the merge will proceed without checking the SHA
     merge_method = "merge" // (Optional) string - Merge method the PR wull be merged with. One of “merge”, “squash” or “rebase”. Default = “merge”
   }
@@ -1280,7 +1280,7 @@ call github_merge_when_ready {
   inputs = {
     repo = "backend" // String - The name of the repository the PR is in
     pr_number = 55 // Number - The PR number
-    merge_comment_title = "Auto-merged this PR!" // (Optional) string - The commit message title that will provided with the merge. Default = PR title
+    merge_comment_title = "Auto-merged this PR!" // (Optional) string - The commit message title that will be provided with the merge. Default = PR title
     head_sha = "939abcd18feaa12345bdb" // (Optional) string - The SHA the branch head must be at for the merge to proceed, to prevent race conditions. If not provided the merge will proceed without checking the SHA
     merge_method = "merge" // (Optional) string - Merge method the PR will be merged with. One of “merge”, “squash” or “rebase”. Default = “merge”
   }
