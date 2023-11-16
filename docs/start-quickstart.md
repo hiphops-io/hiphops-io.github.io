@@ -7,7 +7,7 @@ Get started using Hiphops with your first pipeline.
 
 This guide assumes you've followed the instructions in [Installation](start-installation.md) and have `hops` installed locally with an Hiphops.io account key.
 
-The quick version of those instructions is:
+In case you haven't already followed them, the quick version of those instructions is:
 1. Download the Hiphops server/CLI from [here](https://github.com/hiphops-io/hops/releases/latest) and place it on your path
 1. Get your hiphops.io account key from your account page and add it to hops: `hops config addkey --keydata="COPY_PASTED_ACCOUNT_KEY"`
 1. Ensure you have GitHub and Slack connected via that same account page, we'll use those in this guide
@@ -18,9 +18,8 @@ The quick version of those instructions is:
 
 Now we'll get our config/folders set up:
 
-1. `mkdir ~/.hops` creates the default folder `hops` uses to look for configs
-2. `touch ~/.hops/config.yaml && echo "debug: true" >> ~/.hops/config.yaml` to create a config file with debug enabled.<br>This is just a convenience measure as we'll usually want debug level logging when running locally
-3. `touch ~/.hops/quickstart.hops` to create our first empty hops file
+1. `touch ~/.hops/config.yaml && echo "debug: true" >> ~/.hops/config.yaml` to create a config file with debug enabled.<br>This is just a convenience measure as we'll usually want debug level logging when running locally
+1. `touch ~/.hops/quickstart.hops` to create our first empty hops file
 
 > Note: We're using default directory locations and filenames for everything in this guide, but know that you can configure those settings via CLI flags/ENV_VARS/config files to hops
 
@@ -42,6 +41,8 @@ task greet_world {
 ```
 
 Now start Hiphops with `hops start` (wait for it to say `Console available on http://127.0.0.1:8916/console`) then [click here to open the console](http://127.0.0.1:8916/console)
+
+> Note: You'll see a lot of logging as we're in debug mode. Unless you see an error/fatal level log, it's nothing to worry about and should help you understand how work is flowing through your pipelines.
 
 You should see the task you just created, `Greet World`.<br>
 Click on it and you'll see a form with a single field `Greeting` and a `Run task` button.
