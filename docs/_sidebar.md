@@ -15,6 +15,8 @@
   - [OpenAI](app-openai.md)
   - [Slack](app-slack.md)
   - [100+ Coming Soon](app-coming-soon.md)
+- **Walkthroughs**
+  - [GitHub & Slack Release Flow](walk-release-flow.md)
 
 <!-- TODO: Managing hiphops stuff (local dev, deployed instances, pipeline storage on sequences etc) -->
 <!-- Concepts -->
