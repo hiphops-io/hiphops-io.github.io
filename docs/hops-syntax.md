@@ -32,6 +32,8 @@ Each block is described below, along with the attributes and blocks that are val
 
 ## Pipelines `[block:on]`
 
+`on` blocks define a pipeline that will run in response to an event. Events can come from third parties such as GitHub via apps, or from your own tasks.
+
 `on` blocks can be defined at the top level of a .hops config and accepts the following:
 
 |Name|Type|Required|Multiple|Example|
@@ -40,6 +42,7 @@ Each block is described below, along with the attributes and blocks that are val
 |**name**|`Attribute`|-|-|`name = "my_pipeline_name"`|
 |**if**|`Attribute`|-|-|`if = true`|
 |**call**|`Block`|:white_check_mark:|:white_check_mark:|`call slack_post_message {}`|
+|**done**|`Block`|-|:white_check_mark:|`done {result = "Woohoo"}`|
 
 
 Example `on` block:
@@ -134,9 +137,42 @@ on event {
 
 For more details, see the [section on 'Call' blocks](#calls-blockcall)
 
+
+#### Done <small>`optional`</small>
+
+Nested `done` blocks define the exit scenarios for a pipeline, with their result or error.
+
+
+Example `done`:
+
+```hcl
+on event {
+ call app_do_thing {
+  name = "one"
+  ...
+ }
+
+ call otherapp_do_thing {
+  name = "two"
+  ...
+ }
+
+ // Pipeline will immediately exit and error if either call errors
+ // else it will return the result of the second call as an object
+ done {
+  error = one.hops.error || two.hops.error
+  result = two.json
+ }
+}
+```
+
+For more details, see the [section on 'Done' blocks](#done-blockdone)
+
 ---
 
 ## Calls `[block:call]`
+
+`call` blocks are how you execute work in a pipeline. They call app workers (e.g. `github_create_pr`) and present results back into your pipeline.
 
 `call` blocks can appear within an `on` block and accept the following:
 
@@ -254,6 +290,98 @@ call anapp_run {
   }
 }
 ```
+
+## Done `[block:done]`
+
+`done` blocks are used to define when a pipeline is complete, either due to error
+or completion. They also allow a completed pipeline to declare a result object.
+
+`done` blocks can appear within an `on` block and accept the following:
+
+|Name|Type|Required|Multiple|Example|
+|:---|:--:|:------:|:------:|:----:|
+|**error**|`Attribute`|-|-|`error = "Bad thing happened"`|
+|**result**|`Attribute`|-|-|`result = {myfield = "Great!"}`|
+
+
+Example `done` block:
+
+```hcl
+on event_action {
+  call foo_bar {...}
+
+  done {
+    error = foo_bar.hops.error
+    result = foo_bar.result
+  }
+}
+```
+
+A `done` block is satisfied when:
+- `error` evaluates to anything other than `null` or `false` **OR**
+- `result` evaluates to anything other than `null`.
+
+If the done block is satisfied, the pipeline will exit and no further calls will be made.
+
+> Note: `error` takes precedence over `result` in determining the outcome.<br>
+> If `error` is not `null` or `false`, the pipeline will always be marked as `errored`.
+
+Multiple `done` blocks may be used in a single pipeline, but only one will become the final result. This can be useful to define early exit scenarios.
+
+
+If multiple `done` blocks are satisfied at the same time, the one appearing first will take precedence.
+
+An explicit `done` is not required.<br>
+The default behaviour will mark a pipeline as `done` when:
+- All dispatched `call` blocks have received results
+- No further `call` blocks are ready for dispatch
+- The outcome will be `errored` if any result is `errored`
+- The outcome will be `completed` with an empty result object if all results are `completed`
+
+---
+
+### Done block fields
+
+#### Error <small>`optional`</small>
+
+The `error` attribute defines the error (if any) for a pipeline. If `error` evaluates to `false` or `null`, the pipeline has not errored. All other values including the empty string mean the pipeline will error immediately.
+
+`error` can be set to any value that is serializable as JSON
+
+Example `error`:
+
+```hcl
+on event {
+  done {error = "I'm going to immediately error the pipeline"}
+  ...
+}
+```
+
+`error` evaluation is relaxed to avoid having to guard against as yet unset variables. If `error` evaluation fails, it will be defaulted to `null`.<br>
+In debug mode this will be logged with a reason, in normal running mode it will not.
+
+
+#### Result <small>`optional`</small>
+
+The `result` attribute defines the result (if any) for a pipeline. If `result` evaluates to `null` the pipeline has no `result`. All other values (including the empty string and `false`) mean the pipeline will complete immediately.
+
+`result` can be set to any value that is serializable as JSON
+
+Example `result`:
+
+```hcl
+on event {
+  done {result = "Success"}
+  ...
+}
+```
+
+`result` evaluation is relaxed to avoid having to guard against as yet unset variables. If `result` evaluation fails, it will be defaulted to `null`.<br>
+In debug mode this default will be logged with a reason, in normal running mode it will not.
+
+If your pipeline should exit successfully, but you do not need to return a `result`, it is best to set `result` to the empty string (or a nice message).
+
+---
 
 ## Tasks `[block:task]`
 
