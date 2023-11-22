@@ -346,7 +346,7 @@ The default behaviour will mark a pipeline as `done` when:
 
 The `error` attribute defines the error (if any) for a pipeline. If `error` evaluates to `false` or `null`, the pipeline has not errored. All other values including the empty string mean the pipeline will error immediately.
 
-`error` can be set to any value that is serializable as JSON
+`error` can be set to any string value, which will be used as the error message for the pipeline
 
 Example `error`:
 
