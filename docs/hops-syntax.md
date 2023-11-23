@@ -321,22 +321,17 @@ A `done` block is satisfied when:
 - `error` evaluates to anything other than `null` or `false` **OR**
 - `result` evaluates to anything other than `null`.
 
-If the done block is satisfied, the pipeline will exit and no further calls will be made.
+If the `done` block is satisfied, the pipeline will exit.
 
 > Note: `error` takes precedence over `result` in determining the outcome.<br>
 > If `error` is not `null` or `false`, the pipeline will always be marked as `errored`.
 
-Multiple `done` blocks may be used in a single pipeline, but only one will become the final result. This can be useful to define early exit scenarios.
+Multiple `done` blocks may be used in a single pipeline, but only one will become the final result. This allowings defining multiple/early exit scenarios.<br>
+If multiple `done` blocks match the first will be used.
 
-
-If multiple `done` blocks are satisfied at the same time, the one appearing first will take precedence.
-
-An explicit `done` is not required.<br>
-The default behaviour will mark a pipeline as `done` when:
-- All dispatched `call` blocks have received results
-- No further `call` blocks are ready for dispatch
-- The outcome will be `errored` if any result is `errored`
-- The outcome will be `completed` with an empty result object if all results are `completed`
+Pipelines do not require a `done` block to complete. The default behaviour is:
+- Mark as `done` when existing `calls` have their results and no further `calls` can be dispatched
+- The outcome will be `completed` with an empty object `result`
 
 ---
 
