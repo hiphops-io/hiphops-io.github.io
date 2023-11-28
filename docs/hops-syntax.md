@@ -421,7 +421,7 @@ on task_onboard_user {
 }
 ```
 
-Tasks define user interfaces for your pipelines. A pipeline doesn't _require_ a UI, as you can trigger them based on events from your various apps, but some ad-hoc flows are better driven by a human action. Tasks allow you to easily share common scripts and workflows with a wider team.
+Tasks define user interfaces for your pipelines. A pipeline doesn't _require_ a UI, as you can trigger them based on events from your various apps or via a `schedule`, but some ad-hoc flows are better driven by a human action. Tasks allow you to easily share common scripts and workflows with a wider team.
 
 You'll notice `task` doesn't define any work to do, just the inputs it accepts and validates.
 The `on` block is the single place to define pipelines and their calls.
@@ -665,6 +665,138 @@ param is_good {type = "bool"}
 ```
 
 > `type` and `default` must correspond for any param where `default` is defined
+
+---
+
+---
+
+## Schedules `[block:schedule]`
+
+`schedule` blocks can be defined at the top level of a .hops config and accept the following:
+
+|Name|Type|Required|Multiple|Example|
+|:---|:--:|:------:|:------:|:----:|
+|**label**|`Label`|:white_check_mark:|-|`schedule run_report {}`|
+|**cron**|`Attribute`|:white_check_mark:|-|`cron = "0 0 * * *"`|
+|**inputs**|`Attribute`|-|-|`inputs = {}`|
+
+
+Example `schedule` block:
+
+```hcl
+schedule run_report {
+  cron = "@daily"
+}
+
+on schedule_run_report {
+  // Do some work
+  ...
+}
+```
+
+Schedules create scheduled source events with which you can trigger pipelines. Schedules allow you to run automation flows periodically.
+
+You'll notice `schedule` doesn't define any work to do, just the schedule on which to run via `cron` and optional `inputs`.
+An `on` block can listen to events created by a `schedule` and perform work in reaction to them (as shown above).
+
+This decoupling means a `schedule` can execute multiple pipelines (or none)
+
+> Note: Hiphops won't catch up missed schedules. If you have no hiphops instance running, the scheduled will not be triggered.
+
+Schedules have a resolution of 1 minute and are subject to idempotency measures (meaning multiple hops instances can serve the same schedules without duplication).
+
+> Note: Idempotency only works for _identical_ schedules. If your input mutates _and_ the schedule is triggered twice, then it may cause duplicate events to be created.
+
+---
+
+### Schedule block fields
+
+#### Label <small>`required`</small>
+
+The label names the `schedule` and will also be used as the `action` for events it generates, with `schedule` being the event.
+
+Example `label`:
+
+```hcl
+schedule hello {...}
+```
+
+You can trigger pipelines with a matching sensor like so:
+
+```hcl
+on schedule_hello {...}
+```
+
+The schedule label must meet the following validation rules:
+
+[Label validation](../_snippets/valid_label.md ':include')
+
+
+#### Cron <small>`required`</small>
+
+The `cron` attribute defines when a `schedule` will run.
+
+> syntax!
+
+Example `cron`:
+
+```hcl
+schedule party_time {
+  cron = "0 0 * * FRI" // Traditional cron format. Runs midnight every Friday
+}
+
+schedule hello {
+  cron = "@daily" // Uses friendly pre-defined schedule. Runs at midnight every day
+}
+
+schedule ping {
+  cron = "@every 1m" // A helper syntax to run every 'duration'
+}
+```
+
+> As noted above, hiphops does not trigger new schedule events more frequently than every minute. This is part of the idempotency protections so overrides any config given in `cron`.
+
+Hiphops accept typical cron spec format (see [this site](https://crontab.guru/examples.html) for some good examples) in addition to pre-defined schedules:
+
+Entry                      | Description                                | Equivalent To
+-----                      | -----------                                | -------------
+`@yearly` (or `@annually`) | Run once a year, midnight, Jan. 1st        | `0 0 0 1 1 *`
+`@monthly`                 | Run once a month, midnight, first of month | `0 0 0 1 * *`
+`@weekly`                  | Run once a week, midnight between Sat/Sun  | `0 0 0 * * 0`
+`@daily` (or `@midnight`)  | Run once a day, midnight                   | `0 0 0 * * *`
+`@hourly`                  | Run once an hour, beginning of hour        | `0 0 * * * *`
+`@every duration`          | Run every duration (e.g. 1m, 1h25m)        | `0 0 * * * *`
+
+
+Most users familiar with cron (or happy with the predefined schedules) won't need the full spec. For completeness, the exhuastive spec of what Hiphops supports is [here](https://pkg.go.dev/github.com/robfig/cron#hdr-CRON_Expression_Format)
+
+
+#### Inputs <small>`optional`</small>
+
+The `inputs` attribute is a key value object defining the values to be passed with the schedule event. These are inputs of your own choosing and are not required.
+
+Example `inputs`:
+
+```hcl
+schedule daily_greeting {
+  cron = "@daily"
+
+  inputs = {
+    greeting = "Hello"
+    name = "World"
+  }
+}
+
+// Example pipeline using the inputs to do some 'work'
+on schedule_daily_greeting {
+  call slack_post_message {
+    inputs = {
+      channel = "random"
+      text = "${event.greeting} ${event.name}!" // Hello World!
+    }
+  }
+}
+```
 
 ---
 
