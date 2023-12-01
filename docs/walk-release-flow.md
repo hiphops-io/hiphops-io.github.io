@@ -8,7 +8,7 @@ Our objective in this walkthrough is to create an automated release/pre-release 
 
 This is Hiphops.io's actual internal release process for the time being (we'll be enhancing this pretty regularly as we add more features)
 
-When we're finishing, we'll have a flow that does the following:
+When we're finished, we'll have a flow that does the following:
 
 1. On push/merge into any `main` branch, we generate a pre-release + tag with an automatic, memorable version name
 1. We run the `deploy.yaml` workflow for that repo against that newly created tag
