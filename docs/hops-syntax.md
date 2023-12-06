@@ -1,6 +1,5 @@
 # Syntax
 
-
 Here's a super simple example of the .hops syntax that shows how pipelines hang together.
 
 ```hcl
@@ -36,14 +35,13 @@ Each block is described below, along with the attributes and blocks that are val
 
 `on` blocks can be defined at the top level of a .hops config and accepts the following:
 
-|Name|Type|Required|Multiple|Example|
-|:---|:--:|:------:|:------:|:----:|
-|**label**|`Label`|:white_check_mark:|-|`on a_label {}`|
-|**name**|`Attribute`|-|-|`name = "my_pipeline_name"`|
-|**if**|`Attribute`|-|-|`if = true`|
-|**call**|`Block`|:white_check_mark:|:white_check_mark:|`call slack_post_message {}`|
-|**done**|`Block`|-|:white_check_mark:|`done {result = "Woohoo"}`|
-
+| Name      |    Type     |      Required      |      Multiple      |           Example            |
+| :-------- | :---------: | :----------------: | :----------------: | :--------------------------: |
+| **label** |   `Label`   | :white_check_mark: |         -          |       `on a_label {}`        |
+| **name**  | `Attribute` |         -          |         -          | `name = "my_pipeline_name"`  |
+| **if**    | `Attribute` |         -          |         -          |         `if = true`          |
+| **call**  |   `Block`   | :white_check_mark: | :white_check_mark: | `call slack_post_message {}` |
+| **done**  |   `Block`   |         -          | :white_check_mark: |  `done {result = "Woohoo"}`  |
 
 Example `on` block:
 
@@ -69,7 +67,6 @@ It must meet the following validation rules:
 
 [Label validation](../_snippets/valid_label.md ':include')
 
-
 Example `label`:
 
 `on pullrequest {...}` would be triggered by any `pullrequest` event, such as `closed`, `opened` etc
@@ -77,7 +74,6 @@ Example `label`:
 `on pullrequest_closed {...}` would be triggered by `pullrequest` `closed` events only.
 
 > Available events and actions are defined in the docs for the corresponding app.
-
 
 #### Name <small>`optional`</small>
 
@@ -112,7 +108,6 @@ on event {
 
 For more details, see the [section on 'if' attributes](#conditional-attributeif)
 
-
 #### Call <small>`required`</small>
 
 Nested `call` blocks define the actual work to be done within a pipeline. They call apps and their handlers with input to perform work.
@@ -137,11 +132,9 @@ on event {
 
 For more details, see the [section on 'Call' blocks](#calls-blockcall)
 
-
 #### Done <small>`optional`</small>
 
 Nested `done` blocks define the exit scenarios for a pipeline, with their result or error.
-
 
 Example `done`:
 
@@ -176,13 +169,12 @@ For more details, see the [section on 'Done' blocks](#done-blockdone)
 
 `call` blocks can appear within an `on` block and accept the following:
 
-|Name|Type|Required|Multiple|Example|
-|:---|:--:|:------:|:------:|:----:|
-|**label**|`Label`|:white_check_mark:|-|`call app_handler {}`|
-|**name**|`Attribute`|-|-|`name = "do_thing"`|
-|**if**|`Attribute`|-|-|`if = true`|
-|**inputs**|`Attribute`|:white_check_mark:|-|`inputs = {}`|
-
+| Name       |    Type     |      Required      | Multiple |        Example        |
+| :--------- | :---------: | :----------------: | :------: | :-------------------: |
+| **label**  |   `Label`   | :white_check_mark: |    -     | `call app_handler {}` |
+| **name**   | `Attribute` |         -          |    -     |  `name = "do_thing"`  |
+| **if**     | `Attribute` |         -          |    -     |      `if = true`      |
+| **inputs** | `Attribute` | :white_check_mark: |    -     |     `inputs = {}`     |
 
 Example `call` block:
 
@@ -218,13 +210,11 @@ It must meet the following validation rules:
 
 [Label validation](../_snippets/valid_label.md ':include')
 
-
 Example `label`:
 
 `call slack_post_message {...}` would call the slack app's post_message handler.
 
 > Available events and actions are defined in the docs for the corresponding app.
-
 
 #### Name <small>`optional`</small>
 
@@ -298,11 +288,10 @@ or completion. They also allow a completed pipeline to declare a result object.
 
 `done` blocks can appear within an `on` block and accept the following:
 
-|Name|Type|Required|Multiple|Example|
-|:---|:--:|:------:|:------:|:----:|
-|**error**|`Attribute`|-|-|`error = "Bad thing happened"`|
-|**result**|`Attribute`|-|-|`result = {myfield = "Great!"}`|
-
+| Name       |    Type     | Required | Multiple |             Example             |
+| :--------- | :---------: | :------: | :------: | :-----------------------------: |
+| **error**  | `Attribute` |    -     |    -     | `error = "Bad thing happened"`  |
+| **result** | `Attribute` |    -     |    -     | `result = {myfield = "Great!"}` |
 
 Example `done` block:
 
@@ -318,6 +307,7 @@ on event_action {
 ```
 
 A `done` block is satisfied when:
+
 - `error` evaluates to anything other than `null` or `false` **OR**
 - `result` evaluates to anything other than `null`.
 
@@ -330,6 +320,7 @@ Multiple `done` blocks may be used in a single pipeline, but only one will becom
 If multiple `done` blocks match the first will be used.
 
 Pipelines do not require a `done` block to complete. The default behaviour is:
+
 - Mark as `done` when existing `calls` have their results and no further `calls` can be dispatched
 - The outcome will be `completed` with an empty object `result`
 
@@ -382,15 +373,14 @@ If your pipeline should exit successfully, but you do not need to return a `resu
 
 `task` blocks can be defined at the top level of a .hops config and accept the following:
 
-|Name|Type|Required|Multiple|Example|
-|:---|:--:|:------:|:------:|:----:|
-|**label**|`Label`|:white_check_mark:|-|`task onboard_user {}`|
-|**description**|`Attribute`|-|-|`description = "A longer piece of text describing this task's purpose. Can be multi-line."`|
-|**display_name**|`Attribute`|-|-|`display_name = "Onboard new user"`|
-|**emoji**|`Attribute`|-|-|`emoji = "🙋🏽‍♀️"`|
-|**summary**|`Attribute`|-|-|`summary = "Summary of this task's purpose"`|
-|**param**|`Block`|-|:white_check_mark:|`param myparam_name {}`|
-
+| Name             |    Type     |      Required      |      Multiple      |                                           Example                                           |
+| :--------------- | :---------: | :----------------: | :----------------: | :-----------------------------------------------------------------------------------------: |
+| **label**        |   `Label`   | :white_check_mark: |         -          |                                   `task onboard_user {}`                                    |
+| **description**  | `Attribute` |         -          |         -          | `description = "A longer piece of text describing this task's purpose. Can be multi-line."` |
+| **display_name** | `Attribute` |         -          |         -          |                             `display_name = "Onboard new user"`                             |
+| **emoji**        | `Attribute` |         -          |         -          |                                       `emoji = "🙋🏽‍♀️"`                                        |
+| **summary**      | `Attribute` |         -          |         -          |                        `summary = "Summary of this task's purpose"`                         |
+| **param**        |   `Block`   |         -          | :white_check_mark: |                                   `param myparam_name {}`                                   |
 
 Example `task` block:
 
@@ -496,7 +486,7 @@ or as a multi-line string:
 task hello {
   description = <<-EOT
   Say Hello via Slack!
-  
+
   All messages will be sent to the slack #greetings channel
   EOT
 }
@@ -538,15 +528,14 @@ For more details, see the [section on 'param' blocks](#parameters-blockparam) be
 
 `param` blocks can be defined within `task` blocks and accept the following:
 
-|Name|Type|Required|Multiple|Example|
-|:---|:--:|:------:|:------:|:----:|
-|**label**|`Label`|:white_check_mark:|-|`param username {}`|
-|**default**|`Attribute`|-|-|`default = "defaultuser123"`|
-|**display_name**|`Attribute`|-|-|`display_name = "Username"`|
-|**help**|`Attribute`|-|-|`help = "Username to create for new user"`|
-|**required**|`Attribute`|-|-|`required = true`|
-|**type**|`Attribute`|-|-|`type = "string"`|
-
+| Name             |    Type     |      Required      | Multiple |                  Example                   |
+| :--------------- | :---------: | :----------------: | :------: | :----------------------------------------: |
+| **label**        |   `Label`   | :white_check_mark: |    -     |            `param username {}`             |
+| **default**      | `Attribute` |         -          |    -     |        `default = "defaultuser123"`        |
+| **display_name** | `Attribute` |         -          |    -     |        `display_name = "Username"`         |
+| **help**         | `Attribute` |         -          |    -     | `help = "Username to create for new user"` |
+| **required**     | `Attribute` |         -          |    -     |             `required = true`              |
+| **type**         | `Attribute` |         -          |    -     |             `type = "string"`              |
 
 Example `param` block:
 
@@ -668,18 +657,40 @@ param is_good {type = "bool"}
 
 ---
 
+### Pass values to params via URL
+
+You can pass pre-defined values to params via a task's URL. This works for any param by referencing its label.
+
+Example URLS:
+
+```hcl
+// String
+hops.mydomain.com/console/my_task?foo_string=Hello
+
+//Textarea
+hops.mydomain.com/console/my_task?foo_text=Hello World
+
+//Number
+hops.mydomain.com/console/my_task?foo_number=001
+
+//Bool
+hops.mydomain.com/console/my_task?foo_bool=true
+
+//Combining values
+hops.mydomain.com/console/my_task?foo_string=Hello&foo_number=001
+```
+
 ---
 
 ## Schedules `[block:schedule]`
 
 `schedule` blocks can be defined at the top level of a .hops config and accept the following:
 
-|Name|Type|Required|Multiple|Example|
-|:---|:--:|:------:|:------:|:----:|
-|**label**|`Label`|:white_check_mark:|-|`schedule run_report {}`|
-|**cron**|`Attribute`|:white_check_mark:|-|`cron = "0 0 * * *"`|
-|**inputs**|`Attribute`|-|-|`inputs = {}`|
-
+| Name       |    Type     |      Required      | Multiple |         Example          |
+| :--------- | :---------: | :----------------: | :------: | :----------------------: |
+| **label**  |   `Label`   | :white_check_mark: |    -     | `schedule run_report {}` |
+| **cron**   | `Attribute` | :white_check_mark: |    -     |   `cron = "0 0 * * *"`   |
+| **inputs** | `Attribute` |         -          |    -     |      `inputs = {}`       |
 
 Example `schedule` block:
 
@@ -731,7 +742,6 @@ The schedule label must meet the following validation rules:
 
 [Label validation](../_snippets/valid_label.md ':include')
 
-
 #### Cron <small>`required`</small>
 
 The `cron` attribute defines when a `schedule` will run.
@@ -758,18 +768,16 @@ schedule ping {
 
 Hiphops accept typical cron spec format (see [this site](https://crontab.guru/examples.html) for some good examples) in addition to pre-defined schedules:
 
-Entry                      | Description                                | Equivalent To
------                      | -----------                                | -------------
-`@yearly` (or `@annually`) | Run once a year, midnight, Jan. 1st        | `0 0 0 1 1 *`
-`@monthly`                 | Run once a month, midnight, first of month | `0 0 0 1 * *`
-`@weekly`                  | Run once a week, midnight between Sat/Sun  | `0 0 0 * * 0`
-`@daily` (or `@midnight`)  | Run once a day, midnight                   | `0 0 0 * * *`
-`@hourly`                  | Run once an hour, beginning of hour        | `0 0 * * * *`
-`@every duration`          | Run every duration (e.g. 1m, 1h25m)        | `0 0 * * * *`
-
+| Entry                      | Description                                | Equivalent To |
+| -------------------------- | ------------------------------------------ | ------------- |
+| `@yearly` (or `@annually`) | Run once a year, midnight, Jan. 1st        | `0 0 0 1 1 *` |
+| `@monthly`                 | Run once a month, midnight, first of month | `0 0 0 1 * *` |
+| `@weekly`                  | Run once a week, midnight between Sat/Sun  | `0 0 0 * * 0` |
+| `@daily` (or `@midnight`)  | Run once a day, midnight                   | `0 0 0 * * *` |
+| `@hourly`                  | Run once an hour, beginning of hour        | `0 0 * * * *` |
+| `@every duration`          | Run every duration (e.g. 1m, 1h25m)        | `0 0 * * * *` |
 
 Most users familiar with cron (or happy with the predefined schedules) won't need the full spec. For completeness, the exhuastive spec of what Hiphops supports is [here](https://pkg.go.dev/github.com/robfig/cron#hdr-CRON_Expression_Format)
-
 
 #### Inputs <small>`optional`</small>
 
@@ -838,4 +846,3 @@ A few common ones to look at first are:
 - `try()` similar to `can`, but accepts n-many expressions and returns the result of the first one that succeeds (or an error, if none succeed)
 - `glob()` Accepts a string or list of strings and a glob pattern or list of patterns. Returns true if any strings match any patterns
 - `xglob()` Similar to `glob` but returns true only if all strings match at least one pattern
-
