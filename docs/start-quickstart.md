@@ -9,7 +9,7 @@ This guide assumes you've followed the instructions in [Installation](start-inst
 
 In case you haven't already followed them, the quick version of those instructions is:
 1. Download the Hiphops server/CLI from [here](https://github.com/hiphops-io/hops/releases/latest) and place it on your path
-1. Get your hiphops.io account key from your account page and add it to hops: `hops config addkey --keydata="COPY_PASTED_ACCOUNT_KEY"`
+1. Get your hiphops.io account key from your account page and add it to hops: `hops config addkey --keydata=COPY_PASTED_ACCOUNT_KEY`
 1. Ensure you have GitHub and Slack connected via that same account page, we'll use those in this guide
 
 > Note: If you don't use Slack you can still follow this guide to understand how things stitch together. The Slack parts just won't do anything

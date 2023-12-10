@@ -41,7 +41,7 @@ Sign in to your Hiphops.io account, connect any SaaS tools you'd like to automat
 
 Add your account key to your local Hiphops:
 
-`hops config addkey --keydata="COPY_PASTED_ACCOUNT_KEY"`
+`hops config addkey --keydata=COPY_PASTED_ACCOUNT_KEY`
 
 !> Important: Keep your account key safe. It should only be shared with trusted users that require privileges to create automations for your connected tools.
 
