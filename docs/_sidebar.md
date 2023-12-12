@@ -15,6 +15,7 @@
 - **Apps**
   - [GitHub](app-github.md)
   - [Kubernetes](app-kubernetes.md)
+  - [Notion](app-notion.md)
   - [OpenAI](app-openai.md)
   - [Slack](app-slack.md)
   - [100+ Coming Soon](app-coming-soon.md)

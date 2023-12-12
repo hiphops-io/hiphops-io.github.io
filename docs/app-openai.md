@@ -13,7 +13,7 @@ _Use OpenAIs capabilities for flows such as generating reports on your own data,
 
 A simple proxy exposing the full OpenAI REST API.
 
-Full documentation for the REST API can be found [OpenAI API Reference](https://platform.openai.com/docs/api-reference).
+Full documentation for the REST API can be found at [OpenAI API Reference](https://platform.openai.com/docs/api-reference).
 
 **Call structure:**
 
