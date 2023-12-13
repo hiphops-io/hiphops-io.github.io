@@ -14,6 +14,7 @@
   - [Kubernetes Deployment](deploy-k8s.md)
 - **Apps**
   - [GitHub](app-github.md)
+  - [HTTP](app-http.md)
   - [Kubernetes](app-kubernetes.md)
   - [Notion](app-notion.md)
   - [OpenAI](app-openai.md)
