@@ -19,13 +19,14 @@ In case you haven't already followed them, the quick version of those instructio
 Now we'll get our config/folders set up:
 
 1. `touch ~/.hops/config.yaml && echo "debug: true" >> ~/.hops/config.yaml` to create a config file with debug enabled.<br>This is just a convenience measure as we'll usually want debug level logging when running locally
-1. `touch ~/.hops/quickstart.hops` to create our first empty hops file
+1. `mkdir -p ~/.hops/quickstart` to create the directory for our first automation
+1. `touch ~/.hops/quickstart/quickstart.hops` to create our first empty hops file for that automation
 
 > Note: We're using default directory locations and filenames for everything in this guide, but know that you can configure those settings via CLI flags/ENV_VARS/config files to hops
 
 ## First pipeline + task
 
-We created an empty .hops config in the previous step `~/.hops/quickstart.hops`
+We created an empty .hops config in the previous step `~/.hops/quickstart/quickstart.hops`
 
 Go ahead and open that in an editor. Using `HCL` for syntax highlighting will make this more pleasant.
 
