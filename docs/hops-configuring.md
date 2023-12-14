@@ -9,10 +9,14 @@ Hiphops pipelines are configured in hops files (extension `.hops`). As hops file
 
 ## Config location
 
-You can split your config across multiple hops files to make them more manageable. Multiple files will simply be analysed as if they are a single config.
+Best practice is to split your automations across multiple automation bundles. This will make your automations more manageable.
 
-By default, hiphops will search for configs in `~/.hops`.<br>
-This can be configured with the flag `--hops` which accepts either a path to a single `*.hops` file or a directory. If given a directory, it will be searched recursively.
+An automation bundle consists of a sub directory under your main hops config directory. For example, if your main hops config directory is `/home/user/hops`, then your automation bundles would be located in directories below this. Here are example automation locations: `/home/user/hops/standup_alert` or `home/user/hops/deploy_cluster`.
+
+Each automation consists of `.hops` files and additional (related) files. When `hops` starts, all bundles are loaded together.
+
+By default, hiphops will search for bundles in `~/.hops`.<br>
+This can be configured with the flag `--hops` which accepts a directory. Automations are loaded only from automation bundles under the `--hops` directory.
 
 > Note: File/directory names beginning with `..` will be ignored during search. This is to enable support for Kubernetes configmaps and their symlink layout.
 
@@ -27,10 +31,8 @@ In particular, grouping tasks in a file with the pipelines they trigger is bette
 
 ### Names and naming
 
-By convention, hops files should be lower snake case `like_this.hops` and named to represent the value they contribute e.g. `pr_approvals.hops` or `release.hops`.
+By convention, hops directories and files should be lower snake case `like_this/like_this.hops` and named to represent the value they contribute e.g. `pr_approvals/pr_approvals.hops` or `release/release.hops`.
 
 It's worth avoiding junk words such as `automate`, `workflow`, or `pipelines` in your filenames, as they could be applied to any and all hops configs.
 
 Within your configs, note that whilst the `name` attribute is optional on all resources, using it provides helpful context when debugging or looking at logs.
-
-
