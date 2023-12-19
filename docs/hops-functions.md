@@ -197,6 +197,8 @@ env("NO_SUCH_ENV_VAR", "nice_default") // Returns "nice_default"
 
 The `file` function returns the contents of a file in the same directory as the `.hops` file it is called from. The returned value will always be a string.
 
+> Note: Only files present when hops was started are available. Any files created or changed after hops starts will not be available.
+
 Example:
 
 ```hcl
