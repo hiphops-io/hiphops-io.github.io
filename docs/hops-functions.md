@@ -181,7 +181,7 @@ The `env` function returns a given environment variable's value, or the default 
 
 > Note: This executes on the hiphops instance serving/running workflows. If there are multiple instances with disparate values for env vars, the behaviour could be unexpected as pipelines steps are shared across them.
 
-Example: 
+Example:
 
 ```hcl
 // Assuming env var MY_ENV=foo
@@ -189,6 +189,22 @@ env("MY_ENV", "nice_default") // Returns "foo"
 
 // Assuming no matching env var
 env("NO_SUCH_ENV_VAR", "nice_default") // Returns "nice_default"
+```
+
+---
+
+## file
+
+The `file` function returns the contents of a file in the same directory as the `.hops` file it is called from. The returned value will always be a string.
+
+Example:
+
+```hcl
+// Assuming file "myfile.txt" in the same directory and containing "Hello!"
+file("myfile.txt") // Returns "Hello!"
+
+// Assuming no matching file
+file("no_such_file.txt") // Returns ""
 ```
 
 ---
