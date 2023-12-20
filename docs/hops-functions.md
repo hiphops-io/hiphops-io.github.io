@@ -225,7 +225,7 @@ flatten([1, 2, 3], [], [4, [5, 6]]) // Returns [1, 2, 3, 4, 5, 6]
 ## format
 
 
-The `format` function produces a string by formatting values according to a template string. It is similar to the `fmt.Sprintf` in golang, 
+The `format` function produces a string by formatting values according to a template string. It is similar to the `fmt.Sprintf` in golang.
 
 Example: 
 
@@ -793,6 +793,38 @@ Example:
 ```hcl
 substr("Hello world", 1, 3) // Returns "ell" 
 ```
+
+---
+
+## template
+
+The `template` function accepts a filename and variables. The template will be loaded from the filename and then populated with the variables. The content is returned as a string.
+
+The file is found in the directory of the `.hops` file (same as the `file` function).
+
+The template syntax is Django like. Documentation [here](https://django.readthedocs.io/en/1.7.x/topics/templates.html).
+
+> Note: Unlike Django, HTML escaping is disabled by default. To enable it, see below.
+
+Example:
+
+```hcl
+template("template.tmpl", { "accountId": "anaccount", "password": "asecret" })
+```
+
+Where `template.tmpl` contains:
+
+```
+Your account and password are {{ accountId }}:{{ password }}
+```
+
+Returns:
+
+```
+Your account and password are anaccount:asecret
+```
+
+In order to turn on HTML escaping, add `"autoescape": true` to the variables.
 
 ---
 
