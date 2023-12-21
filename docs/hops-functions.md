@@ -195,7 +195,7 @@ env("NO_SUCH_ENV_VAR", "nice_default") // Returns "nice_default"
 
 ## file
 
-The `file` function returns the contents of a file in the same directory as the `.hops` file it is called from. The returned value will always be a string.
+The `file` function returns the contents of a file relative to the `example.hops` file it is called from. The returned value will always be a string.
 
 Example:
 
@@ -798,21 +798,21 @@ substr("Hello world", 1, 3) // Returns "ell"
 
 ## template
 
-The `template` function accepts a filename and variables. The template will be loaded from the filename and then populated with the variables. The content is returned as a string.
+The `template` function accepts a filename and variables. The template will be loaded from the filename and rendered using the variables. The result is returned as a string.
 
-The file is found in the directory of the `.hops` file (same as the `file` function).
+The template file path is relative to `example.hops` file.
 
 The template syntax is Django like. Documentation [here](https://django.readthedocs.io/en/1.7.x/topics/templates.html).
 
-> Note: Unlike Django, HTML escaping is disabled by default. To enable it, see below.
+> Note: Unlike Django, HTML escaping (where variables are made HTML safe before rendering) is disabled by default. To enable it, see below.
 
 Example:
 
 ```hcl
-template("template.tmpl", { "accountId": "anaccount", "password": "asecret" })
+template("mytemplate.txt", { "accountId": "anaccount", "password": "asecret" })
 ```
 
-Where `template.tmpl` contains:
+Where `template.txt` contains:
 
 ```
 Your account and password are {{ accountId }}:{{ password }}
@@ -824,7 +824,19 @@ Returns:
 Your account and password are anaccount:asecret
 ```
 
-In order to turn on HTML escaping, add `"autoescape": true` to the variables.
+When rendering HTML, in order to turn on HTML escaping of variables, add `"autoescape": true` to the variables.
+
+Example of unescaped variable (which could come from a malicious user):
+
+```
+<script>alert('xss');</script>
+```
+
+Example after escaping:
+
+```
+&lt;script&gt;alert(&#39;xss&#39;);&lt;/script&gt;
+```
 
 ---
 
