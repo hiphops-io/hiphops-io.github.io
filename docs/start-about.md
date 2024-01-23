@@ -24,18 +24,18 @@ Hiphops ships as a single binary that can run almost anywhere. Write and immedia
 #### Configure in code 𝍌
 
 UI driven workflow builders or YAML configs are fine for simple pipelines, but become unwieldy and difficult to maintain as complexity grows.
-Defining flows in your native language can be powerful, but it's unlikely that the first choice of language is the same for everyone in an org. They also tend to force much more boilerplate.
+On the other hand, defining automations in full-fledged programming languages is complex and introduces boilerplate setup that isn't useful for most business/process automation work.
 
-Hiphops is configured via HCL - the same language used by products such as Terraform and Docker Bake. HCL provides a good mix of expressions, built in functions and a low barrier to entry with a config-like syntax.
+Hiphops is configured via an easy to learn syntax that allows you to define precise behaviour without fluff. It's a great balance of control vs simplicity.
 
-Deploy Hiphops configs as you would any other code, so it fits into your existing change flow.
+> For the curious, our syntax is a simplified HCL - the same language used by products such as Terraform and Docker Bake. HCL provides a good mix of expressions, built in functions and a low barrier to entry.
 
 
-#### Interactive and accessible 👌
+#### Custom UIs for manually triggered automations
 
-Automations are only as valuable as they are accessible. Automations that require technical users to drive them or babysite them effectively force technical team members to spend time on basic admin. They also provide a poor experience to non-technical teams (such as HR) that may want to self-serve for things such as user onboarding.
+Automations are great, but having the ability to trigger them via a UI is sublime.
 
-Whilst Hiphops pipelines can run in response to events (in the same way as your CI/CD), you can also configure custom UIs that are accessible to all team members. 
+Wrap up a multi-step process in a Hiphops automation and have a UI to trigger it in a few lines of config. Perfect for adhoc back office tasks.
 
 
 #### Extensible ➕
@@ -44,9 +44,11 @@ A closed ecosystem that solves 90% of your use case often ends up being a false 
 
 Hiphops is fully extensible. You're able to run custom code in containerised steps or create your own integrations from scratch. You only need to code those parts that are custom to you, and your custom code works seamlessly as a first class citizen within the context of Hiphops pipelines.
 
+
 #### Super fast 🏎
 
-Hiphops running model means pipelines aren't constructed on the fly, and instances are already in place to handle work. This means Hiphops can being to execute work in sub-millisecond times, vs tens of seconds for most workflow tools. This is great for local development feedback, and also means UIs in front of your pipelines feel snappy and responsive to end users.
+Hiphops' running model means automations are pre-process and ready to run. This means Hiphops can begin work in sub-millisecond times, vs tens of seconds for most workflow tools. This is great for local development feedback, and also means your pipelines feel snappy and responsive to end users.
+
 
 #### Open Source ☀️
 
@@ -59,7 +61,7 @@ Whilst Hiphops is most powerful when paired with an [Hiphops.io](https://www.hip
 
 #### Infinitely long pipelines ♾
 
-Hiphops is fully event driven, meaning you only use compute when there's work to be done. If a pipeline waits for input before continuing, that input can take as long as you like. This contrasts with running automations on something like a CI/CD, which generally holds a process open for the duration of the run.
+Hiphops is fully event driven, meaning you only use compute when there's work to be done. If a pipeline waits for input before continuing, then it won't be using up resource/blocking other pipelines in the meantime. This contrasts with running automations on something like a CI/CD, which generally holds a process open for the duration of the run.
 
 
 #### Bring your own auth, secrets, etc 🔐
@@ -72,7 +74,7 @@ Most teams have a full featured secret store in place already via their cloud pr
 
 ## How it works
 
-You self-host the Hiphops engine, [hops](https://github.com/hiphops-io/hops) - which you deploy with your configs. It's simple to run, with zero additional dependencies. It can be deployed as a docker container, binary, or using our example Kubernetes manifests.
+You self-host the Hiphops engine, [hops](https://github.com/hiphops-io/hops) - which you deploy alongside your automations. It's simple to run, with zero additional dependencies. It can be deployed as a docker container, binary, or using our example Kubernetes manifests.
 
 Hops connects with your Hiphops.io account, where we provide pre-built apps to connect with SaaS providers and common helpers. Hiphops.io also provides the messaging, storage, and the other nuts and bolts that makes Hiphops powerful.
 

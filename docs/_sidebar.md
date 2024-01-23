@@ -1,7 +1,6 @@
 - **Getting started**
   - [About Hiphops](start-about.md)
   - [Installation](start-installation.md)
-  - [Quickstart](start-quickstart.md)
 - **Walkthroughs**
   - [GitHub & Slack Release Flow](walk-release-flow.md)
   - [Slack Async Standup Bot](walk-standup-bot.md)
