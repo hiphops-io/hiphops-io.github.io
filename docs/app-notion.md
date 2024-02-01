@@ -3,9 +3,9 @@
 _Integrating Notion allows Hiphops pipelines access to the full variety of the Notion API._<br>
 _Allow querying and updating databases, creating pages and updating blocks, among other capabilities._
 
-|Name|Listener|Worker|Setup|Auth|
-|:---|:-------|:-----|:----|:---|
-|`notion`|-|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|Add via hiphops.io account page|Credential free (via Notion App)|
+| Name     | Listener | Worker                                  | Setup                           | Auth                             |
+| :------- | :------- | :-------------------------------------- | :------------------------------ | :------------------------------- |
+| `notion` | -        | :white_check_mark:&nbsp;&nbsp;&nbsp;Yes | Add via hiphops.io account page | Credential free (via Notion App) |
 
 ---
 
@@ -18,7 +18,7 @@ Full documentation for the API can be found at [Notion API Reference](https://de
 **Call structure:**
 
 ```hcl
-call openai_api {
+call notion_api {
   inputs = {
     method = "PATCH" // (Optional) string - The HTTP method (default GET)
     path = "/v1/pages/60bdc8bd-3880-44b8-a9cd-8a145b3ffbd7" // The endpoint path, for example: https://developers.notion.com/reference/patch-page
