@@ -396,10 +396,10 @@ task onboard_user {
   EOT // Optional
 
   // Params are optional. A task without params will just have a submit button.
-  param user_name = {}
-  param email = {required = true}
-  param notes = {type = "text"}
-  param is_admin = {
+  param user_name {}
+  param email {required = true}
+  param notes {type = "text"}
+  param is_admin {
     type = "bool"
     help = "Whether this user should be created with admin level perms"
   }
