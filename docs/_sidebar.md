@@ -11,14 +11,16 @@
   - [Functions](hops-functions.md)
 - **Deploying Hiphops**
   - [Kubernetes Deployment](deploy-k8s.md)
-- **Apps**
-  - [GitHub](app-github.md)
+- **Core Apps**
   - [HTTP](app-http.md)
   - [Kubernetes](app-kubernetes.md)
+  - [Notify](app-notify.md)
+  - [Store](app-store.md)
+- **SaaS Apps**
+  - [GitHub](app-github.md)
   - [Notion](app-notion.md)
   - [OpenAI](app-openai.md)
   - [Slack](app-slack.md)
-  - [Store](app-store.md)
   - [100+ Coming Soon](app-coming-soon.md)
 <!-- TODO: Managing hiphops stuff (local dev, deployed instances, pipeline storage on sequences etc) -->
 <!-- Concepts -->
