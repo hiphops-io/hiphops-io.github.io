@@ -18,6 +18,7 @@
   - [Notion](app-notion.md)
   - [OpenAI](app-openai.md)
   - [Slack](app-slack.md)
+  - [Store](app-store.md)
   - [100+ Coming Soon](app-coming-soon.md)
 <!-- TODO: Managing hiphops stuff (local dev, deployed instances, pipeline storage on sequences etc) -->
 <!-- Concepts -->
