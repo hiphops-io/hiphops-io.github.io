@@ -43,8 +43,10 @@ call store_put {
   "errored": false,
   "completed": true,
   "done": true,
-  "body": "some_file_or_data", // For successful calls it will be populated with the key that was set
-  "json": "some_file_or_data" // Same as `body` above
+  "body": "{\"key\":\"some_file_or_data\"}", // For successful calls it will be populated with the key that was set
+  "json": {
+    "key": "some_file_or_data"
+  }
 }
 ```
 

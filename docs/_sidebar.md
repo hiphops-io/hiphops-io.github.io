@@ -12,6 +12,7 @@
 - **Deploying Hiphops**
   - [Kubernetes Deployment](deploy-k8s.md)
 - **Core Apps**
+  - [Hiphops](app-hiphops.md)
   - [HTTP](app-http.md)
   - [Kubernetes](app-kubernetes.md)
   - [Notify](app-notify.md)

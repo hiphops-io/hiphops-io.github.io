@@ -50,11 +50,13 @@ call notify_send_email {
 **Example call:**
 
 ```hcl
-call notify_send_email {
-  inputs = {
-    to = ["bob@fam.com"]
-    subject = "Greetings"
-    content = "Hi Bob!"
+on thing_happened {
+  call notify_send_email {
+    inputs = {
+      to = ["bob@fam.com"]
+      subject = "Greetings"
+      content = "Hi Bob!"
+    }
   }
 }
 ```
