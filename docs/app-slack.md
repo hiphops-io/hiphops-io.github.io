@@ -5,7 +5,63 @@ _As Hiphops exposes the full Slack REST Web API, the vast majority of Slack base
 
 |Name|Listener|Worker|Setup|Auth|
 |:---|:-------|:-----|:----|:---|
-|`slack`|-|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|Add via hiphops.io account page|Credential free (via Slack App)|
+|`slack`|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|:white_check_mark:&nbsp;&nbsp;&nbsp;Yes|Add via hiphops.io account page|Credential free (via Slack App)|
+
+---
+
+## Event: `task` (slash commands)
+
+actions: `*`
+
+With the Slack app connected, Slack users may create `task` events in Hiphops via the `/hiphops` slash command. The first value will be used as the task's action, with following values used as parameters.
+
+e.g. If a user in a Slack channel enters `/hiphops say_hi greeting=hello`, Hiphops will create a new event like so:
+
+```js
+{
+  "hops": {
+    "source": "slack"
+    "event": "task",
+    "action": "say_hi", // This is the first value given to the slash command
+  },
+  "greeting": "hello", // Param provided by user input
+  // =======
+  // The values below are always set based on the channel/user/workspace the command came from.
+  // If they clash with user provided parameters, then the below values will be used instead.
+  // =======
+  "channel_id": "C0287351A3F",
+  "channel_name": "random",
+  "enterprise_id": "",
+  "enterprise_name": "",
+  "response_url": "https://hooks.slack.com/commands/T0000JK00KP/6823884231527/t71l3i8uW9j21daTIkZY44Ev", // URL to send responses to the command
+  "team_domain": "myteam",
+  "team_id": "T0000JK00KP",
+  "text": "say_hi greeting=hello", // Original full text given to the command
+  "trigger_id": "6840909712916.6209631307669.ba59aba523ab64878ddf793fc577d1ea", // Short lived ID that can be used to open a modal in response to a command.
+  "user_id": "U000B0BTB0U",
+  "user_name": "tom"
+}
+```
+
+> Note: This feature is in the early stages. As such it does not yet perform validation of the input against any matching `task` blocks you may have configured in your automations. This enhanced behaviour will be added in future.
+
+**Example usage:**
+
+Assuming the slash command is given as in the example above, you could react to that command in your automations like so:
+
+```hcl
+on task_say_hi {
+  // Here we just post the greeting from the command back to slack for demo purposes.
+  // In your pipelines you can use that command to trigger any flow you like.
+  call slack_post_message {
+    inputs = {
+      channel_id = event.channel_id
+      // We construct a message using the values from the original event. <@USER_ID> is Slack's way of mentioning a user via API calls.
+      text = "${event.greeting} <@${event.user_id}>"
+    }
+  }
+}
+```
 
 ---
 
